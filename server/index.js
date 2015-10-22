@@ -6,7 +6,9 @@ var routes = express.Router()
 
 //redo once we have some public stuffs
 routes.get('/app-bundle.js',
-  browserify('./client/app.js'))
+  browserify('./client/app.js', {
+    transform: [ require('reactify') ]
+  }))
 
 //redo once we have some public stuffs
 routes.get('/api/tags-example', function(req, res) {
