@@ -1,10 +1,12 @@
 
 var mongoose = require('mongoose');
 
-var mongodb = process.env.PROD_MONGODB || process.env.MONGOLAB_URI;
+var mongodb;
+//Once we deploy this will become relevant
 
 var config = {
-  mongoUrl: mongodb || 'mongodb://localhost/shortly'
+  mongoUrl: mongodb || 'mongodb://localhost/'
+  //need to configure this local url
 };
 
 mongoose.connect(config.mongoUrl);
