@@ -1,3 +1,5 @@
+//this code expects Mongo to be installed 
+//and a db called 'pairLearning' to exist
 
 var mongoose = require('mongoose');
 
