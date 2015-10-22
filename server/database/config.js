@@ -5,15 +5,14 @@ var mongodb;
 //Once we deploy this will become relevant
 
 var config = {
-  mongoUrl: mongodb || 'mongodb://localhost/'
-  //need to configure this local url
+  mongoUrl: mongodb || 'mongodb://localhost/pairLearning'
+  //this url may or may not be incorrect
 };
 
 mongoose.connect(config.mongoUrl);
 
-mongoose.connection.on('error', function(err) {
-  console.log('Error with Mango connection:', err);
-  mongoose.connect(config.mongoUrl);
-});
+mongoose.connection.on('error', function(err){
+	console.log('Mango problem', err)
+})
 
 module.exports = mongoose;

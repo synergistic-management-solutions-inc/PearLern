@@ -1,7 +1,8 @@
 var browserify = require('browserify-middleware')
 var express = require('express')
 var Path = require('path')
-var mongoose = require("../database/config");
+var mongoose = require('./database/config');
+var Helpers = require('./request_handler');
 
 var routes = express.Router()
 
@@ -14,32 +15,9 @@ routes.get('/api/tags-example', function(req, res) {
   res.send(['node', 'express', 'browserify', 'mithril'])
 })
 
-routes.post('/signup', function(req, res) {
-  var user = {};
-  user.username = req.body.username;
-  user.password = req.body.password;
+routes.post('/signup', Helpers.signUp)
 
-  //actually create user
-  //grab ID from our friend the DB
-
-  //testing code, delete later
-  user.id = 1;
-
-  res.status(201).send(user);
-})
-
-routes.post('/signin', function(req, res) {
-  var user = {};
-  user.username = req.body.username;
-  user.password = req.body.password;
-
-  //verify user exists/correct password
-
-  //testing code, delete later
-  user.id = 1;
-
-  res.status(200).send(user);
-})
+routes.post('/signin', Helpers.signIn)
 
 var assetFolder = Path.resolve(__dirname, '../client/public')
 routes.use(express.static(assetFolder))
