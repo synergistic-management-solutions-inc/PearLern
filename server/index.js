@@ -10,7 +10,7 @@ routes.get('/app-bundle.js',
 
 //redo once we have some public stuffs
 routes.get('/api/tags-example', function(req, res) {
-  res.send(['node', 'express', 'browserify', 'mithril'])
+  res.send(['node', 'express', 'browserify'])
 })
 
 routes.post('/signup', function(req, res){

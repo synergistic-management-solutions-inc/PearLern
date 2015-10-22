@@ -13,7 +13,8 @@
     "body-parser": "^1.14.1",
     "browserify-middleware": "^5.0.2",
     "express": "^4.12.4",
-    "mithril": "^0.2.0"
+    "react": "~0.14.0",
+    "react-dom": "~0.14.0"
   },
   "devDependencies": {
     "chai": "^3.4.0",
@@ -29,8 +30,7 @@
   "keywords": [
     "boilerplate",
     "browserify",
-    "express",
-    "mithril"
+    "express"
   ],
   "bugs": {
     "url": "https://github.com/mindeavor/node-catapult/issues"
