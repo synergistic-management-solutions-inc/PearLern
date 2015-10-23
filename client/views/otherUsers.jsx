@@ -8,6 +8,11 @@ var AllUsers = React.createClass({
   render: function () {
     return (
           <div>
+            {
+              ['a', 'b', 'c'].map(function (element) {
+                return <div>element</div>
+              })
+            }
             <OneUser />
           </div>)
   }
