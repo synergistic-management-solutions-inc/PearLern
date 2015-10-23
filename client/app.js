@@ -8,7 +8,7 @@ var $ = require('jquery');
 ReactDOM.render(<div>
                   <SignUp />
                   <Profile users={Profile.USERS} />
-                  // <AllUsers />
+                  <AllUsers />
                 </div>,
                   document.getElementById('app')
                 );
