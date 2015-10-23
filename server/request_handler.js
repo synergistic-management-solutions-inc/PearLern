@@ -1,4 +1,4 @@
-var User = require('./database/user');
+var User = require('./database/models/user');
 
 exports.signUp = function(req, res) {
   var userInfo = {};
