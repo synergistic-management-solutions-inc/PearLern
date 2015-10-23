@@ -1,27 +1,12 @@
-var m = require('mithril')
-var MyComponent = require('./components/MyComponent')
+var React = require('react');
+var ReactDOM = require('react-dom');
+var Profile = require('./views/profile.jsx');
+var SignUp = require('./views/signup.jsx')
+var $ = require('jquery');
 
-//
-// Global variable for global state (e.g. currentUser)
-//
-window.App = {}
-
-//
-// Client-side routing
-//
-m.route.mode = 'pathname'
-m.route(document.getElementById('app'), '/', {
-
-  '/': {
-    // Controllers are optional
-    // controller: function () {},
-
-    view: function (ctrl) {
-      return m('.app', [
-        m('h1', 'Node Catapult'),
-        m.component(MyComponent, { title: 'Welcome to my app!' })
-      ])
-    }
-  }
-
-})
+ReactDOM.render(<div>
+                  <SignUp />
+                  <Profile users={Profile.USERS} />
+                </div>,
+                  document.getElementById('app')
+                );

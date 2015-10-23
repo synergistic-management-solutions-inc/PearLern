@@ -8,11 +8,14 @@ var routes = express.Router()
 
 //redo once we have some public stuffs
 routes.get('/app-bundle.js',
-  browserify('./client/app.js'))
+  // Tell browserify to user reactify as it's JSX compiler
+  browserify('./client/app.js', {
+    transform: [ require('reactify') ]
+  }))
 
 //redo once we have some public stuffs
 routes.get('/api/tags-example', function(req, res) {
-  res.send(['node', 'express', 'browserify', 'mithril'])
+  res.send(['node', 'express', 'browserify'])
 })
 
 routes.post('/signup', Helpers.signUp)
