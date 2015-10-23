@@ -5,3 +5,4 @@ bower_components/
 build/
 dist/
 client/.DS_Store
+client/views/.DS_Store

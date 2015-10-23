@@ -10,7 +10,3 @@ ReactDOM.render(<div>
                 </div>,
                   document.getElementById('app')
                 );
-
-
-
-ReactDOM.render(<div><SignUp /><Profile users={Profile.USERS} /></div>, document.getElementById('app'));
