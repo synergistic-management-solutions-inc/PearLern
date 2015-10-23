@@ -6,9 +6,11 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var passport = require('passport');
-var falsh = require('connect-flash');
+var flash = require('connect-flash');
 
 var Helpers = require('./request_handler');
+require('./config/passport')(passport);
+
 
 var routes = express.Router();
 
@@ -24,9 +26,9 @@ routes.get('/api/tags-example', function(req, res) {
 });
 
 
-routes.post('/signup', Helpers.signUp);
-
-routes.post('/signin', Helpers.signIn);
+// routes.post('/signup', Helpers.signUp);
+//
+// routes.post('/signin', Helpers.signIn);
 
 var assetFolder = Path.resolve(__dirname, '../client/public');
 routes.use(express.static(assetFolder));
@@ -62,9 +64,10 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(flash());
 
   app.use('/', routes);
+  require('./routes.js')(app, passport);
 
   // Start the server!
-  var port = process.env.PORT || 4000
+  var port = process.env.PORT || 4000;
   app.listen(port);
   console.log("Listening on port", port);
 } else {

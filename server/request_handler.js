@@ -1,4 +1,4 @@
-var User = require('./database/models/user');
+var User = require('./database/models/user.js');
 
 exports.signUp = function(req, res) {
   var userInfo = {};
@@ -16,7 +16,7 @@ exports.signUp = function(req, res) {
     //should eventually create a session
     //and redirect
     res.status(201).send(user);
-  })
+  });
 };
 
 exports.signIn = function(req, res) {
@@ -33,5 +33,5 @@ exports.signIn = function(req, res) {
     }
     //should create session and perhaps redirect here
     res.status(200).send(user);
-  })
+  });
 };

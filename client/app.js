@@ -1,4 +1,4 @@
-var React = require('react')
+var React = require('react');
 var ReactDOM = require('react-dom');
 
 var SignUp = React.createClass({
@@ -6,7 +6,7 @@ var SignUp = React.createClass({
     return {
       username: 'Choose a username',
       password: 'Choose a password'
-    }
+    };
   },
   addUser: function(user) {
     //send user to router to -> server

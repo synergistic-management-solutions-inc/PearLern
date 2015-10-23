@@ -1,10 +1,10 @@
 var request = require('supertest')
-var routes = require(__server + '/index.js')
+var routes = require(__server + '/index.js');
 
 describe("The Server", function() {
 
   var app = TestHelper.createApp()
-  app.use('/', routes)
+  app.use('/', routes);
   app.testReady()
 
   it("serves an example endpoint", function() {
@@ -14,14 +14,14 @@ describe("The Server", function() {
       .get('/api/tags-example')
       .expect(200)
       .expect(function(response) {
-        expect(response.body).to.include('node')
-      })
+        expect(response.body).to.include('node');
+      });
   })
 
   var user = {
     'username': 'user',
     'password': 'pass'
-  }
+  };
 
   it("replies to post requests from /signup", function(){
     return request(app)
@@ -31,10 +31,10 @@ describe("The Server", function() {
       .expect(function(res){
         var newUser = res.body
         expect(newUser.id).to.not.be.undefined
-        expect(newUser.username).to.equal('user')
-        expect(newUser.password).to.equal('pass')
-      })
-    })
+        expect(newUser.username).to.equal('user');
+        expect(newUser.password).to.equal('pass');
+      });
+    });
 
   it("replies to post requests from /signin", function(){
     return request(app)
@@ -45,10 +45,10 @@ describe("The Server", function() {
         var newUser = res.body
         expect(newUser.id).to.not.be.undefined
         expect(newUser.username).to.equal('user')
-        expect(newUser.password).to.equal('pass')
+        expect(newUser.password).to.equal('pass');
       })
     })
 
 
 
-})
+});
