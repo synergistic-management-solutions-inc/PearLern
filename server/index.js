@@ -5,6 +5,9 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
+var passport = require('passport');
+var falsh = require('connect-flash');
+
 var Helpers = require('./request_handler');
 
 var routes = express.Router();
@@ -42,6 +45,8 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(cookieParser());
   //parse our cookie
 
+  app.use(require('body-parser').json());
+
   app.use(session({
     secret: 'Jang',
     saveUninitialized: true,
@@ -51,19 +56,17 @@ if (process.env.NODE_ENV !== 'test') {
   //if set to true - it will save
   // resave -  if nothing is changed - save it again
 
-  // app.set('view engine', 'ejs');
-  // EJS is for testing only - Please be aware
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-  // require('./routes.js')(app);
+  app.use(flash());
 
-  app.use(require('body-parser').json())
-  app.use('/', routes)
+  app.use('/', routes);
 
   // Start the server!
   var port = process.env.PORT || 4000
-  app.listen(port)
-  console.log("Listening on port", port)
+  app.listen(port);
+  console.log("Listening on port", port);
 } else {
-
-  module.exports = routes
+  module.exports = routes;
 }

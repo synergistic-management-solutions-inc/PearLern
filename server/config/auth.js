@@ -1,5 +1,5 @@
 module.expors = {
-  'facebookAuth' : {
+  'facebookAuth': {
     'clientID': '',
     'clientSecret': '',
     'callbackURL': 'http://localhost:8080/auth/facebook/callback'

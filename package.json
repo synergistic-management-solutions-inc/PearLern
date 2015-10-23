@@ -12,13 +12,15 @@
   "dependencies": {
     "body-parser": "^1.14.1",
     "browserify-middleware": "^5.0.2",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "latest",
-    "ejs": "^2.3.4",
     "express": "^4.12.4",
     "express-session": "latest",
     "mongoose": "latest",
     "morgan": "^1.6.1",
+    "passport": "^0.3.0",
     "passport-facebook": "^2.0.0",
+    "passport-local": "^1.0.0",
     "react": "~0.14.0",
     "react-dom": "~0.14.0",
     "reactify": "^1.1.1"
