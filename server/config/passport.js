@@ -34,7 +34,7 @@ module.exports = function(passport) {
           } else {
             var newUser = new User();
             newUser.username = username;
-            newUser.password = password;
+            newUser.password = newUser.generateHash(password);
 
             newUser.save(function(err) {
               if (err) {
@@ -64,7 +64,7 @@ module.exports = function(passport) {
           if (!user) {
             return done(null, false, req.flash('loginMessage', 'No User'));
           }
-          if (user.password !== password) {
+          if (!user.validPassword(password)) {
             return done(null, false, req.flash('loginMessage', 'Bad Pass'));
           }
           return done(null, user);
