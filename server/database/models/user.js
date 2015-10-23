@@ -6,8 +6,12 @@ var UserSchema = new Schema({
       type: String,
       index: { unique: true}
     },
-    password: String
-    // Profile needed;
+    password: String,
+    profile: {
+    	email: String,
+    	about: String,
+    	interests: String
+    }
 });
 
 
