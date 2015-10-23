@@ -7,13 +7,6 @@ var session = require('express-session');
 var mongoose = require('mongoose');
 var Helpers = require('./request_handler');
 
-var configDB = require("./database/database.js");
-mongoose.connect(configDB.url);
-
-mongoose.connection.on('error', function(err){
-	console.log('Mango problem', err);
-});
-
 var routes = express.Router();
 
 //redo once we have some public stuffs
