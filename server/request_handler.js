@@ -35,3 +35,29 @@ exports.signIn = function(req, res) {
   	res.status(200).send(user);
   })
 }
+
+exports.submitProfile = function(req, res){
+	console.log('hopefully this is hitting')
+	var profileInfo = {} 
+	profileInfo.email = req.body.profile.email;
+	profileInfo.about = req.body.profile.about;
+	profileInfo.interests = req.body.profile.interests;
+
+	User.findOne({username: req.body.username}, function(err, user){
+		if (err || !user){
+			console.log('cannot enter profile info');
+			res.status(404).send(err);
+		}
+		user.profile = profileInfo;
+		user.save(function(err){
+			if (err){
+				console.log('profile info was not updated');
+				res.status(400).send(err);
+				return; 
+			}
+
+			res.status(201).send(user.profile);			
+		})
+
+	})
+}

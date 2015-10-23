@@ -16,8 +16,9 @@ routes.get('/api/tags-example', function(req, res) {
 })
 
 routes.post('/signup', Helpers.signUp)
-
 routes.post('/signin', Helpers.signIn)
+//this needs to handle users/+username+
+routes.post('/users/user', Helpers.submitProfile)
 
 var assetFolder = Path.resolve(__dirname, '../client/public')
 routes.use(express.static(assetFolder))
