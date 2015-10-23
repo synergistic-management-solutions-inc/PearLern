@@ -6,6 +6,7 @@ var routes = express.Router()
 
 //redo once we have some public stuffs
 routes.get('/app-bundle.js',
+  // Tell browserify to user reactify as it's JSX compiler
   browserify('./client/app.js', {
     transform: [ require('reactify') ]
   }))
