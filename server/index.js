@@ -28,17 +28,10 @@ if (process.env.NODE_ENV !== 'test') {
     res.sendFile(assetFolder + '/index.html')
   })
 
-
-
   var app = express()
 
   app.use(require('body-parser').json())
   app.use('/', routes)
-
-  app.use(function(req, res, next) {
-    req.mango = mongoose;
-    next();
-  });
 
   // Start the server!
   var port = process.env.PORT || 4000
