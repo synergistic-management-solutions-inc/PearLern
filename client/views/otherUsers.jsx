@@ -2,18 +2,33 @@ var React = require('react')
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
 
-
+var datastuffs = {users: [
+  {
+    "username": "cottoncandy",
+    "profile": {
+      "email": "unicorn@unicorn.com",
+      "about": "I like things.",
+      "interests": "python"
+    }
+  },
+  {
+    "username": "puppies",
+    "profile": {
+      "email": "unicornpuppies@unicorn.com",
+      "about": "I like puppies.",
+      "interests": "python"
+    }
+  }
+]}
 
 var AllUsers = React.createClass({
   render: function () {
+    console.log(JSON.stringify(datastuffs.users));
     return (
           <div>
-            {
-              ['a', 'b', 'c'].map(function (element) {
-                return <div>element</div>
-              })
-            }
-            <OneUser />
+            {datastuffs.users.map(function(element) {
+              return <div>Username: {JSON.stringify(element.username)} Interests: {JSON.stringify(element.profile.interests)}</div>
+            })}
           </div>)
   }
 });
@@ -29,24 +44,6 @@ var OneUser = React.createClass({
     },
     // Need component did mount for AJAX requests. Remember to check if component did mount.
     componentDidMount: function () {
-      var datastuffs = {users: [
-        {
-          "username": "cottoncandy",
-          "profile": {
-            "email": "unicorn@unicorn.com",
-            "about": "I like things.",
-            "interests": ["python"]
-          }
-        },
-        {
-          "username": "puppies",
-          "profile": {
-            "email": "unicornpuppies@unicorn.com",
-            "about": "I like puppies.",
-            "interests": ["python"]
-          }
-        }
-      ]};
       if (this.isMounted()) {
         this.setState({
           username: datastuffs.users[0].username,
