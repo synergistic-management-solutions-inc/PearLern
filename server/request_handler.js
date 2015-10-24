@@ -63,7 +63,21 @@ exports.submitProfile = function(req, res){
 }
 
 exports.getUsers = function(req, res){
-  User.find({}, function(err, something){
-    console.log(something);
+  User.find({}, function(err, users){
+    var userData = []
+
+    users.forEach(function(user){
+  
+      //profiles with content
+      //we only want those users
+      //they should be sent here
+      if (user.profile.interests && user.profile.email){
+        userData.push({
+          username: user.username,
+          profile: user.profile
+        })
+      }
+    })
+  res.status(200).send({'users': userData})
   })
 }

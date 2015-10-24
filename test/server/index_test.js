@@ -110,11 +110,28 @@ describe("The Server", function() {
     })
   })
 
-  // it('retrieves user data', function(){
-  //   return newProfile(function(){
-  //     return request(app)
-  //     .get('/users')
-      
-  //   })
-  // })
+  it('retrieves user data', function(){
+    return newProfile(function(){
+      return request(app)
+      .get('/users')
+      .expect(200)
+      .expect(function(res){
+        expect(res.body.users.length).to.equal(1);
+        expect(res.body.users[0].username).to.equal('user');
+        expect(typeof res.body.users[0].profile).to.equal('object');
+      })
+    })
+  })
+
+  it('only retrieves users with profile information', function(){
+    return signUp(function(){
+      return request(app)
+      .get('/users')
+      .expect(200)
+      .expect(function(res){
+        console.log(res.body);
+        expect(res.body.users.length).to.equal(0);
+      })
+    })
+  })
 })
