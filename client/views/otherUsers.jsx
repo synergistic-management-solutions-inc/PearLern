@@ -35,17 +35,18 @@ var AllUsers = React.createClass({
     console.log(JSON.stringify(datastuffs.users));
     return (
           <div>
-            {datastuffs.users.map(function(element) {
-              return (<div>
-                <br />
-                <p>Username: {JSON.stringify(element.username).replace(/"/g,"")}</p>
-                <p>Interests: {JSON.stringify(element.profile.interests).replace(/"/g,"")}</p>
-                <p>
-                  Email: <a href="mailto:someone@example.com">{JSON.stringify(element.profile.email).replace(/"/g,"")}</a>
-                </p>
-                <br />
-              </div>)
-            })}
+            <ul>
+              {datastuffs.users.map(function(element) {
+                return (<li>
+                  <p>Username: {JSON.stringify(element.username).replace(/"/g,"")}</p>
+                  <p>Interests: {JSON.stringify(element.profile.interests).replace(/"/g,"")}</p>
+                  <p>
+                    Email: <a href="mailto:someone@example.com">{JSON.stringify(element.profile.email).replace(/"/g,"")}</a>
+                  </p>
+                  <br />
+                </li>)
+              })}
+            </ul>
           </div>)
   }
 });
