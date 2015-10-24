@@ -13,8 +13,9 @@ exports.signUp = function(req, res) {
   		res.status(400).send(err);
   		return; 
   	}
-  	//should eventually create a session
-  	//and redirect
+  	//eventually 
+    //should redirect to main
+    //create a session
   	res.status(201).send(user);
   })
 }
@@ -37,8 +38,7 @@ exports.signIn = function(req, res) {
 }
 
 exports.submitProfile = function(req, res){
-	console.log('hopefully this is hitting')
-	var profileInfo = {} 
+  var profileInfo = {}; 
 	profileInfo.email = req.body.profile.email;
 	profileInfo.about = req.body.profile.about;
 	profileInfo.interests = req.body.profile.interests;
@@ -60,4 +60,24 @@ exports.submitProfile = function(req, res){
 		})
 
 	})
+}
+
+exports.getUsers = function(req, res){
+  User.find({}, function(err, users){
+    var userData = []
+
+    users.forEach(function(user){
+  
+      //profiles with content
+      //we only want those users
+      //they should be sent here
+      if (user.profile.interests && user.profile.email){
+        userData.push({
+          username: user.username,
+          profile: user.profile
+        })
+      }
+    })
+  res.status(200).send({'users': userData})
+  })
 }

@@ -34,7 +34,7 @@ describe("The Server", function() {
       .then(cb)
   }
 
-  it("users can sign up and sign in", function(){
+  it("creates new accepts sign up and sign in requests", function(){
     return request(app)
       .post('/signup')
       .send(user)
@@ -60,14 +60,14 @@ describe("The Server", function() {
       })
     })
 
-  it('users cannot sign in before signing up', function(){
+  it('it will not sign in a nonexistant user', function(){
     return request(app)
     .post('/signin')
     .send(user)
     .expect(404)
   })
 
-  it('users cannot sign up twice', function(){
+  it('will not allow a user to sign up twice', function(){
     return signUp(function(){
       return request(app)
       .post('/signup')
@@ -76,8 +76,7 @@ describe("The Server", function() {
     })
   })
 
-
-  it('user has a profile', function(){
+  var newProfile = function(cb){
     return signUp(function(){
       return request(app)
       .post('/users/user')
@@ -89,26 +88,49 @@ describe("The Server", function() {
         expect(newProfile.about).to.equal(profile.about)
         expect(newProfile.interests).to.equal(profile.interests)
       })
+    }).then(cb)
+  }
+
+  it('accepts profile information', function(){
+    return newProfile(function(){})
+  })
+
+  it('accepts changes to preexisting profiles', function(){
+    return newProfile(function(){
+      return request(app)
+      .post('/users/user')
+      .send({username: 'user', profile: {email: '', about: '', interests: ''}})
+      .expect(201)
+      .expect(function(res){
+        var newProfile = res.body
+        expect(newProfile.email).to.equal('')
+        expect(newProfile.about).to.equal('')
+        expect(newProfile.interests).to.equal('')
+      })
     })
   })
 
-  it('user can change profile information', function(){
+  it('retrieves user data', function(){
+    return newProfile(function(){
+      return request(app)
+      .get('/users')
+      .expect(200)
+      .expect(function(res){
+        expect(res.body.users.length).to.equal(1);
+        expect(res.body.users[0].username).to.equal('user');
+        expect(typeof res.body.users[0].profile).to.equal('object');
+      })
+    })
+  })
+
+  it('only retrieves users with profile information', function(){
     return signUp(function(){
       return request(app)
-      .post('users/user')
-      .send(profile)
-      .expect(201)
-      .then(function(){
-        return request(app)
-        .post('users/user')
-        .send({email: '', about: '', interests: ''})
-        .expect(201)
-        .expect(function(res){
-          var newProfile = res.body
-          expect(newProfile.email).to.equal('')
-          expect(newProfile.about).to.equal('')
-          expect(newProfile.interests).to.equal('')
-        })
+      .get('/users')
+      .expect(200)
+      .expect(function(res){
+        console.log(res.body);
+        expect(res.body.users.length).to.equal(0);
       })
     })
   })

@@ -30,8 +30,6 @@ reply from server: {
 	_id:
 }
 
-*intended*
-
 GET: /users/+username+
 note: when you go to your own profile page
 reply from server: {
