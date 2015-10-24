@@ -3,7 +3,7 @@ var express = require('express')
 var Path = require('path')
 var mongoose = require('./database/config');
 var Helpers = require('./request_handler');
-
+var app = express()
 var routes = express.Router()
 
 //redo once we have some public stuffs
@@ -27,14 +27,14 @@ var assetFolder = Path.resolve(__dirname, '../client/public')
 routes.use(express.static(assetFolder))
 
 if (process.env.NODE_ENV !== 'test') {
+  app.use(require('body-parser').json())
+  app.use(require('body-parser').urlencoded({ extended: true }));
 
   routes.get('/*', function(req, res) {
     res.sendFile(assetFolder + '/index.html')
   })
 
-  var app = express()
 
-  app.use(require('body-parser').json())
   app.use('/', routes)
 
   // Start the server!

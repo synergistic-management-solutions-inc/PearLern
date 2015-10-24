@@ -44,12 +44,10 @@ var Profile = React.createClass({
     var self = this;
     $.ajax({
       type : 'GET',
-      url : '/users/scott'
-    })
-    .then(function(err, res) {
-      if (err) { console.log(err); }
-      // Set Profile.USERS to new data
-      console.log(res)
+      url : '/users/user',
+      success : function(res) {
+        console.log('Got', res)
+      }
     })
   },
 
@@ -76,6 +74,7 @@ var Profile = React.createClass({
 
   saveData : function() {
     var data = {
+      username : 'scott',
       profile : {
         email : this.state.emailValue,
         about : this.state.aboutValue,
@@ -85,13 +84,15 @@ var Profile = React.createClass({
     console.log(data)
     $.ajax({
       type : 'POST',
-      url : '/users/' + this.props.users[0].username,
+      dataType : 'json',
+      url : '/users/user',
       data : data
     })
     .then(function(err, res) {
       if (err) { console.log(err) }
-      this.setState({ modalIsOpen : false })
+        console.log(res)
     })
+    this.setState({ modalIsOpen : false })
   },
   // /Handlers
 
