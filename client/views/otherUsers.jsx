@@ -18,16 +18,33 @@ var datastuffs = {users: [
       "about": "I like puppies.",
       "interests": "python"
     }
+  },
+  {
+    "username": "blargl",
+    "profile": {
+      "email": "unicornpuppiesdlfjsdklfj@unicorn.com",
+      "about": "I like puppies.",
+      "interests": "ruby"
+    }
   }
 ]}
 
+// TODO replace example email address
 var AllUsers = React.createClass({
   render: function () {
     console.log(JSON.stringify(datastuffs.users));
     return (
           <div>
             {datastuffs.users.map(function(element) {
-              return <div>Username: {JSON.stringify(element.username)} Interests: {JSON.stringify(element.profile.interests)}</div>
+              return (<div>
+                <br />
+                <p>Username: {JSON.stringify(element.username).replace(/"/g,"")}</p>
+                <p>Interests: {JSON.stringify(element.profile.interests).replace(/"/g,"")}</p>
+                <p>
+                  Email: <a href="mailto:someone@example.com">{JSON.stringify(element.profile.email).replace(/"/g,"")}</a>
+                </p>
+                <br />
+              </div>)
             })}
           </div>)
   }
