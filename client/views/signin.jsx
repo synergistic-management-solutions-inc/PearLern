@@ -8,24 +8,23 @@ var mountNode = document.getElementById('app')
 //Add novaldiate to forms to override default HTML 5 validation?
 //Server response
 
-var SignUp = React.createClass({
+var SignIn = React.createClass({
   getInitialState: function (){
     return {
       username: '',
       password: ''
     }
   },
-  addUser: function () {
+  validateUser: function () {
     //Composes new user instance from current username/password state & posts to server
-    var newUser = {
+    var User = {
       username: this.state.username,
       password: this.state.password
     } 
-    console.log("newUser:", newUser);
     $.ajax({
       type: 'POST',
-      url: '/signup',
-      data: newUser
+      url: '/signin',
+      data: User
     })
     .then(function (err,res){
       if (err) {
@@ -45,17 +44,17 @@ var SignUp = React.createClass({
   },
   render: function () {
     return (
-      <div className="signup-container">
-        <h2 className="signup-header">Sign Up and Prepare to Get Schooled</h2> 
+      <div className="signin-container">
+        <h2 className="signin-header">Sign Up and Prepare to Get Schooled</h2> 
         <input type="text" className="username-input" placeholder="Choose a Username" onChange={this.updateUsername}/>
         <input type="password" className="password-input" placeholder="Choose a Password"  onChange={this.updatePassword}/> 
         <button type="submit" className="submit-button" onClick={this.addUser}> Register </button>
-        <p className="signup-footer">Already registered? <a href='/signin'>Sign-In </a></p>
+        <p className="signin-footer">Already registered? <a href='/signin'>Sign-In </a></p>
       </div>
     )
   }
 });
 
-ReactDOM.render(<SignUp />, mountNode);
+//ReactDOM.render(<SignIn />, mountNode);
 
-module.exports = SignUp;
+module.exports = SignIn;
