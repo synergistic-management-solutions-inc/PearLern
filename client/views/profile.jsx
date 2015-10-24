@@ -29,7 +29,7 @@ var customStyles = {
 // We will need some sort of routing.
 var Profile = React.createClass({
 
-  // Set the initial value of email (using dummy data for now) and state of modal
+  // Set the initial value input fields (using dummy data for now) and state of modal
   getInitialState : function() {
     return { 
       modalIsOpen : false,
@@ -39,11 +39,15 @@ var Profile = React.createClass({
     };
   },
 
+  // This fires right before the component mounts. This is where we'll get user profile data.
   componentWillMount: function() {
-    //alert('mounting...')
     var self = this;
-    $.getJSON({
-      url : '/users/'
+    $.ajax({
+      type : 'GET',
+      url : '/users/user',
+      success : function(res) {
+        console.log('Got', res)
+      }
     })
   },
 
@@ -66,6 +70,29 @@ var Profile = React.createClass({
 
   updateInterests : function(event) {
     this.setState({ interestsValue : event.target.value });
+  },
+
+  saveData : function() {
+    var data = {
+      username : 'scott',
+      profile : {
+        email : this.state.emailValue,
+        about : this.state.aboutValue,
+        interests : this.state.interestsValue
+      }
+    }
+    console.log(data)
+    $.ajax({
+      type : 'POST',
+      dataType : 'json',
+      url : '/users/user',
+      data : data
+    })
+    .then(function(err, res) {
+      if (err) { console.log(err) }
+        console.log(res)
+    })
+    this.setState({ modalIsOpen : false })
   },
   // /Handlers
 
