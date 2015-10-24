@@ -24,7 +24,7 @@ UserSchema.methods.generateHash = function(password) {
 
 UserSchema.methods.validPassword = function(password) {
   return bcyrpt.compareSync(password, this.password);
-}
+};
 
 var User = Mongoose.model('User', UserSchema);
 
