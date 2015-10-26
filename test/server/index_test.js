@@ -9,7 +9,7 @@ describe("The Server", function() {
   app.testReady()
 
   var user = {'username': 'user','password': 'pass'}
-  var profile = {'email': 'email@email.com', 'about': 'I don\'t actually exist', 'interests': 'backbone'}
+  var profile = {'email': 'email@email.com', 'about': 'I don\'t actually exist', 'interests': ['backbone']}
 
   beforeEach(function() {
     return User.remove({});
@@ -86,7 +86,7 @@ describe("The Server", function() {
         var newProfile = res.body
         expect(newProfile.email).to.equal(profile.email)
         expect(newProfile.about).to.equal(profile.about)
-        expect(newProfile.interests).to.equal(profile.interests)
+        expect(newProfile.interests[0]).to.equal(profile.interests[0])
       })
     }).then(cb)
   }
@@ -95,17 +95,30 @@ describe("The Server", function() {
     return newProfile(function(){})
   })
 
+  it('allows a user to have multiple interests', function(){
+    return signUp(function(){
+      return request(app)
+      .post('/users/user')
+      .send({email: '', about: '', interests: ['backbone', 'MORE backbone']})
+      .expect(201)
+      .expect(function(res){
+        var interests = res.body.interests
+        expect(interests[0]).to.equal('backbone');
+        expect(interests[1]).to.equal('MORE backbone');
+      })
+    })
+
   it('accepts changes to preexisting profiles', function(){
     return newProfile(function(){
       return request(app)
       .post('/users/user')
-      .send({email: '', about: '', interests: ''})
+      .send({email: '', about: '', interests: []})
       .expect(201)
       .expect(function(res){
         var newProfile = res.body
         expect(newProfile.email).to.equal('')
         expect(newProfile.about).to.equal('')
-        expect(newProfile.interests).to.equal('')
+        expect(newProfile.interests.length).to.equal(0)
       })
     })
   })
@@ -126,6 +139,7 @@ describe("The Server", function() {
       .expect(404)
     })
   })
+  })
 
   it('returns a single user\'s profile information', function(){
     return newProfile(function(){
@@ -133,7 +147,7 @@ describe("The Server", function() {
       .get('/users/user')
       .expect(200)
       .expect(function(res){
-        expect(res.body.interests).to.equal('backbone')
+        expect(res.body.interests[0]).to.equal('backbone')
       })
     })
   })
@@ -146,7 +160,7 @@ describe("The Server", function() {
       .expect(function(res){
         expect(res.body.email).to.equal('')
         expect(res.body.about).to.equal('')
-        expect(res.body.interests).to.equal('')
+        expect(res.body.interests.length).to.equal(0)
       })
     })
   })
@@ -159,7 +173,7 @@ describe("The Server", function() {
       .expect(function(res){
         expect(res.body.users.length).to.equal(1)
         expect(res.body.users[0].username).to.equal('user')
-        expect(res.body.users[0].interests).to.equal('backbone')
+        expect(res.body.users[0].interests[0]).to.equal('backbone')
       })
     })
   })
