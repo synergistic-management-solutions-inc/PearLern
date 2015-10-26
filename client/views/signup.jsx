@@ -1,6 +1,7 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 var $ = require('jquery')
+var Link = require('react-router').Link
 
 const RaisedButton = require('material-ui/lib/raised-button');
 
@@ -69,7 +70,7 @@ var SignUp = React.createClass({
             <input type="password" className="password-validate" placeholder="Re-enter Password"  onChange={this.validatePassword}/>
             <p className="validate-text">{this.state.matchFail}</p>
             <RaisedButton label="Register" className="submit-button" onClick={this.addUser}/> 
-            <p className="signup-footer">Already registered? <a href='/signin'>Sign-In </a></p>
+            <p className="signup-footer">Already registered? <Link to='/signin'>Sign-In </Link></p>
           </div>
         </div>
       </div>
