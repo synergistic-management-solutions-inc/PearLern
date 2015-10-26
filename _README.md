@@ -61,7 +61,11 @@ data from client: {
 }
 
 reply from server: {
-	email:
+op-0[]
+\	email:
 	about:
 	interests: []
 }
+
+GET: /messages/+username+
+POST: /messages/+username+
