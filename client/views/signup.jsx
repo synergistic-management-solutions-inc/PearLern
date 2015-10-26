@@ -1,19 +1,23 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 var $ = require('jquery')
-var mountNode = document.getElementById('app')
-var Link = require('react-router').Link
+
+const RaisedButton = require('material-ui/lib/raised-button');
+
+var mountNode = document.getElementById('app');
 
 //TODOs: 
 //Add form validation
 //Add novaldiate to forms to override default HTML 5 validation?
-//Server response
+//Server response codes
 
 var SignUp = React.createClass({
   getInitialState: function (){
     return {
       username: '',
-      password: ''
+      password: '',
+      validate: '',
+      matchFail: ''
     }
   },
   addUser: function () {
@@ -44,20 +48,35 @@ var SignUp = React.createClass({
       password: event.target.value.substr(0, 30)
     });
   },
+  validatePassword: function (event) {
+    this.setState({
+      validate: event.target.value.substr(0, 30)
+    });
+    if (this.state.valdiate !== this.state.password) {
+      this.setState({
+        matchFail: 'Passwords do not match!'
+      });
+    }
+  },
   render: function () {
     return (
-      <div className="signup-container">
-        <h2 className="signup-header">Sign Up and Prepare to Get Schooled</h2> 
-        <input type="text" className="username-input" placeholder="Choose a Username" onChange={this.updateUsername}/>
-        <input type="password" className="password-input" placeholder="Choose a Password"  onChange={this.updatePassword}/> 
-        <button type="submit" className="submit-button" onClick={this.addUser}> Register </button>
-        <p className="signup-footer">Already registered? <Link to='/signin'>Sign In</Link></p>
-        <div className="profile"><Link to='/profile'>View Your Profile</Link></div>
+      <div className="container" className="sign-up">
+        <div className="row">
+          <div className="col s6 offset-s6">
+            <h4 className="signup-header">Sign Up</h4> 
+            <input type="text" className="username-input" placeholder="Choose a Username" onChange={this.updateUsername}/> <br />
+            <input type="password" className="password-input" placeholder="Choose a Password"  onChange={this.updatePassword}/>
+            <input type="password" className="password-validate" placeholder="Re-enter Password"  onChange={this.validatePassword}/>
+            <p className="validate-text">{this.state.matchFail}</p>
+            <RaisedButton label="Register" className="submit-button" onClick={this.addUser}/> 
+            <p className="signup-footer">Already registered? <a href='/signin'>Sign-In </a></p>
+          </div>
+        </div>
       </div>
     )
   }
 });
 
-ReactDOM.render(<SignUp />, mountNode);
+//ReactDOM.render(<SignUp />, mountNode);
 
 module.exports = SignUp;
