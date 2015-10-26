@@ -1,4 +1,5 @@
 var User = require('./database/models/user');
+var Message = require('./database/models/message');
 
 //retrieves profile information for all users who 
 //have filled out their email and interests fields
@@ -48,7 +49,6 @@ exports.signUp = function(req, res) {
 
   //profile fields are intially set to empty strings.
   userInfo.profile = {email: '', about: ''}
-
   var user = new User(userInfo);
   user.save(function(err){
     if (err){
@@ -110,5 +110,58 @@ exports.submitProfile = function(req, res){
       res.status(201).send(user.profile);     
     })
 
+  })
+}
+
+exports.sendMessage = function(req, res){
+  var messageInfo = {};
+  messageInfo.to = req.body.to;
+  messageInfo.from = req.body.from;
+  messageInfo.text = req.body.text;
+  
+  //TODO
+  //verify that the sender exists
+  //and has a session to prove who they are
+
+  //checks that the recipient exists
+  User.findOne({username: messageInfo.to}, function(err, recipient){
+    if (err || !recipient){
+      console.log('cannot message nonexistent user');
+      res.status(404).send(err);
+      return;
+    }
+
+    //creates and saves the message
+    var message = new Message(messageInfo);
+    message.save(function(err){
+      if (err){
+        console.log('message could not be sent');
+        res.status(400).send(err);
+        return;
+      }
+      res.status(201).send(message);
+    })
+  })
+}
+
+exports.getMessages = function(req, res){
+  //grabs username from URL
+  var username = req.path.substring(10);
+
+  //TODO 
+  //verify that this user exists 
+  //and that they are who they say they are
+
+  Message.find({'to': username}, function(err, receivedMessages){
+    if (err){
+      console.log('could not find messages');
+      res.status(404).send(err);
+      return;
+    }
+
+    Message.find({'from': username}, function(err, sentMessages){
+      var messages = {messages: receivedMessages.concat(sentMessages)};
+      res.status(200).send(messages);
+    })
   })
 }

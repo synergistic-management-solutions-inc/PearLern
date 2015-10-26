@@ -4,11 +4,13 @@ var Profile = require('./views/profile.jsx');
 var SignUp = require('./views/signup.jsx');
 var SignIn = require('./views/signin.jsx');
 var Landing = require('./views/landing.jsx');
+var LandingHead = require('./views/landinghead.jsx')
 var AllUsers = require('./views/otherUsers.jsx');
 var Router = require('react-router').Router
 var Route = require('react-router').Route
 var Link = require('react-router').Link
 var $ = require('jquery');
+var Footer = require('./views/footer.jsx');
 
 var App = React.createClass({
   render: function() {
@@ -16,6 +18,7 @@ var App = React.createClass({
       <div>
         <Landing />
         {this.props.children}
+        <Footer />
       </div>
     );
   }
