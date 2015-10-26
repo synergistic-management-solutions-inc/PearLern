@@ -33,9 +33,9 @@ var Profile = React.createClass({
   getInitialState : function() {
     return { 
       modalIsOpen : false,
-      emailValue : this.props.users[0].profile.email,
-      aboutValue : this.props.users[0].profile.about,
-      interestsValue : this.props.users[0].profile.interests
+      emailValue : 'sschwa12@gmail.com',
+      aboutValue : 'I like drinking beer and writing code!',
+      interestsValue : 'JS'
     };
   },
 

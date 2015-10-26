@@ -45,11 +45,10 @@ var SignIn = React.createClass({
   render: function () {
     return (
       <div className="signin-container">
-        <h2 className="signin-header">Sign Up and Prepare to Get Schooled</h2> 
+        <h2 className="signin-header">Sign In and Prepare to Get Schooled</h2> 
         <input type="text" className="username-input" placeholder="Choose a Username" onChange={this.updateUsername}/>
         <input type="password" className="password-input" placeholder="Choose a Password"  onChange={this.updatePassword}/> 
         <button type="submit" className="submit-button" onClick={this.addUser}> Register </button>
-        <p className="signin-footer">Already registered? <a href='/signin'>Sign-In </a></p>
       </div>
     )
   }

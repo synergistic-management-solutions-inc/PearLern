@@ -2,6 +2,7 @@ var React = require('react')
 var ReactDOM = require('react-dom')
 var $ = require('jquery')
 var mountNode = document.getElementById('app')
+var Link = require('react-router').Link
 
 //TODOs: 
 //Add form validation
@@ -50,7 +51,8 @@ var SignUp = React.createClass({
         <input type="text" className="username-input" placeholder="Choose a Username" onChange={this.updateUsername}/>
         <input type="password" className="password-input" placeholder="Choose a Password"  onChange={this.updatePassword}/> 
         <button type="submit" className="submit-button" onClick={this.addUser}> Register </button>
-        <p className="signup-footer">Already registered? <a href='/signin'>Sign-In </a></p>
+        <p className="signup-footer">Already registered? <Link to='/signin'>Sign In</Link></p>
+        <div className="profile"><Link to='/profile'>View Your Profile</Link></div>
       </div>
     )
   }
