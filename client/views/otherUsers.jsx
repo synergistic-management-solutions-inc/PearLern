@@ -2,13 +2,45 @@ var React = require('react')
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
 
+var datastuffs = {users: [
+  {
+    "username": "cottoncandy",
+      "email": "unicorn@unicorn.com",
+      "about": "I like things.",
+      "interests": ["python"]
+  },
+  {
+    "username": "puppies",
+      "email": "unicornpuppies@unicorn.com",
+      "about": "I like puppies.",
+      "interests": ["python"]
+  },
+  {
+    "username": "blargl",
+      "email": "unicornpuppiesdlfjsdklfj@unicorn.com",
+      "about": "I like puppies.",
+      "interests": ["ruby"]
+  }
+]}
 
-
+// TODO replace example email address
 var AllUsers = React.createClass({
   render: function () {
+    console.log(JSON.stringify(datastuffs.users));
     return (
           <div>
-            <OneUser />
+            <ul>
+              {datastuffs.users.map(function(element) {
+                return (<li>
+                  <p>Username: {JSON.stringify(element.username).replace(/"|'/g,"")}</p>
+                  <p>Interests: {JSON.stringify(element.interests).replace(/[\[\]"|']+/g, "")}</p>
+                  <p>
+                    Email: <a href="mailto:someone@example.com">{JSON.stringify(element.email).replace(/"|'/g,"")}</a>
+                  </p>
+                  <br />
+                </li>)
+              })}
+            </ul>
           </div>)
   }
 });
@@ -24,28 +56,10 @@ var OneUser = React.createClass({
     },
     // Need component did mount for AJAX requests. Remember to check if component did mount.
     componentDidMount: function () {
-      var datastuffs = {users: [
-        {
-          "username": "cottoncandy",
-          "profile": {
-            "email": "unicorn@unicorn.com",
-            "about": "I like things.",
-            "interests": ["python"]
-          }
-        },
-        {
-          "username": "puppies",
-          "profile": {
-            "email": "unicornpuppies@unicorn.com",
-            "about": "I like puppies.",
-            "interests": ["python"]
-          }
-        }
-      ]};
       if (this.isMounted()) {
         this.setState({
           username: datastuffs.users[0].username,
-          interests: datastuffs.users[0].profile.interests
+          interests: datastuffs.users[0].interests
         })
       }
     },
