@@ -10,7 +10,7 @@ var UserSchema = new Schema({
     profile: {
     	email: String,
     	about: String,
-    	interests: String
+    	interests: []
     }
 });
 
