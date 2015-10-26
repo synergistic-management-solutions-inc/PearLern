@@ -33,9 +33,9 @@ var Profile = React.createClass({
   getInitialState : function() {
     return { 
       modalIsOpen : false,
-      emailValue : 'sschwa12@gmail.com',
-      aboutValue : 'I like drinking beer and writing code!',
-      interestsValue : 'JS'
+      emailValue : '',
+      aboutValue : '',
+      interestsValue : ''
     };
   },
 
@@ -46,10 +46,18 @@ var Profile = React.createClass({
       type : 'GET',
       url : '/users/scott',
       success : function(res) {
-        console.log('Got', res)
+        console.log('got', res)
+        if (self.isMounted()) {
+          self.setState({
+            emailValue : res.email,
+            aboutValue : res.about,
+            interestsValue : res.interests[0]
+          });
+        }
       }
-    })
+    });
   },
+
 
   openModal : function() {
     this.setState({modalIsOpen: true});
@@ -81,16 +89,11 @@ var Profile = React.createClass({
         interests : this.state.interestsValue
       }
     }
-    console.log(data)
     $.ajax({
       type : 'POST',
       dataType : 'json',
       url : '/users/' + data.username,
       data : data
-    })
-    .then(function(err, res) {
-      if (err) { console.log(err) }
-        console.log(res)
     })
     this.setState({ modalIsOpen : false })
   },
@@ -133,16 +136,16 @@ var Profile = React.createClass({
 })
 
 // Dummy data
-Profile.USERS = [
-  { username : 'Scott',
-    password : '123',
-    profile : {
-      email : 'sschwa12@gmail.com',
-      about : 'I enjoy drinking beer and writing javascript',
-      interests : 'Javascript'
-    }
-  }
-]
+// Profile.USERS = [
+//   { username : 'Scott',
+//     password : '123',
+//     profile : {
+//       email : 'sschwa12@gmail.com',
+//       about : 'I enjoy drinking beer and writing javascript',
+//       interests : ['Javascript']
+//     }
+//   }
+// ]
 
 
 module.exports = Profile;
