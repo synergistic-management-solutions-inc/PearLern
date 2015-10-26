@@ -47,6 +47,23 @@ var AllUsers = React.createClass({
   render: function () {
     // console.log(JSON.stringify(datastuffs.users));
     return (
+<<<<<<< HEAD
+          <div className="container">
+            <ul>
+              {datastuffs.users.map(function(element) {
+                return (<li>
+                  <p>Username: {JSON.stringify(element.username).replace(/"|'/g,"")}</p>
+                  <p>Interests: {JSON.stringify(element.interests).replace(/[\[\]"|']+/g, "")}</p>
+                  <p>
+                    Email: <a href="mailto:someone@example.com">{JSON.stringify(element.email).replace(/"|'/g,"")}</a>
+                  </p>
+                  <br />
+                </li>)
+              })}
+            </ul>
+            <div className="push"></div>
+          </div>)
+=======
       <div className="other-users-container">
         <button onClick={this.getUsers}>fdsfjskfj</button>
         <ul>
@@ -64,6 +81,7 @@ var AllUsers = React.createClass({
       </div>
 
     )
+>>>>>>> Refactored other users code, added getUsers button
   }
 });
 
