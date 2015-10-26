@@ -25,24 +25,26 @@ var datastuffs = {users: [
 
 // TODO replace example email address
 var AllUsers = React.createClass({
-  getUsers: function () {
+  componentDidMount: function () {
+    var self = this;
     console.log('hitting');
     $.ajax({
       type : 'GET',
       contentType : 'json',
-      url : '/users/'
+      url : '/users',
+      success: function(result) {
+        if (self.isMounted()){
+          self.setState({
+            username: result.users[0].username,
+            interests: result.users[0].interests
+          })
+        }
+        console.log("result:", result)
+      },
+      error: function(err){
+        console.log("Error:", err)
+      }
     })
-    .then(function(err, res) {
-      if (err) { console.log("Error:", err); }
-      console.log("results", res);
-    });
-    if (this.isMounted()) {
-      console.log('is mounted');
-      this.setState({
-        username: datastuffs.users[0].username,
-        interests: datastuffs.users[0].interests
-      });
-    }
   },
   render: function () {
     // console.log(JSON.stringify(datastuffs.users));
