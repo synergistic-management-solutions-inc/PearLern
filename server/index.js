@@ -1,8 +1,14 @@
 var browserify = require('browserify-middleware')
 var express = require('express')
 var Path = require('path')
+var morgan = require('morgan');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var passport = require('passport');
+var flash = require('connect-flash');
 var mongoose = require('./database/config');
 var Helpers = require('./request_handler');
+
 var app = express()
 var routes = express.Router()
 
@@ -37,8 +43,31 @@ if (process.env.NODE_ENV !== 'test') {
     res.sendFile(assetFolder + '/index.html')
   })
 
+  //middleware - executes on any client and server interaction trade
+  //marks the request and time on console
+  app.use(morgan('dev'));
+
+  app.use(cookieParser());
+  //parse our cookie
+
+  app.use(session({
+    secret: 'Jang',
+    saveUninitialized: true,
+    resave: true
+  }));
+//saveUninitialized saves session to database for persistence log in
+//if set to true - it will save
+// resave -  if nothing is changed - save it again
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.use(flash());
+
 
   app.use('/', routes)
+  require('./routes.js')(app, passport);
+
 
   // Start the server!
   var port = process.env.PORT || 4000
