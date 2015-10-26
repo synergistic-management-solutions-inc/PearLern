@@ -22,9 +22,11 @@ routes.get('/api/tags-example', function(req, res) {
 //on what kind of data is expected/being returned
 routes.get('/users', Helpers.getUsers);
 routes.get('/users/*', Helpers.getProfile);
+routes.get('/messages/*', Helpers.getMessages);
 routes.post('/signup', Helpers.signUp);
 routes.post('/signin', Helpers.signIn);
 routes.post('/users/*', Helpers.submitProfile);
+routes.post('/messages', Helpers.sendMessage);
 
 var assetFolder = Path.resolve(__dirname, '../client/public')
 routes.use(express.static(assetFolder))
