@@ -46,7 +46,6 @@ var Profile = React.createClass({
       type : 'GET',
       url : '/users/scott',
       success : function(res) {
-        console.log('got', res)
         if (self.isMounted()) {
           self.setState({
             emailValue : res.email,
