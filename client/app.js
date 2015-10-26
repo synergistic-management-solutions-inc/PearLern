@@ -10,12 +10,25 @@ var Route = require('react-router').Route
 var Link = require('react-router').Link
 var $ = require('jquery');
 
+var App = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <Landing />
+        {this.props.children}
+      </div>
+    );
+  }
+});
+
 ReactDOM.render((
   <Router>
-    <Route path="/" component={SignUp} />
-    <Route path="signin" component={SignIn} />
-    <Route path="profile" component={Profile} />
-    <Route path="all" component={AllUsers} />
+    <Route path="/" component={App}>
+      <Route path="signin" component={SignIn} />
+      <Route path="signup" component={SignUp} />
+      <Route path="profile" component={Profile} />
+      <Route path="all" component={AllUsers} />
+    </Route>
   </Router>
 ),
 

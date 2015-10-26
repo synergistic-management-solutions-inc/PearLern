@@ -20,6 +20,7 @@
     "history": "^1.12.5",
     "jquery": "^2.1.4",
     "material-ui": "^0.13.0",
+    "materialize-css": "^0.97.1",
     "mongoose": "^4.2.2",
     "morgan": "^1.6.1",
     "passport": "^0.3.0",
