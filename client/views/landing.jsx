@@ -1,7 +1,6 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 var $ = require('jquery')
-var Link = require('react-router').Link
 
 var Landing = React.createClass({
   getInitialState: function () {
@@ -11,21 +10,23 @@ var Landing = React.createClass({
   },
   render: function (){
     return (
-      <nav>
-          <div className="nav-wrapper light-blue">
-            <a href="#" className="brand-logo">PearLern</a>
-            <ul id="nav-mobile" className="right hide-on-med-and-down">
-              <li><Link to="/profile">My Profile</Link></li>
-              <li><Link to="/signin">Login</Link></li>
-              <li><Link to="/signup">Register</Link></li>
-            </ul>
+      <div className="container">
+        <div className="row">
+            <div className="col s12 s6">
+              <h3>Find People to Learn With!</h3>
+            </div>
+        </div>
+          <div className="col s12">
+            <p>PearLern helps match you with other people sharing the same learning objectives.  For a hefty fee, we will find you an accountabili-buddy to join you on your journey to learn the tedious art of coding!</p>
           </div>
-        </nav>
-              
+      </div>
     )
   }
 });
 
 
-
 module.exports = Landing;
+
+
+
+

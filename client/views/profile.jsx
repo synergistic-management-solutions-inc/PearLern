@@ -25,8 +25,7 @@ var customStyles = {
   }
 };
 
-// This is one BIG component. Will need to break this down somehow. Also it's displaying right on our app home.
-// We will need some sort of routing.
+// This is one BIG component. Will need to break this down somehow.
 var Profile = React.createClass({
 
   // Set the initial value input fields (using dummy data for now) and state of modal
@@ -133,18 +132,5 @@ var Profile = React.createClass({
             );
   }
 })
-
-// Dummy data
-// Profile.USERS = [
-//   { username : 'Scott',
-//     password : '123',
-//     profile : {
-//       email : 'sschwa12@gmail.com',
-//       about : 'I enjoy drinking beer and writing javascript',
-//       interests : ['Javascript']
-//     }
-//   }
-// ]
-
 
 module.exports = Profile;
