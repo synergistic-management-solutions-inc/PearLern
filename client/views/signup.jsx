@@ -62,7 +62,10 @@ var SignUp = React.createClass({
     return (
       <div className="container" className="sign-up">
         <div className="row">
-          <div className="col s6 offset-s6">
+          <div className="col s6">
+            <img className="responsive-img" src="http://archsmarter.com/wp-content/uploads/Learn-to-code1.jpg"/>
+          </div>
+          <div className="col s6">
             <h4 className="signup-header">Sign Up</h4> 
             <input type="text" className="username-input" placeholder="Choose a Username" onChange={this.updateUsername}/> <br />
             <input type="password" className="password-input" placeholder="Choose a Password"  onChange={this.updatePassword}/>
