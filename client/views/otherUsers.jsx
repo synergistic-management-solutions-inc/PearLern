@@ -68,6 +68,6 @@ var OneUser = React.createClass({
     }
 });
 
-ReactDOM.render(<AllUsers />, document.getElementById('app'));
+// ReactDOM.render(<AllUsers />, document.getElementById('app'));
 
 module.exports = AllUsers;

@@ -6,16 +6,33 @@ var SignIn = require('./views/signin.jsx');
 var Landing = require('./views/landing.jsx');
 var LandingHead = require('./views/landinghead.jsx')
 var AllUsers = require('./views/otherUsers.jsx');
-var Footer = require('./views/footer.jsx');
+var Router = require('react-router').Router
+var Route = require('react-router').Route
+var Link = require('react-router').Link
 var $ = require('jquery');
+var Footer = require('./views/footer.jsx');
 
-ReactDOM.render(<div className="container">
-                  <Landing />
-                  <LandingHead />
-                  <SignUp />
-                  <Profile users={Profile.USERS} />
-                  <AllUsers />
-                  <Footer />
-                </div>,
-                  document.getElementById('app')
-                );
+var App = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <Landing />
+        {this.props.children}
+        <Footer />
+      </div>
+    );
+  }
+});
+
+ReactDOM.render((
+  <Router>
+    <Route path="/" component={App}>
+      <Route path="signin" component={SignIn} />
+      <Route path="signup" component={SignUp} />
+      <Route path="profile" component={Profile} />
+      <Route path="all" component={AllUsers} />
+    </Route>
+  </Router>
+),
+
+document.getElementById('app'));

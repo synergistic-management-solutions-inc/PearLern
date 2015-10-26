@@ -1,5 +1,7 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
+var $ = require('jquery')
+var Link = require('react-router').Link
 
 var Landing = React.createClass({
   getInitialState: function () {
@@ -13,9 +15,9 @@ var Landing = React.createClass({
           <div className="nav-wrapper light-blue">
             <a href="#" className="brand-logo">PearLern</a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
-              <li><a href="about.html">About</a></li>
-              <li><a href="signin.html">Login</a></li>
-              <li><a href="signup.html">Register</a></li>
+              <li><Link to="/profile">My Profile</Link></li>
+              <li><Link to="/signin">Login</Link></li>
+              <li><Link to="/signup">Register</Link></li>
             </ul>
           </div>
         </nav>
