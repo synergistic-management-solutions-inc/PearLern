@@ -44,7 +44,7 @@ var Profile = React.createClass({
     var self = this;
     $.ajax({
       type : 'GET',
-      url : '/users/user',
+      url : '/users/scott',
       success : function(res) {
         console.log('Got', res)
       }
@@ -85,7 +85,7 @@ var Profile = React.createClass({
     $.ajax({
       type : 'POST',
       dataType : 'json',
-      url : '/users/user',
+      url : '/users/' + data.username,
       data : data
     })
     .then(function(err, res) {
