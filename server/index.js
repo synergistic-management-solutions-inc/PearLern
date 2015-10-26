@@ -18,14 +18,13 @@ routes.get('/api/tags-example', function(req, res) {
   res.send(['node', 'express', 'browserify'])
 })
 
-routes.post('/signup', Helpers.signUp)
-routes.post('/signin', Helpers.signIn)
-
-//I hardcoded this
-//it should handle different routes
-//will address later 
-routes.post('/users/user', Helpers.submitProfile)
-routes.get('/users', Helpers.getUsers)
+//Here are all my endpoints! See the README for details
+//on what kind of data is expected/being returned
+routes.get('/users', Helpers.getUsers);
+routes.get('/users/*', Helpers.getProfile);
+routes.post('/signup', Helpers.signUp);
+routes.post('/signin', Helpers.signIn);
+routes.post('/users/*', Helpers.submitProfile);
 
 var assetFolder = Path.resolve(__dirname, '../client/public')
 routes.use(express.static(assetFolder))
