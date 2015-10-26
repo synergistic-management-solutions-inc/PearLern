@@ -47,7 +47,7 @@ exports.signUp = function(req, res) {
   userInfo.password = req.body.password;
 
   //profile fields are intially set to empty strings.
-  userInfo.profile = {email: '', about: '', interests: ''}
+  userInfo.profile = {email: '', about: ''}
 
   var user = new User(userInfo);
   user.save(function(err){

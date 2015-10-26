@@ -4,9 +4,8 @@ Product Owner: Scott Schwartz
 Scrum Master: Diandra Ryan-Mas
 Development Team: Diana Lee, Kang Lee, Nick Poling 
 
-HTTP ENDPOINTS
 
-*already built* 
+HTTP ENDPOINTS
 
 POST: /signup
 data from client: {
@@ -35,7 +34,7 @@ note: when you go to your own profile page
 reply from server: {
 	email:
 	about:
-	interests:
+	interests: []
 } 
 
 GET: /users
@@ -45,7 +44,7 @@ reply from server: {
 		username:
 		email:
 		about:
-		interests:
+		interests: []
 	},
 	etc.		
 	]
@@ -58,11 +57,11 @@ note: for submitting profile info
 data from client: {
 	email:
 	about:
-	interests:
+	interests: []
 }
 
 reply from server: {
 	email:
 	about:
-	interests:
+	interests: []
 }
