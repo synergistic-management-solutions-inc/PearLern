@@ -43,11 +43,9 @@ note: when you go to the listing for other users
 reply from server: {
 	users: [{
 		username:
-		profile: {
-			email:
-			about:
-			interests:
-		} 
+		email:
+		about:
+		interests:
 	},
 	etc.		
 	]
@@ -58,12 +56,9 @@ note: for submitting profile info
 			If the user hasn't filled out a field, send an empty string. If you leave
 			off the key all together, my code will most definitely break 
 data from client: {
-	username:
-	profile: {
-		email:
-		about:
-		interests:
-	} 
+	email:
+	about:
+	interests:
 }
 
 reply from server: {

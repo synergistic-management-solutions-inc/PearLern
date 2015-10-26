@@ -80,7 +80,7 @@ describe("The Server", function() {
     return signUp(function(){
       return request(app)
       .post('/users/user')
-      .send({username: 'user', profile: profile})
+      .send(profile)
       .expect(201)
       .expect(function(res){
         var newProfile = res.body
@@ -99,7 +99,7 @@ describe("The Server", function() {
     return newProfile(function(){
       return request(app)
       .post('/users/user')
-      .send({username: 'user', profile: {email: '', about: '', interests: ''}})
+      .send({email: '', about: '', interests: ''})
       .expect(201)
       .expect(function(res){
         var newProfile = res.body
@@ -110,15 +110,56 @@ describe("The Server", function() {
     })
   })
 
-  it('retrieves user data', function(){
+  it('returns 404 to post requests for a nonexistent user', function(){
+    return newProfile(function(){
+      return request(app)
+      .post('/users/consuelo')
+      .send({email: '', about: '', interests: ''})
+      .expect(404)
+    })
+  })
+
+  it('returns 404 to get requests for a nonexistent user',function(){
+    return newProfile(function(){
+      return request(app)
+      .get('/users/consuelo')
+      .expect(404)
+    })
+  })
+
+  it('returns a single user\'s profile information', function(){
+    return newProfile(function(){
+      return request(app)
+      .get('/users/user')
+      .expect(200)
+      .expect(function(res){
+        expect(res.body.interests).to.equal('backbone')
+      })
+    })
+  })
+
+  it('returns empty strings is the user has not entered profile info', function(){
+    return signUp(function(){
+      return request(app)
+      .get('/users/user')
+      .expect(200)
+      .expect(function(res){
+        expect(res.body.email).to.equal('')
+        expect(res.body.about).to.equal('')
+        expect(res.body.interests).to.equal('')
+      })
+    })
+  })
+
+  it('retrieves data for all users', function(){
     return newProfile(function(){
       return request(app)
       .get('/users')
       .expect(200)
       .expect(function(res){
-        expect(res.body.users.length).to.equal(1);
-        expect(res.body.users[0].username).to.equal('user');
-        expect(typeof res.body.users[0].profile).to.equal('object');
+        expect(res.body.users.length).to.equal(1)
+        expect(res.body.users[0].username).to.equal('user')
+        expect(res.body.users[0].interests).to.equal('backbone')
       })
     })
   })
@@ -129,7 +170,6 @@ describe("The Server", function() {
       .get('/users')
       .expect(200)
       .expect(function(res){
-        console.log(res.body);
         expect(res.body.users.length).to.equal(0);
       })
     })
