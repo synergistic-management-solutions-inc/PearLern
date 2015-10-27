@@ -50,6 +50,13 @@ reply from server: {
 	]
 }
 
+GET: /messages/+username+
+note: for retrieving the message history of a user
+reply from server: {
+	messages: [{to: '', from: '', text: ''}, etc],
+	users: ['username', etc.]
+}
+
 POST: /users/+username+
 note: for submitting profile info
 			If the user hasn't filled out a field, send an empty string. If you leave
@@ -61,11 +68,21 @@ data from client: {
 }
 
 reply from server: {
-op-0[]
-\	email:
+	email:
 	about:
 	interests: []
 }
 
-GET: /messages/+username+
-POST: /messages/+username+
+POST: /messages/
+note: for sending a message
+data from client: {
+	to:
+	from:
+	text:
+}
+reply from the server: {
+	_id:
+	to:
+	from:
+	text:
+}
