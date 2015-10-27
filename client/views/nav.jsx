@@ -19,6 +19,7 @@ var Nav = React.createClass({
               <li><Link to="/signin">Login</Link></li>
               <li><Link to="/signup">Register</Link></li>
               <li><Link to="/all">All Users</Link></li>
+              <li><Link to="/messenger">Messenger</Link></li> 
             </ul>
           </div>
         </nav>

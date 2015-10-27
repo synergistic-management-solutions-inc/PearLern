@@ -13,6 +13,7 @@ var SignIn = require('./views/signin.jsx');
 var Landing = require('./views/landing.jsx');
 var Nav = require('./views/nav.jsx')
 var AllUsers = require('./views/otherUsers.jsx');
+var Messenger = require('./views/messenger.jsx');
 var Footer = require('./views/footer.jsx');
 
 var App = React.createClass({
@@ -35,6 +36,7 @@ ReactDOM.render((
       <Route path="signup" component={SignUp} />
       <Route path="profile" component={Profile} />
       <Route path="all" component={AllUsers} />
+      <Route path="messenger" component={Messenger} />
     </Route>
   </Router>
 ),
