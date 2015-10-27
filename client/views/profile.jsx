@@ -43,7 +43,7 @@ var Profile = React.createClass({
     var self = this;
     $.ajax({
       type : 'GET',
-      url : '/users/scott',
+      url : '/users/helen_of_troy',
       success : function(res) {
         if (self.isMounted()) {
           self.setState({
@@ -80,17 +80,15 @@ var Profile = React.createClass({
 
   saveData : function() {
     var data = {
-      username : 'scott',
-      profile : {
-        email : this.state.emailValue,
-        about : this.state.aboutValue,
-        interests : this.state.interestsValue
-      }
+      email : this.state.emailValue,
+      about : this.state.aboutValue,
+      interests : this.state.interestsValue
     }
+
     $.ajax({
       type : 'POST',
       dataType : 'json',
-      url : '/users/' + data.username,
+      url : '/users/helen_of_troy',
       data : data
     })
     this.setState({ modalIsOpen : false })

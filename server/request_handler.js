@@ -89,9 +89,9 @@ exports.submitProfile = function(req, res){
   var username = req.path.substring(7);
 
   var profileInfo = {}; 
-  profileInfo.email = req.body.profile.email;
-  profileInfo.about = req.body.profile.about;
-  profileInfo.interests = req.body.profile.interests;
+  profileInfo.email = req.body.email;
+  profileInfo.about = req.body.about;
+  profileInfo.interests = req.body.interests;
 
   User.findOne({username: username}, function(err, user){
     if (err || !user){
