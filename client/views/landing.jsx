@@ -19,6 +19,7 @@ var Landing = React.createClass({
           <div className="col s12">
             <p>PearLern helps match you with other people sharing the same learning objectives.  For a hefty fee, we will find you an accountabili-buddy to join you on your journey to learn the tedious art of coding!</p>
           </div>
+        <div className="push"></div>
       </div>
     )
   }

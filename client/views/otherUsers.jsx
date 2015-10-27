@@ -28,7 +28,7 @@ var AllUsers = React.createClass({
   render: function () {
     console.log(JSON.stringify(datastuffs.users));
     return (
-          <div>
+          <div className="container">
             <ul>
               {datastuffs.users.map(function(element) {
                 return (<li>
@@ -41,6 +41,7 @@ var AllUsers = React.createClass({
                 </li>)
               })}
             </ul>
+            <div className="push"></div>
           </div>)
   }
 });
