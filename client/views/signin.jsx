@@ -1,9 +1,10 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 var $ = require('jquery')
-const RaisedButton = require('material-ui/lib/raised-button');
+var Link = require('react-router').Link
 
-var mountNode = document.getElementById('app')
+var SignInHead = require('./landinghead2.jsx')
+const RaisedButton = require('material-ui/lib/raised-button');
 
 //TODOs: 
 //Add form validation
@@ -46,17 +47,23 @@ var SignIn = React.createClass({
   },
   render: function () {
     return (
-      <div className="signin-container">
-        <h2 className="signin-header">Sign Up and Prepare to Get Schooled</h2> 
-        <input type="text" className="username-input" placeholder="Choose a Username" onChange={this.updateUsername}/>
-        <input type="password" className="password-input" placeholder="Choose a Password"  onChange={this.updatePassword}/> 
-        <RaisedButton label="Sign In" className="submit-button" onClick={this.validateUser}/>
-        <p className="signin-footer">Already registered? <a href='/signin'>Sign-In </a></p>
+      <div className="sign-in-view">
+        <SignInHead />
+        <div className="row">
+          <div className="col s6">
+            <img className="responsive-img" src="https://zenpayroll.com/wp-content/uploads/2013/10/pair-programming.jpg"/>
+          </div>
+          <div className="col s6">
+            <h4 className="signin-header">Sign In</h4> 
+            <input type="text" className="username-input" placeholder="Enter Username" onChange={this.updateUsername}/>
+            <input type="password" className="password-input" placeholder="Enter Password"  onChange={this.updatePassword}/> 
+            <RaisedButton label="Sign In" className="submit-button" onClick={this.validateUser}/>
+            <p className="signin-footer">Not yet registered? <Link to='/signup'>Sign up!</Link></p>
+          </div>
+        </div>
       </div>
     )
   }
 });
-
-//ReactDOM.render(<SignIn />, mountNode);
 
 module.exports = SignIn;
