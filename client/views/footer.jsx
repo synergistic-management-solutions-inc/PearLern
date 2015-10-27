@@ -9,20 +9,20 @@ var Footer = React.createClass({
   },
   render: function (){
     return (
-      <footer>
-        <div className="nav-wrapper light-blue">
-          <div className="row">
-            <div className="col s12">
-              <p>PearLern is a Synergistic Management Solutions Company © 2015 SMS World Enterprises plc</p>
+      <nav>
+          <div className="nav-wrapper light-blue">
+            <div className="container">
+              <div className="row">
+                <div className="col s12">
+                  <p>PearLern is a Synergistic Management Solutions Company © 2015 SMS World Enterprises plc</p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </footer>
+        </nav>
               
     )
   }
 });
-
-
 
 module.exports = Footer;
