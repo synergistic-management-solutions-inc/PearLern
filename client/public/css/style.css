@@ -15,6 +15,7 @@ html, body {
 
 
 footer .row, .push {
+  text-align: center;
   margin-bottom: 0;
   height: 75px;
 }

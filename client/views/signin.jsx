@@ -61,6 +61,7 @@ var SignIn = React.createClass({
             <p className="signin-footer">Not yet registered? <Link to='/signup'>Sign up!</Link></p>
           </div>
         </div>
+        <div className="push"></div>
       </div>
     )
   }

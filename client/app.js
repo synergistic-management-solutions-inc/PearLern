@@ -18,7 +18,7 @@ var Footer = require('./views/footer.jsx');
 var App = React.createClass({
   render: function() {
     return (
-      <div className = "container">
+      <div className="container">
         <Nav />
         {this.props.children}
         <Footer />

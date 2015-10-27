@@ -9,7 +9,7 @@ var SignInHead = React.createClass({
   },
   render: function (){
     return (
-      <div className="container">
+      <div>
         <div className="row">
             <div className="col s12 s6">
               <h3>Sign in & Get Learning</h3>
