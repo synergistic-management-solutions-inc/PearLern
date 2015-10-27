@@ -3,9 +3,8 @@ var ReactDOM = require('react-dom')
 var $ = require('jquery')
 var Link = require('react-router').Link
 
+// var LandingHead = require('./landinghead.jsx')
 const RaisedButton = require('material-ui/lib/raised-button');
-
-var mountNode = document.getElementById('app');
 
 //TODOs: 
 //Add form validation
@@ -18,7 +17,7 @@ var SignUp = React.createClass({
       username: '',
       password: '',
       validate: '',
-      matchFail: ''
+      matchFail: false
     }
   },
   addUser: function () {
@@ -53,15 +52,11 @@ var SignUp = React.createClass({
     this.setState({
       validate: event.target.value.substr(0, 30)
     });
-    if (this.state.valdiate !== this.state.password) {
-      this.setState({
-        matchFail: 'Passwords do not match!'
-      });
-    }
+    this.state.valdiate !== this.state.password ? this.setState({matchFail: true}) : this.setState({matchFail: false}) 
   },
   render: function () {
     return (
-      <div className="container" className="sign-up">
+      <div className="sign-up-view">
         <div className="row">
           <div className="col s6">
             <img className="responsive-img" src="http://archsmarter.com/wp-content/uploads/Learn-to-code1.jpg"/>
@@ -71,16 +66,14 @@ var SignUp = React.createClass({
             <input type="text" className="username-input" placeholder="Choose a Username" onChange={this.updateUsername}/> <br />
             <input type="password" className="password-input" placeholder="Choose a Password"  onChange={this.updatePassword}/>
             <input type="password" className="password-validate" placeholder="Re-enter Password"  onChange={this.validatePassword}/>
-            <p className="validate-text">{this.state.matchFail}</p>
+            {this.state.matchFail ? <p className="validate-text">Passwords do not match!</p> : <br />}
             <RaisedButton label="Register" className="submit-button" onClick={this.addUser}/> 
-            <p className="signup-footer">Already registered? <Link to='/signin'>Sign-In </Link></p>
+            <p className="signup-footer">Already registered? <Link to='/signin'>Sign in!</Link></p>
           </div>
         </div>
       </div>
     )
   }
 });
-
-//ReactDOM.render(<SignUp />, mountNode);
 
 module.exports = SignUp;
