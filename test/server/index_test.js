@@ -215,6 +215,7 @@
         .expect(function(res){
           expect(res.body._id).to.not.be.undefined
           expect(res.body.text).to.equal(messages[0].text)
+          expect(res.body.created_at).to.not.be.undefined
         })
       })
     })
