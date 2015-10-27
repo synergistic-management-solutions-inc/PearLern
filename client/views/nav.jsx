@@ -18,6 +18,7 @@ var Nav = React.createClass({
               <li><Link to="/profile">My Profile</Link></li>
               <li><Link to="/signin">Login</Link></li>
               <li><Link to="/signup">Register</Link></li>
+              <li><Link to="/all">All Users</Link></li>
             </ul>
           </div>
         </nav>
