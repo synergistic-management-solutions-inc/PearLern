@@ -52,6 +52,7 @@ var SignIn = React.createClass({
         <input type="password" className="password-input" placeholder="Choose a Password"  onChange={this.updatePassword}/> 
         <RaisedButton label="Sign In" className="submit-button" onClick={this.validateUser}/>
         <p className="signin-footer">Already registered? <a href='/signin'>Sign-In </a></p>
+        <div className="push"></div>
       </div>
     )
   }

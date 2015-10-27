@@ -6,3 +6,4 @@ build/
 dist/
 client/.DS_Store
 client/views/.DS_Store
+.DS_Store

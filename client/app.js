@@ -17,7 +17,7 @@ var App = React.createClass({
   render: function() {
   
       return (
-        <div>
+        <div className="app">
           <Nav />
           {this.props.children}
           <Footer />
@@ -32,6 +32,7 @@ ReactDOM.render((
     <Route path="/" component={App}>
       <IndexRoute component={Landing} />
       <Route path="signin" component={SignIn} />
+      <Route path="signin" component={Profile} />
       <Route path="signup" component={SignUp} />
       <Route path="profile" component={Profile} />
       <Route path="all" component={AllUsers} />

@@ -104,15 +104,15 @@ var Profile = React.createClass({
     var about = this.state.aboutValue;
     var interests = this.state.interestsValue;
     return (<div>
-              <div className="profile">
+              <div className="container">
                 <div className="email-label">Email</div>
                 <div className="email">{email}</div>
                 <div className="about-label">About</div>
                 <div className="about">{about}</div>
                 <div className="interests-label">Interests</div>
                 <div className="interests">{interests}</div>
+                <button className="edit-profile" onClick={this.openModal}>Edit Profile</button>
               </div>
-              <button className="edit-profile" onClick={this.openModal}>Edit Profile</button>
               <Modal
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
@@ -128,6 +128,7 @@ var Profile = React.createClass({
                 </div>
                 <button className="edit-save" onClick={this.saveData}>Save</button>
                 </Modal>
+              <div className="push"></div>
             </div>
             );
   }
