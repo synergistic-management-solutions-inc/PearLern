@@ -4,7 +4,8 @@ var $ = require('jquery');
 /*TODO
   [] test ajax
   [] get current user in a more formalized way
-  [] figure out how to pass in user state on redirect  
+  [] figure out how to pass in otherUser state on redirect 
+  [] rerender page  
 */
 
   //this should be a variable stored as a prop in our highest 
@@ -13,7 +14,7 @@ var $ = require('jquery');
 
 //sample data
   var conversations = [
-    {'user': 'Shady Pete',
+    {'username': 'Shady Pete',
     'messages': [
       {
         'to': 'Shady Pete',
@@ -21,7 +22,7 @@ var $ = require('jquery');
         'text': 'You got the goods?'
       }
     ]},
-    {'user': 'Helen of Troy',
+    {'username': 'Helen of Troy',
     'messages': [
       {
         'to': 'User',
@@ -93,10 +94,10 @@ var $ = require('jquery');
   })
 
   //the username of the other user in the conversation
-  var User = React.createClass({
+  var OtherUser = React.createClass({
     render: function(){
       return (
-        <h5>{this.props.user} </h5>
+        <h5>{this.props.otherUser} </h5>
       );
     }
   })
@@ -114,7 +115,7 @@ var $ = require('jquery');
   var NewMessage = React.createClass({
     sendMessage: function(text){
       var message = {
-        'to': this.props.user,
+        'to': this.props.otherUser,
         'from': currentUser,
         'text': this.refs.message.getDOMNode().value
         };
@@ -158,9 +159,9 @@ var $ = require('jquery');
 
       return (
         <div>
-          <User user={this.props.conversation.username}/>
+          <OtherUser otherUser={this.props.conversation.username}/>
           {conversation}
-          <NewMessage user={this.props.conversation.username}/> 
+          <NewMessage OtherUser={this.props.conversation.username}/> 
         </div>
         ) 
     }
@@ -184,12 +185,12 @@ var $ = require('jquery');
       
     },
     render: function(){
-      var user = this.props.user;
-      var conversation = {username: user, messages: []}
+      var otherUser = this.props.otherUser;
+      var conversation = {username: otherUser, messages: []}
 
       //grabs any messages from the state
       this.state.conversations.forEach(function(conv){
-        if (conv.user === user){
+        if (conv.username === otherUser){
           conversation.messages = conv.messages;
         }
       })
@@ -207,18 +208,18 @@ var $ = require('jquery');
     getInitialState: function(){
       return {
         //should be able to take an initial state
-        user: this.initialState || conversations[0].user
+        otherUser: this.props.otherUser || conversations[0].username
       }
     },
     displayConversation: function(username){
-      this.setState({user: username});
+      this.setState({otherUser: username});
     },
     render: function(){
       var displayConversation = this.displayConversation;
       return (
         <div>
-          <Contacts displayConversation={displayConversation} user={this.state.user} />
-          <Conversations user={this.state.user} />
+          <Contacts displayConversation={displayConversation} otherUser={this.state.otherUser} />
+          <Conversations otherUser={this.state.otherUser} />
         </div>
       )
     }
