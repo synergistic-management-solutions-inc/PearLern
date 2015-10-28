@@ -2,36 +2,37 @@ var React = require('react')
 var $ = require('jquery');
 
 /*TODO
+  [] fix server
   [] test ajax
-  [] get current user in a more formalized way
   [] figure out how to pass in otherUser state on redirect 
   [] rerender page  
+  [] get current user in a more formalized way
 */
 
   //this should be a variable stored as a prop in our highest 
   //component and passed down
-  var currentUser = 'User'
+  var currentUser = 'user'
 
 //sample data
   var conversations = [
-    {'username': 'Shady Pete',
+    {'username': 'shady_pete',
     'messages': [
       {
-        'to': 'Shady Pete',
-        'from': 'User',
+        'to': 'shady_pete',
+        'from': 'user',
         'text': 'You got the goods?'
       }
     ]},
-    {'username': 'Helen of Troy',
+    {'username': 'helen_of_troy',
     'messages': [
       {
-        'to': 'User',
-        'from': 'Helen of Troy',
+        'to': 'user',
+        'from': 'helen_of_troy',
         'text': 'Wassup?'
       },
       {
-        'to': 'Helen of Troy',
-        'from': 'User',
+        'to': 'helen_of_troy',
+        'from': 'user',
         'text': 'Not much.'
       }
     ]}
@@ -53,25 +54,32 @@ var $ = require('jquery');
   var Contacts = React.createClass({
     getInitialState: function(){
       //hard-coded version
-      return {contacts: ['Shady Pete', 'Helen of Troy', 'The Wizard of Sound']}
+      // return {contacts: ['shady_pete', 'helen_of_troy', 'the_wizard_of_sound']}
 
-      /* real version
-      return $.ajax({
+      //the empty array 
+      //it's a placeholder until 
+      //server sends data
+      return {contacts: []}
+
+    },
+    componentDidMount: function(){
+      var component = this;
+
+      $.ajax({
         type: 'GET',
         url: '/users'
       })
       .then(function(res){
+        console.log('users', res.users)
         var state = {contacts: []}
-        res.body.users.each(function(user){
-          if (user !== currentUser){            
-            state.contacts.push()
+        res.users.forEach(function(user){
+          if (user.username !== currentUser){            
+            state.contacts.push(user.username); 
           }
         })
-
-        return state;
+        //setting the state will automatically re-render
+        component.setState(state);
       })
-      */
-
     },
     userSelected: function(username){
       this.props.displayConversation(username);
@@ -142,8 +150,6 @@ var $ = require('jquery');
   //the component for the entire conversation with one other user
   var Conversation = React.createClass({
     render: function(){
-      console.log('props', this.props.conversation);
-
       var conversation = this.props.conversation.messages.map(function(message){
         //checks if the message in incoming or outgoing
         //for styling purposes

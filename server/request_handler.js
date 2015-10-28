@@ -2,28 +2,25 @@ var User = require('./database/models/user');
 var Message = require('./database/models/message');
 var _ = require('underscore');
 var prettyjson = require('prettyjson');
-//retrieves profile information for all users who 
-//have filled out their email and interests fields
+
+//retrieves user/profile information for all users
 exports.getUsers = function(req, res){
   User.find({}, function(err, users){
     var userData = [];
-
     users.forEach(function(user){
       var profile = user.profile;
 
-      //profiles with content
-      //we only want those users
-      //they should be sent here
-      if (profile.interests && profile.email){
-        userData.push({
-          username: user.username,
-          email: profile.email,
-          about: profile.about,
-          interests: profile.interests //in the future, this will be perhaps be sent back as an array
-        })
-      }
+      //the client must check
+      //if these users have profiles
+      //I'll send empty strings
+      userData.push({
+        username: user.username,
+        email: profile.email || '',
+        about: profile.about || '',
+        interests: profile.interests || ''
+      })
     })
-  res.status(200).send({'users': userData})
+    res.status(200).send({'users': userData});
   })
 }
 
@@ -171,7 +168,7 @@ exports.getMessages = function(req, res){
         var convObj = {user : ''}
         convObj.messages = [];
         _.each(messages, function(message) {
-          convObj.user = message.from
+          convObj.username = message.from
           convObj.messages.push({
             to : message.to,
             from : message.from,
