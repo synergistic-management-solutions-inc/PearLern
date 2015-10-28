@@ -2,6 +2,7 @@
   var routes = require(__server + '/index');
   var User = require(__server + '/database/models/user');
   var Message = require(__server + '/database/models/message');
+  var prettyjson = require('prettyjson');
 
   describe("The Server", function() {
 
@@ -254,7 +255,10 @@
         .get('/messages/user')
         .expect(200)
         .expect(function(res){
-          expect(res.body.messages.length).to.equal(2)
+          expect(res.body.length).to.equal(2)
+          res.body.forEach(function(convo) {
+            expect(convo.messages.length).to.equal(1);
+          })
         })
       })
     })
@@ -267,7 +271,40 @@
         .get('/messages/shady_pete')
         .expect(200)
         .expect(function(res){
-          expect(res.body.messages.length).to.equal(0);
+          res.body.forEach(function(convo) {
+            expect(convo.messages.length).to.equal(0);
+          })
+        })
+      })
+    })
+  })
+
+  // most recent at the end
+  it('orders messages by timestamp', function() {
+    return sendMessage(users[0], users[1], messages[0], function() {
+      return request(app)
+      .post('/messages')
+      .send(messages[1])
+      .expect(201)
+      .then(function() {
+        return request(app)
+        .get('/messages/user')
+        .expect(200)
+        .then(function() {
+          return request(app)
+          .post('/messages')
+          .send(messages[2])
+          .expect(201)
+          .then(function() {
+            return request(app)
+            .get('/messages/user')
+            .expect(200)
+            .then(function(res) {
+              var timestamp1 = res.body[1].messages[0].created_at;
+              var timestamp2 = res.body[1].messages[1].created_at;
+              expect(timestamp1).to.be.below(timestamp2);
+            })
+          })
         })
       })
     })

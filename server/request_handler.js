@@ -1,6 +1,7 @@
 var User = require('./database/models/user');
 var Message = require('./database/models/message');
-
+var _ = require('underscore');
+var prettyjson = require('prettyjson');
 //retrieves profile information for all users who 
 //have filled out their email and interests fields
 exports.getUsers = function(req, res){
@@ -160,8 +161,40 @@ exports.getMessages = function(req, res){
     }
 
     Message.find({'from': username}, function(err, sentMessages){
-      var messages = {messages: receivedMessages.concat(sentMessages)};
-      res.status(200).send(messages);
+
+      // Build convo data
+      // buildConversation function
+      // Organizes data
+      var conversations = [];
+
+      function buildConversation(messages) {
+        var convObj = {user : ''}
+        convObj.messages = [];
+        _.each(messages, function(message) {
+          convObj.user = message.from
+          convObj.messages.push({
+            to : message.to,
+            from : message.from,
+            text : message.text,
+            created_at : message.created_at
+          })
+        })
+          conversations.push(convObj);
+      }
+
+      buildConversation(sentMessages);
+      buildConversation(receivedMessages);
+
+      // Sort the messages
+      // By created_at timestamp
+      // Using underscore
+      conversations.forEach(function(convo) {
+         convo.messages = _.sortBy(convo.messages, 'created_at')
+      })
+      // Run this to see the conversations:
+      // console.log('conversations', prettyjson.render(conversations));
+
+      res.status(200).send(conversations);
     })
   })
 }
