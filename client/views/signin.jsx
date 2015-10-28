@@ -48,10 +48,9 @@ var SignIn = React.createClass({
   render: function () {
     return (
       <div className="sign-in-view">
-        <SignInHead />
         <div className="row">
           <div className="col s6">
-            <img className="responsive-img" src="https://zenpayroll.com/wp-content/uploads/2013/10/pair-programming.jpg"/>
+            <img className="responsive-img" src=" "/>
           </div>
           <div className="col s6">
             <h4 className="signin-header">Sign In</h4> 
@@ -61,6 +60,7 @@ var SignIn = React.createClass({
             <p className="signin-footer">Not yet registered? <Link to='/signup'>Sign up!</Link></p>
           </div>
         </div>
+        <SignInHead />
         <div className="push"></div>
       </div>
     )
