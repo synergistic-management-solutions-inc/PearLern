@@ -73,7 +73,7 @@ reply from server: {
 	interests: []
 }
 
-POST: /messages/
+POST: /messages
 note: for sending a message
 data from client: {
 	to:
