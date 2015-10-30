@@ -2,6 +2,17 @@ var React = require('react')
 var $ = require('jquery');
 
 
+var Users = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <User />
+      </div>
+    );
+  }
+})
+
+
 var User = React.createClass({
   // Setting default state to empty strings to avoid errors
   getInitialState: function() {
@@ -50,4 +61,4 @@ var User = React.createClass({
   }
 })
 
-module.exports = User;
+module.exports = Users;
