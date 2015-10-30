@@ -1,7 +1,6 @@
 var User = require('./database/models/user');
 var Message = require('./database/models/message');
 var _ = require('underscore');
-var prettyjson = require('prettyjson');
 
 //retrieves user/profile information for all users
 exports.getUsers = function(req, res){
@@ -142,6 +141,10 @@ exports.sendMessage = function(req, res){
   })
 }
 
+//finds all messages from a particular user and sorts them by conversation 
+//the shape of the data here is a bit convoluted and I apologize for that, 
+//but it makes life really easy on the client side in messenger.jsx
+//see README for a more precise description of what the server is sending
 exports.getMessages = function(req, res){
   //grabs username from URL
   var username = req.path.substring(10);
@@ -156,14 +159,7 @@ exports.getMessages = function(req, res){
 
   //TODO 
   //verify that this user is who they say they are
-  //via sessions of something
-
-  //finds all messages from a particular user and sorts them by conversation 
-  //in other words it will clump together all messages to and from shady_joe,
-  //all messages to and from helen_of_troy, etc. 
-  //see README for a more precise description of the shape of this data 
-  //it's a bit convoluted and I apologize for that, but it makes life really easy 
-  //on the client side in messenger.jsx
+  //via sessions or something
 
     Message.find({'to': username}, function(err, receivedMessages){
       if (err){
@@ -218,9 +214,6 @@ exports.getMessages = function(req, res){
           }
           conversations.push(conversation);
         })
-
-        // Run this to see the conversations:
-        // console.log('conversations', prettyjson.render(conversations));
 
         res.status(200).send({conversations: conversations});
       })

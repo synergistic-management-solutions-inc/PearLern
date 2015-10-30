@@ -24,6 +24,46 @@
       {'to': 'shady_joe', 'from': 'user', 'text': 'i\'ll be there'}
     ]
 
+    /* These are helper functions for the tests.
+    I know there are much more sophisticated ways to do this
+    involving promises and before eachs and all that, but oh well
+    */
+
+    var signUp = function(user, cb){
+      return request(app)
+        .post('/signup')
+        .send(user)
+        .expect(201)
+        .then(cb)
+    }
+
+    //signs up 'user' and creates a profile
+    var newProfile = function(cb){
+      return signUp(users[0], function(){
+        return request(app)
+        .post('/users/user')
+        .send(profile)
+        .expect(201)
+        .expect(function(res){
+          var newProfile = res.body
+          expect(newProfile.email).to.equal(profile.email)
+          expect(newProfile.about).to.equal(profile.about)
+          expect(newProfile.interests[0]).to.equal(profile.interests[0])
+        })
+      }).then(cb)
+    }
+
+    //be sure to sign up both users involved in the message
+    //before calling this
+    var sendMessage = function(message, cb){
+      return request(app)
+      .post('/messages')
+      .send(message)
+      .expect(201)
+      .then(cb)
+    }
+
+  //clears the DB
     beforeEach(function() {
       return User.remove({});
     })
@@ -43,13 +83,6 @@
         })
     })
 
-    var signUp = function(user, cb){
-      return request(app)
-        .post('/signup')
-        .send(user)
-        .expect(201)
-        .then(cb)
-    }
 
     it("creates new accepts sign up and sign in requests", function(){
       return request(app)
@@ -93,20 +126,6 @@
       })
     })
 
-    var newProfile = function(cb){
-      return signUp(users[0], function(){
-        return request(app)
-        .post('/users/user')
-        .send(profile)
-        .expect(201)
-        .expect(function(res){
-          var newProfile = res.body
-          expect(newProfile.email).to.equal(profile.email)
-          expect(newProfile.about).to.equal(profile.about)
-          expect(newProfile.interests[0]).to.equal(profile.interests[0])
-        })
-      }).then(cb)
-    }
 
     it('accepts profile information', function(){
       return newProfile(function(){})
@@ -220,18 +239,10 @@
     })
   })
 
-  //be sure to sign up both users involved in the message
-  var sendMessage = function(message, cb){
-    return request(app)
-    .post('/messages')
-    .send(message)
-    .expect(201)
-    .then(cb)
-  }
 
 /* !!YE BE WARNED!!
   You are now entering into the chasm of callbacks,
-  where Scott was once pinned under a .then statement 
+  where Scott was once pinned under an anonymous function 
   for three days and almost had to cut off his own arm
   to escape
 */
