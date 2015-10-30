@@ -2,11 +2,15 @@ var React = require('react')
 var $ = require('jquery');
 
 /*TODO
-  [] fix server
+  [x] fix server
   [] test ajax
+    [x] contacts
+    [x] convos
+    [] submit
   [] figure out how to pass in otherUser state on redirect 
-  [] rerender page  
+  [] auto rerender page  
   [] get current user in a more formalized way
+  [] prevent page from breaking if no other users exist
 */
 
   //this should be a variable stored as a prop in our highest 
@@ -53,8 +57,6 @@ var $ = require('jquery');
   //the component for the list for all the contacts
   var Contacts = React.createClass({
     getInitialState: function(){
-      //hard-coded version
-      // return {contacts: ['shady_pete', 'helen_of_troy', 'the_wizard_of_sound']}
 
       //the empty array 
       //it's a placeholder until 
@@ -76,6 +78,12 @@ var $ = require('jquery');
             state.contacts.push(user.username); 
           }
         })
+        
+        if (!component.props.otherUser){
+          var firstContact = state.contacts[0];
+          console.log('setting state to', firstContact);
+          component.props.displayConversation(firstContact);
+        }
         //setting the state will automatically re-render
         component.setState(state);
       })
@@ -84,6 +92,7 @@ var $ = require('jquery');
       this.props.displayConversation(username);
     },
     render: function(){
+
       var userSelected = this.userSelected;
       var contacts = this.state.contacts.map(function(contact){
         return <Contact userSelected={userSelected} key={contact} contact={contact} />
@@ -218,18 +227,23 @@ var $ = require('jquery');
   var Messenger = React.createClass({
     getInitialState: function(){
       return {
+        //other user represents the user who's conversations
+        //is currently being displayed
+
         //should be able to take an initial state
-        otherUser: this.props.otherUser || conversations[0].username
+        otherUser: this.props.otherUser 
       }
     },
     displayConversation: function(username){
       this.setState({otherUser: username});
     },
     render: function(){
+      console.log('rendering main component');
       var displayConversation = this.displayConversation;
       return (
         <div>
-          <Contacts displayConversation={displayConversation} otherUser={this.state.otherUser} />
+          <Contacts displayConversation={displayConversation} 
+                    otherUser={this.state.otherUser} />
           <Conversations otherUser={this.state.otherUser} />
         </div>
       )

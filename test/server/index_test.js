@@ -14,7 +14,8 @@
     var users = [
       {'username': 'user','password': 'pass'},
       {'username': 'shady_joe', 'password': 'asdf' },
-      {'username': 'helen_of_troy', 'password': '1234'}
+      {'username': 'helen_of_troy', 'password': '1234'},
+      {'username': 'wizard_of_sound', 'password': 'wizard!'}
     ]
     var profile = {'email': 'email@email.com', 'about': 'I don\'t actually exist', 'interests': ['backbone']};
     var messages = [
@@ -304,6 +305,25 @@
                 expect(storedMessages[0].text).to.equal(messages[0].text);
                 expect(storedMessages[1].text).to.equal(messages[1].text);
                 expect(storedMessages[2].text).to.equal(messages[3].text);
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+
+  it('not a test, merely populates DB', function(){
+    return signUp(users[0], function(){
+      return signUp(users[1], function(){
+        return signUp(users[2], function(){
+          return signUp(users[3], function(){
+            return sendMessage(messages[0], function(){
+              return sendMessage(messages[1], function(){
+                return sendMessage(messages[2], function(){
+                  return sendMessage(messages[3], function(){
+                  })
+                })
               })
             })
           })
