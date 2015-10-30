@@ -146,9 +146,17 @@ exports.getMessages = function(req, res){
   //grabs username from URL
   var username = req.path.substring(10);
   var allMessages = {};
+
+ User.findOne({username: username}, function(err, user){
+  if (err || !user){
+    console.log('user does not exist');
+    res.status(404).send(err);
+    return;
+  }
+
   //TODO 
-  //verify that this user exists 
-  //and that they are who they say they are
+  //verify that this user is who they say they are
+  //via sessions of something
 
   //finds all messages from a particular user and sorts them by conversation 
   //in other words it will clump together all messages to and from shady_joe,
@@ -157,64 +165,65 @@ exports.getMessages = function(req, res){
   //it's a bit convoluted and I apologize for that, but it makes life really easy 
   //on the client side in messenger.jsx
 
-  Message.find({'to': username}, function(err, receivedMessages){
-    if (err){
-      console.log('could not find messages');
-      res.status(404).send(err);
-      return;
-    }
-
-    receivedMessages.forEach(function(message){
-      var from = message.from;
-
-      if (!allMessages[from]){
-        allMessages[from] = [];
-      }
-
-      allMessages[from].push(message);
-    })
-
-    Message.find({'from': username}, function(err, sentMessages){
+    Message.find({'to': username}, function(err, receivedMessages){
       if (err){
         console.log('could not find messages');
         res.status(404).send(err);
         return;
       }
 
-      sentMessages.forEach(function(message){
-        var to = message.to;
+      receivedMessages.forEach(function(message){
+        var from = message.from;
 
-        if (!allMessages[to]){
-          allMessages[to] = [];
+        if (!allMessages[from]){
+          allMessages[from] = [];
         }
 
-        allMessages[to].push(message)
+        allMessages[from].push(message);
       })
 
-      // Sort the messages
-      // By created_at timestamp
-      // Using underscore
-      _.each(allMessages, function(messages) {
-         messages = _.sortBy(messages, 'created_at');
-      })
-
-      var conversations = [];
-
-      //restructures data
-      //this shape will be more useful
-      //to work with React
-      _.each(allMessages, function(messages, user){
-        var conversation = {
-          username: user,
-          messages: messages
+      Message.find({'from': username}, function(err, sentMessages){
+        if (err){
+          console.log('could not find messages');
+          res.status(404).send(err);
+          return;
         }
-        conversations.push(conversation);
+
+        sentMessages.forEach(function(message){
+          var to = message.to;
+
+          if (!allMessages[to]){
+            allMessages[to] = [];
+          }
+
+          allMessages[to].push(message)
+        })
+
+        // Sort the messages
+        // By created_at timestamp
+        // Using underscore
+        _.each(allMessages, function(messages, user) {
+          allMessages[user] = _.sortBy(messages, 'created_at');
+        })
+
+        var conversations = [];
+
+        //restructures data
+        //this shape will be more useful
+        //to work with React
+        _.each(allMessages, function(messages, user){
+          var conversation = {
+            username: user,
+            messages: messages
+          }
+          conversations.push(conversation);
+        })
+
+        // Run this to see the conversations:
+        // console.log('conversations', prettyjson.render(conversations));
+
+        res.status(200).send({conversations: conversations});
       })
-
-      // Run this to see the conversations:
-      console.log('conversations', prettyjson.render(conversations));
-
-      res.status(200).send({conversations: conversations});
-    })
-  })
+    })  
+  }) 
 }
