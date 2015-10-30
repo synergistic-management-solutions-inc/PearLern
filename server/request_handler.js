@@ -145,11 +145,15 @@ exports.sendMessage = function(req, res){
 exports.getMessages = function(req, res){
   //grabs username from URL
   var username = req.path.substring(10);
-
+  var allMessages = {};
   //TODO 
   //verify that this user exists 
   //and that they are who they say they are
 
+  //finds all messages from a particular user and sorts them by conversation 
+  //in other words it will clump together all messages to and from shady_joe
+  //and all messages to and from helen_of_troy
+  //see READ ME for a more precise description of the shape of this data 
   Message.find({'to': username}, function(err, receivedMessages){
     if (err){
       console.log('could not find messages');
@@ -157,36 +161,38 @@ exports.getMessages = function(req, res){
       return;
     }
 
-    Message.find({'from': username}, function(err, sentMessages){
+    receivedMessages.forEach(function(message){
+      var from = message.from;
 
-      // Build convo data
-      // buildConversation function
-      // Organizes data
-      var conversations = [];
-
-      function buildConversation(messages) {
-        var convObj = {user : ''}
-        convObj.messages = [];
-        _.each(messages, function(message) {
-          convObj.username = message.from
-          convObj.messages.push({
-            to : message.to,
-            from : message.from,
-            text : message.text,
-            created_at : message.created_at
-          })
-        })
-          conversations.push(convObj);
+      if (!from){
+        allMessages.from = [];
       }
 
-      buildConversation(sentMessages);
-      buildConversation(receivedMessages);
+      allMessages.from.push(message);
+    })
+
+    Message.find({'from': username}, function(err, sentMessages){
+      if (err){
+        console.log('could not find messages');
+        res.status(404).send(err);
+        return;
+      }
+
+      sentMessages.forEach(function(message){
+        var to = message.to;
+
+        if (!to){
+          allMessages.to = [];
+        }
+
+        allMessages.to.push(message)
+      })
 
       // Sort the messages
       // By created_at timestamp
       // Using underscore
-      conversations.forEach(function(convo) {
-         convo.messages = _.sortBy(convo.messages, 'created_at')
+      allMessages.forEach(function(convo) {
+         convo = _.sortBy(convo, 'created_at');
       })
       // Run this to see the conversations:
       // console.log('conversations', prettyjson.render(conversations));
