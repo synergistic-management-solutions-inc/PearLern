@@ -6,10 +6,10 @@ var $ = require('jquery');
   [] test ajax
     [x] contacts
     [x] convos
-    [] submit
+    [x] submit
   [] learn more about keys 
   [] figure out how to pass in otherUser state on redirect 
-  [] auto rerender page  
+  [x] auto rerender page  
   [] get current user in a more formalized way
   [] prevent page from breaking if no other users exist
   [] clean up/comment code 
@@ -131,6 +131,7 @@ var $ = require('jquery');
   //the component for submitting a new message
   var NewMessage = React.createClass({
     sendMessage: function(text){
+      var update = this.props.update;
       var message = {
         'to': this.props.otherUser,
         'from': currentUser,
@@ -143,6 +144,7 @@ var $ = require('jquery');
         data: message,
         success: function(res){
           //should re-render page; 
+          update();
         }
       })
     },
@@ -176,7 +178,8 @@ var $ = require('jquery');
         <div>
           <OtherUser otherUser={this.props.conversation.username}/>
           {conversation}
-          <NewMessage OtherUser={this.props.conversation.username}/> 
+          <NewMessage otherUser={this.props.conversation.username}
+                      update={this.props.update}/> 
         </div>
         ) 
     }
@@ -193,6 +196,14 @@ var $ = require('jquery');
 
     },
     componentDidMount: function(){
+      var update = this.update;
+
+      //grabs the initial message data
+      //then checks for new messages every two seconds
+      update();
+      setInterval(update, 2000);
+    },
+    update: function(){
       var component = this;
 
       $.ajax({
@@ -217,7 +228,9 @@ var $ = require('jquery');
 
       return (
         <div>
-          <Conversation key={conversation.messages} conversation={conversation} />
+          <Conversation key={conversation.messages} 
+                        conversation={conversation}
+                        update={this.update} />
         </div>
       )
     }

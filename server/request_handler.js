@@ -116,6 +116,7 @@ exports.sendMessage = function(req, res){
   messageInfo.from = req.body.from;
   messageInfo.text = req.body.text;
   
+  console.log('who am i trying to send this to??', messageInfo.to);
   //TODO
   //verify that the sender exists
   //and has a session to prove who they are
