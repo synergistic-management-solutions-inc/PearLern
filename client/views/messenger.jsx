@@ -7,10 +7,12 @@ var $ = require('jquery');
     [x] contacts
     [x] convos
     [] submit
+  [] learn more about keys 
   [] figure out how to pass in otherUser state on redirect 
   [] auto rerender page  
   [] get current user in a more formalized way
   [] prevent page from breaking if no other users exist
+  [] clean up/comment code 
 */
 
   //this should be a variable stored as a prop in our highest 
@@ -81,7 +83,6 @@ var $ = require('jquery');
         
         if (!component.props.otherUser){
           var firstContact = state.contacts[0];
-          console.log('setting state to', firstContact);
           component.props.displayConversation(firstContact);
         }
         //setting the state will automatically re-render
@@ -200,7 +201,6 @@ var $ = require('jquery');
       })
       .then(function(res){
         //gives conversation data to the state and automatically re-renders
-        console.log(res); 
          component.setState(res);
       })
     },
@@ -238,11 +238,9 @@ var $ = require('jquery');
       this.setState({otherUser: username});
     },
     render: function(){
-      console.log('rendering main component');
-      var displayConversation = this.displayConversation;
       return (
         <div>
-          <Contacts displayConversation={displayConversation} 
+          <Contacts displayConversation={this.displayConversation} 
                     otherUser={this.state.otherUser} />
           <Conversations otherUser={this.state.otherUser} />
         </div>
