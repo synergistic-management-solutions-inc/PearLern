@@ -70,7 +70,6 @@ var $ = require('jquery');
         url: '/users'
       })
       .then(function(res){
-        console.log('users', res.users)
         var state = {contacts: []}
         res.users.forEach(function(user){
           if (user.username !== currentUser){            
@@ -176,19 +175,25 @@ var $ = require('jquery');
   //the component for every conversation
   var Conversations = React.createClass({
     getInitialState: function(){
-      //hard coded version:
-      return {conversations: conversations}
+      //hard coded version for testing:
+      //return {conversations: conversations}
 
-      /*real version
-      return $.ajax({
+      //real version
+      return {conversations: []}
+
+    },
+    componentDidMount: function(){
+      var component = this;
+
+      $.ajax({
         type: 'GET',
         url: '/messages/'+currentUser
       })
       .then(function(res){
-        return res.body; 
+        //gives conversation data to the state and automatically re-renders
+        console.log(res); 
+         component.setState(res);
       })
-      */
-      
     },
     render: function(){
       var otherUser = this.props.otherUser;

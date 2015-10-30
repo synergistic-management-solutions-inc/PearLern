@@ -167,11 +167,11 @@ exports.getMessages = function(req, res){
     receivedMessages.forEach(function(message){
       var from = message.from;
 
-      if (!from){
-        allMessages.from = [];
+      if (!allMessages[from]){
+        allMessages[from] = [];
       }
 
-      allMessages.from.push(message);
+      allMessages[from].push(message);
     })
 
     Message.find({'from': username}, function(err, sentMessages){
@@ -184,17 +184,17 @@ exports.getMessages = function(req, res){
       sentMessages.forEach(function(message){
         var to = message.to;
 
-        if (!to){
-          allMessages.to = [];
+        if (!allMessages[to]){
+          allMessages[to] = [];
         }
 
-        allMessages.to.push(message)
+        allMessages[to].push(message)
       })
 
       // Sort the messages
       // By created_at timestamp
       // Using underscore
-      allMessages.forEach(function(messages) {
+      _.each(allMessages, function(messages) {
          messages = _.sortBy(messages, 'created_at');
       })
 
@@ -203,16 +203,16 @@ exports.getMessages = function(req, res){
       //restructures data
       //this shape will be more useful
       //to work with React
-      allMessages.forEach(function(messsages, user){
+      _.each(allMessages, function(messages, user){
         var conversation = {
           username: user,
           messages: messages
         }
         conversations.push(conversation);
       })
-      
+
       // Run this to see the conversations:
-      // console.log('conversations', prettyjson.render(conversations));
+      console.log('conversations', prettyjson.render(conversations));
 
       res.status(200).send({conversations: conversations});
     })
