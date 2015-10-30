@@ -2,7 +2,7 @@ var React = require('react')
 var $ = require('jquery');
 
 
-var otherUsers = React.createClass({
+var User = React.createClass({
   // Setting default state to empty strings to avoid errors
   getInitialState: function() {
     return { 
@@ -34,25 +34,20 @@ var otherUsers = React.createClass({
     });
   },
 
-  render: function () {
-    var users = this.state.interestsValue.map(function(user) {
-      return <User key={user} user={user} />
-    })
+  render: function() {
     var username = this.state.usernameValue;
     var interests = this.state.interestsValue;
     var email = this.state.emailValue;
-    return (<div>
-              <div className="user-container">
-                <div className="username-label">Username:</div>
-                <div className="username">{username}</div>
-                <div className="interests-label">Interests</div>
-                <div className="interests">{interests}</div>
-                <div className="email-label">Email:</div>
-                <div className="email">{email}</div>
-              </div>
-            </div>
-            );
+    return (
+      <div>
+        <ul>
+          <li className="username">Username: {username}</li>
+          <li className="interests">Interests: {interests}</li>
+          <li className="email">Email: {email}</li>
+        </ul>
+      </div>
+    );
   }
 })
 
-module.exports = otherUsers;
+module.exports = User;
