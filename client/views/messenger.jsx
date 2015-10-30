@@ -3,11 +3,12 @@ var $ = require('jquery');
 
 /*TODO
   [x] fix server
-  [] test ajax
+  [x] test ajax
     [x] contacts
     [x] convos
     [x] submit
-  [] learn more about keys 
+  [] learn more about keys
+  [] look into console warnings 
   [] figure out how to pass in otherUser state on redirect 
   [x] auto rerender page  
   [] get current user in a more formalized way
@@ -61,7 +62,7 @@ var $ = require('jquery');
     getInitialState: function(){
 
       //the empty array 
-      //it's a placeholder until 
+      //a placeholder until the 
       //server sends data
       return {contacts: []}
 
