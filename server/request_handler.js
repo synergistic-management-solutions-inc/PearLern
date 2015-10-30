@@ -151,9 +151,12 @@ exports.getMessages = function(req, res){
   //and that they are who they say they are
 
   //finds all messages from a particular user and sorts them by conversation 
-  //in other words it will clump together all messages to and from shady_joe
-  //and all messages to and from helen_of_troy
-  //see READ ME for a more precise description of the shape of this data 
+  //in other words it will clump together all messages to and from shady_joe,
+  //all messages to and from helen_of_troy, etc. 
+  //see README for a more precise description of the shape of this data 
+  //it's a bit convoluted and I apologize for that, but it makes life really easy 
+  //on the client side in messenger.jsx
+
   Message.find({'to': username}, function(err, receivedMessages){
     if (err){
       console.log('could not find messages');
@@ -191,13 +194,27 @@ exports.getMessages = function(req, res){
       // Sort the messages
       // By created_at timestamp
       // Using underscore
-      allMessages.forEach(function(convo) {
-         convo = _.sortBy(convo, 'created_at');
+      allMessages.forEach(function(messages) {
+         messages = _.sortBy(messages, 'created_at');
       })
+
+      var conversations = [];
+
+      //restructures data
+      //this shape will be more useful
+      //to work with React
+      allMessages.forEach(function(messsages, user){
+        var conversation = {
+          username: user,
+          messages: messages
+        }
+        conversations.push(conversation);
+      })
+      
       // Run this to see the conversations:
       // console.log('conversations', prettyjson.render(conversations));
 
-      res.status(200).send(conversations);
+      res.status(200).send({conversations: conversations});
     })
   })
 }
