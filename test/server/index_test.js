@@ -14,57 +14,15 @@
     var users = [
       {'username': 'user','password': 'pass'},
       {'username': 'shady_joe', 'password': 'asdf' },
-      {'username': 'helen_of_troy', 'password': '1234'},
-      {'username': 'wizard_of_sound', 'password': 'wizard!'}
+      {'username': 'helen_of_troy', 'password': '1234'}
     ]
     var profile = {'email': 'email@email.com', 'about': 'I don\'t actually exist', 'interests': ['backbone']};
     var messages = [
       {'to': 'shady_joe', 'from': 'user', 'text': 'yo man, u got the goods?'},
       {'to': 'user', 'from': 'shady_joe', 'text': 'yeah, meet me down by the docks'},
-      {'to': 'user', 'from': 'helen_of_troy', 'text': 'hey does shady joe have the stuff?'},
-      {'to': 'shady_joe', 'from': 'user', 'text': 'i\'ll be there'}
+      {'to': 'user', 'from': 'helen_of_troy', 'text': 'hey does shady joe have the stuff?'}
     ]
 
-    /* These are helper functions for the tests.
-    I know there are much more sophisticated ways to do this
-    involving promises and before eachs and all that, but oh well
-    */
-
-    var signUp = function(user, cb){
-      return request(app)
-        .post('/signup')
-        .send(user)
-        .expect(201)
-        .then(cb)
-    }
-
-    //signs up 'user' and creates a profile
-    var newProfile = function(cb){
-      return signUp(users[0], function(){
-        return request(app)
-        .post('/users/user')
-        .send(profile)
-        .expect(201)
-        .expect(function(res){
-          var newProfile = res.body
-          expect(newProfile.email).to.equal(profile.email)
-          expect(newProfile.about).to.equal(profile.about)
-          expect(newProfile.interests[0]).to.equal(profile.interests[0])
-        })
-      }).then(cb)
-    }
-
-    //be sure to sign up both users involved in the message
-    //before calling this
-    var sendMessage = function(message, cb){
-      return request(app)
-      .post('/messages')
-      .send(message)
-      .expect(201)
-      .then(cb)
-    }
-
-  //clears the DB
     beforeEach(function() {
       return User.remove({});
     })
@@ -84,6 +42,13 @@
         })
     })
 
+    var signUp = function(user, cb){
+      return request(app)
+        .post('/signup')
+        .send(user)
+        .expect(201)
+        .then(cb)
+    }
 
     it("creates new accepts sign up and sign in requests", function(){
       return request(app)
@@ -127,6 +92,20 @@
       })
     })
 
+    var newProfile = function(cb){
+      return signUp(users[0], function(){
+        return request(app)
+        .post('/users/user')
+        .send(profile)
+        .expect(201)
+        .expect(function(res){
+          var newProfile = res.body
+          expect(newProfile.email).to.equal(profile.email)
+          expect(newProfile.about).to.equal(profile.about)
+          expect(newProfile.interests[0]).to.equal(profile.interests[0])
+        })
+      }).then(cb)
+    }
 
     it('accepts profile information', function(){
       return newProfile(function(){})
@@ -144,7 +123,6 @@
           expect(interests[1]).to.equal('MORE backbone');
         })
       })
-    })
 
   it('accepts changes to preexisting profiles', function(){
     return newProfile(function(){
@@ -176,6 +154,7 @@
       .get('/users/consuelo')
       .expect(404)
     })
+  })
   })
 
   it('returns a single user\'s profile information', function(){
@@ -215,6 +194,18 @@
     })
   })
 
+  it('only retrieves users with profile information', function(){
+    return signUp(users[0], function(){
+      return request(app)
+      .get('/users')
+      .expect(200)
+      .expect(function(res){
+        expect(res.body.users.length).to.equal(0);
+      })
+    })
+  })
+
+
   it('allows users to send messages', function(){
     return signUp(users[0], function(){
       return signUp(users[1], function(){
@@ -231,6 +222,7 @@
     })
   })
 
+
   it('will not send a message to a nonexistent user', function(){
     return signUp(users[0], function(){
       return request(app)
@@ -240,28 +232,32 @@
     })
   })
 
-
-/* !!YE BE WARNED!!
-  You are now entering into the chasm of callbacks,
-  where Scott was once pinned under an anonymous function 
-  for three days and almost had to cut off his own arm
-  to escape
-*/
+  var sendMessage = function(to, from, message, cb){
+    return signUp(to, function(){
+      return signUp(from, function(){
+        return request(app)
+        .post('/messages')
+        .send(message)
+        .expect(201)
+        .then(cb)
+      })
+    })
+  }
 
   it('will retrieve all messages for a particular user', function(){
-    return signUp(users[0], function(){
-      return signUp(users[1], function(){
-        return sendMessage(messages[0], function(){
-          return sendMessage(messages[1], function(){
-            return request(app)
-            .get('/messages/user')
-            .expect(200)
-            .expect(function(res){
-              var conversations = res.body.conversations;
-              expect(conversations.length).to.equal(1);
-              expect(conversations[0].username).to.equal('shady_joe');
-              expect(conversations[0].messages.length).to.equal(2);
-            })
+    return sendMessage(users[0], users[1], messages[0], function(){
+      return request(app)
+      .post('/messages')
+      .send(messages[1])
+      .expect(201)
+      .then(function(){
+        return request(app)
+        .get('/messages/user')
+        .expect(200)
+        .expect(function(res){
+          expect(res.body.length).to.equal(2)
+          res.body.forEach(function(convo) {
+            expect(convo.messages.length).to.equal(1);
           })
         })
       })
@@ -269,15 +265,46 @@
   })
 
   it('will not retrieve messages from other users', function(){
-    return signUp(users[0], function(){
-      return signUp(users[1], function(){
-        return signUp(users[2], function(){
-          return sendMessage(messages[2], function(){
+    return signUp(users[1], function(){
+      return sendMessage(users[0], users[2], messages[2], function(){
+        return request(app)
+        .get('/messages/shady_pete')
+        .expect(200)
+        .expect(function(res){
+          res.body.forEach(function(convo) {
+            expect(convo.messages.length).to.equal(0);
+          })
+        })
+      })
+    })
+  })
+
+  // most recent at the end
+  it('orders messages by timestamp', function() {
+    return sendMessage(users[0], users[1], messages[0], function() {
+      return request(app)
+      .post('/messages')
+      .send(messages[1])
+      .expect(201)
+      .then(function() {
+        return request(app)
+        .get('/messages/user')
+        .expect(200)
+        .then(function() {
+          return request(app)
+          .post('/messages')
+          .send(messages[2])
+          .expect(201)
+          .then(function() {
             return request(app)
-            .get('/messages/shady_joe')
+            .get('/messages/user')
             .expect(200)
-            .expect(function(res){
-              expect(res.body.conversations.length).to.equal(0);
+            .then(function(res) {
+              // First message of second conversation
+              var timestamp1 = res.body[1].messages[0].created_at;
+              // Second message of second conversation
+              var timestamp2 = res.body[1].messages[1].created_at;
+              expect(timestamp1).to.be.below(timestamp2);
             })
           })
         })
@@ -285,46 +312,31 @@
     })
   })
 
-  it('will not retrieve messages for a nonexistent user', function(){
-    return request(app)
-    .get('/messages/consuelo')
-    .expect(404)
-  })
-
-  it('orders messages by timpestamp', function(){
-    return signUp(users[0], function(){
-      return signUp(users[1], function(){
-        return sendMessage(messages[0], function(){
-          return sendMessage(messages[1], function(){
-            return sendMessage(messages[3], function(){
-              return request(app)
-              .get('/messages/shady_joe')
-              .expect(200)
-              .expect(function(res){
-                var storedMessages = res.body.conversations[0].messages;
-                expect(storedMessages[0].text).to.equal(messages[0].text);
-                expect(storedMessages[1].text).to.equal(messages[1].text);
-                expect(storedMessages[2].text).to.equal(messages[3].text);
-              })
-            })
-          })
-        })
-      })
-    })
-  })
-
-  it('not a test, merely populates DB', function(){
-    return signUp(users[0], function(){
-      return signUp(users[1], function(){
-        return signUp(users[2], function(){
-          return signUp(users[3], function(){
-            return sendMessage(messages[0], function(){
-              return sendMessage(messages[1], function(){
-                return sendMessage(messages[2], function(){
-                  return sendMessage(messages[3], function(){
-                  })
-                })
-              })
+  it('orders conversations by timestamp', function() {
+    return sendMessage(users[0], users[1], messages[0], function() {
+      return request(app)
+      .post('/messages')
+      .send(messages[1])
+      .expect(201)
+      .then(function() {
+        return request(app)
+        .get('/messages/user')
+        .expect(200)
+        .then(function() {
+          return request(app)
+          .post('/messages')
+          .send(messages[2])
+          .expect(201)
+          .then(function() {
+            return request(app)
+            .get('/messages/user')
+            .expect(200)
+            .then(function(res) {
+              // First message of first conversation
+              var timestamp1 = res.body[0].messages[0].created_at;
+              // First message of second conversation
+              var timestamp2 = res.body[1].messages[0].created_at;
+              expect(timestamp1).to.be.below(timestamp2);
             })
           })
         })
