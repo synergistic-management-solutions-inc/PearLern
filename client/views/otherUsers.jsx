@@ -3,26 +3,9 @@ var $ = require('jquery');
 
 
 var Users = React.createClass({
-  render: function() {
-    return (
-      <div>
-        <User />
-      </div>
-    );
-  }
-})
-
-
-var User = React.createClass({
-  // Setting default state to empty strings to avoid errors
   getInitialState: function() {
-    return { 
-      usernameValue: '',
-      interestsValue: '',
-      emailValue: ''
-    };
+    return {users: []};
   },
-
   componentDidMount: function () {
     // The docs said to do ajax in componentDidMount
     var self = this;
@@ -34,29 +17,33 @@ var User = React.createClass({
       // TO DO: Error handling
       success: function(res) {
         if (self.isMounted()) {
-          self.setState({
-            users: res.users[0],
-            usernameValue: res.users[0].username,
-            interestsValue: res.users[0].interests,
-            emailValue: res.users[0].email
-          });
+          self.setState({users: res.users})
         }
       }
     });
   },
-
   render: function() {
-    var username = this.state.usernameValue;
-    var interests = this.state.interestsValue;
-    var email = this.state.emailValue;
     return (
       <div>
-        <ul>
-          <li className="username">Username: {username}</li>
-          <li className="interests">Interests: {interests}</li>
-          <li className="email">Email: {email}</li>
-        </ul>
+        {this.state.users.map(
+          function (element) {
+            return <User user={element} />
+          }
+        )}
       </div>
+    );
+  }
+})
+
+
+var User = React.createClass({
+  render: function() {
+    return (
+      <ul>
+        <li>
+          {this.props.user.username}
+        </li>
+      </ul>
     );
   }
 })
