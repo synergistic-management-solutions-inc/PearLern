@@ -1,6 +1,6 @@
 var React = require('react')
 var $ = require('jquery');
-
+const RaisedButton = require('material-ui/lib/raised-button');
 
 var Users = React.createClass({
   getInitialState: function() {
@@ -22,13 +22,18 @@ var Users = React.createClass({
   },
   render: function() {
     return (
-      <div className="other-users-container">
-        <h3>All Users</h3>
-        {this.state.users.map(
-          function (element) {
-            return <User key={element.username} user={element} />
-          }
-        )}
+      <div className="other-users-view">
+        <div className="row">
+          <div className="col s6">
+            <img className="responsive-img" src="http://www.actclassy.com/wp-content/uploads/2012/04/Computer-Programmers.jpg" />
+          </div>
+          <h4 className="other-users-header">All Users</h4>
+          {this.state.users.map(
+            function (element) {
+              return <User key={element.username} user={element} />
+            }
+          )}
+        </div>
       </div>
     );
   }
@@ -38,7 +43,7 @@ var Users = React.createClass({
 var User = React.createClass({
   render: function() {
     return (
-      <div className="other-user-container">
+      <div className="col s6">
         <ul>
           <li>
             Username: {this.props.user.username}
@@ -50,7 +55,7 @@ var User = React.createClass({
             Interests: {this.props.user.interests.toString().split(',').join(', ')}
           </li>
         </ul>
-        <button>Message</button>
+        <RaisedButton label="Message" />
       </div>
     );
   }

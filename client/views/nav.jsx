@@ -13,6 +13,7 @@ var Nav = React.createClass({
     return (
       <nav>
           <div className="nav-wrapper light-blue">
+            <img className="pear-logo img-responsive" src="http://www.clker.com/cliparts/y/p/p/E/u/H/green-pear.svg" />
             <a href="#" className="brand-logo">PearLern</a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <li><Link to="/profile">My Profile</Link></li>
