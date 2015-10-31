@@ -1,74 +1,64 @@
 var React = require('react')
-var ReactDOM = require('react-dom');
 var $ = require('jquery');
+const RaisedButton = require('material-ui/lib/raised-button');
 
-var datastuffs = {users: [
-  {
-    "username": "cottoncandy",
-      "email": "unicorn@unicorn.com",
-      "about": "I like things.",
-      "interests": ["python"]
+var Users = React.createClass({
+  getInitialState: function() {
+    return {users: []};
   },
-  {
-    "username": "puppies",
-      "email": "unicornpuppies@unicorn.com",
-      "about": "I like puppies.",
-      "interests": ["python"]
-  },
-  {
-    "username": "blargl",
-      "email": "unicornpuppiesdlfjsdklfj@unicorn.com",
-      "about": "I like puppies.",
-      "interests": ["ruby"]
-  }
-]}
+  componentDidMount: function () {
+    var self = this;
 
-// TODO replace example email address
-var AllUsers = React.createClass({
-  render: function () {
-    console.log(JSON.stringify(datastuffs.users));
-    return (
-          <div className="container">
-            <ul>
-              {datastuffs.users.map(function(element) {
-                return (<li>
-                  <p>Username: {JSON.stringify(element.username).replace(/"|'/g,"")}</p>
-                  <p>Interests: {JSON.stringify(element.interests).replace(/[\[\]"|']+/g, "")}</p>
-                  <p>
-                    Email: <a href="mailto:someone@example.com">{JSON.stringify(element.email).replace(/"|'/g,"")}</a>
-                  </p>
-                  <br />
-                </li>)
-              })}
-            </ul>
-            <div className="push"></div>
-          </div>)
-  }
-});
+    $.ajax({
+      type: 'GET',
+      url: '/users/',
 
-
-// TO DO: Add AJAX stuff, replace dummy data with real data, implement mapping
-var OneUser = React.createClass({
-    getInitialState: function() {
-      return {
-        username: '',
-        interest: ''
-      };
-    },
-    // Need component did mount for AJAX requests. Remember to check if component did mount.
-    componentDidMount: function () {
-      if (this.isMounted()) {
-        this.setState({
-          username: datastuffs.users[0].username,
-          interests: datastuffs.users[0].interests
-        })
+      success: function(res) {
+        if (self.isMounted()) {
+          self.setState({users: res.users})
+        }
       }
-    },
-    render: function() {
-        return (<div>Username: {this.state.username}, Interests: {this.state.interests}</div>);
-    }
-});
+    });
+  },
+  render: function() {
+    return (
+      <div className="other-users-view">
+        <div className="row">
+          <div className="col s6">
+            <img className="responsive-img" src="http://www.actclassy.com/wp-content/uploads/2012/04/Computer-Programmers.jpg" />
+          </div>
+          <h4 className="other-users-header">All Users</h4>
+          {this.state.users.map(
+            function (element) {
+              return <User key={element.username} user={element} />
+            }
+          )}
+        </div>
+      </div>
+    );
+  }
+})
 
-// ReactDOM.render(<AllUsers />, document.getElementById('app'));
 
-module.exports = AllUsers;
+var User = React.createClass({
+  render: function() {
+    return (
+      <div className="col s6">
+        <ul>
+          <li>
+            Username: {this.props.user.username}
+          </li>
+          <li>
+            Email: {this.props.user.email}
+          </li>
+          <li>
+            Interests: {this.props.user.interests.toString().split(',').join(', ')}
+          </li>
+        </ul>
+        <RaisedButton label="Message" />
+      </div>
+    );
+  }
+})
+
+module.exports = Users;

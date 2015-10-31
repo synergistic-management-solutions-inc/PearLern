@@ -36,7 +36,8 @@
     "react-router": "^1.0.0-rc3",
     "react-tap-event-plugin": "^0.2.1",
     "reactify": "^1.1.1",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "material-ui": "~0.13.0"
   },
   "devDependencies": {
     "chai": "^3.4.0",

@@ -12,7 +12,10 @@ html, body {
   margin: 0 auto -75px; /* the bottom margin is the negative value of the footer's height */
 }
 
+.pear-logo {
+  height: 60px;
 
+}
 
 footer .row, .push {
   text-align: center;
