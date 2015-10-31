@@ -252,6 +252,7 @@ var $ = require('jquery');
       this.setState({otherUser: username});
     },
     render: function(){
+      console.log('props', this.props)
       return (
         <div>
           <Contacts displayConversation={this.displayConversation} 
