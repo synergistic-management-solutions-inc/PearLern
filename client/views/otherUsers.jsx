@@ -7,14 +7,12 @@ var Users = React.createClass({
     return {users: []};
   },
   componentDidMount: function () {
-    // The docs said to do ajax in componentDidMount
     var self = this;
-    // Doing a GET request to /users
+
     $.ajax({
       type: 'GET',
       url: '/users/',
 
-      // TO DO: Error handling
       success: function(res) {
         if (self.isMounted()) {
           self.setState({users: res.users})
@@ -24,10 +22,11 @@ var Users = React.createClass({
   },
   render: function() {
     return (
-      <div>
+      <div className="other-users-container">
+        <h3>All Users</h3>
         {this.state.users.map(
           function (element) {
-            return <User user={element} />
+            return <User key={element.username} user={element} />
           }
         )}
       </div>
@@ -39,11 +38,20 @@ var Users = React.createClass({
 var User = React.createClass({
   render: function() {
     return (
-      <ul>
-        <li>
-          {this.props.user.username}
-        </li>
-      </ul>
+      <div className="other-user-container">
+        <ul>
+          <li>
+            Username: {this.props.user.username}
+          </li>
+          <li>
+            Email: {this.props.user.email}
+          </li>
+          <li>
+            Interests: {this.props.user.interests.toString().split(',').join(', ')}
+          </li>
+        </ul>
+        <button>Message</button>
+      </div>
     );
   }
 })
