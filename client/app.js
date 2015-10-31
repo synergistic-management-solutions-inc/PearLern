@@ -43,6 +43,7 @@ var App = React.createClass({
     this.setState({messageTo: username})
   },
   render: function() {
+    console.log(React.Children.toArray(this.props.children));
     return (
       <div className="container">
         <Nav />

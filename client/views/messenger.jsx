@@ -9,6 +9,7 @@ var $ = require('jquery');
     [x] submit
   [] learn more about keys
   [] look into console warnings 
+  [] get it to stop pinging when the page is left
   [] figure out how to pass in otherUser state on redirect 
   [x] auto rerender page  
   [] get current user in a more formalized way
@@ -241,18 +242,19 @@ var $ = require('jquery');
   var Messenger = React.createClass({
     getInitialState: function(){
       return {
-        //other user represents the user who's conversations
+        //other user represents the user whose conversation
         //is currently being displayed
 
-        //should be able to take an initial state
-        otherUser: this.props.otherUser 
+        //this can be intially set to a particular user when 
+        //linked from the otherUsers page or it will be auto 
+        //set to the first user on the list
+        otherUser: this.props.messageTo
       }
     },
     displayConversation: function(username){
       this.setState({otherUser: username});
     },
     render: function(){
-      console.log('props', this.props)
       return (
         <div>
           <Contacts displayConversation={this.displayConversation} 
