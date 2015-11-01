@@ -14,7 +14,7 @@ exports.getUsers = function(req, res){
       //I'll send empty strings
       userData.push({
         username: user.username,
-        email: profile.email || '',
+        name: profile.name || '',
         about: profile.about || '',
         interests: profile.interests || ''
       })
@@ -45,7 +45,7 @@ exports.signUp = function(req, res) {
   userInfo.password = req.body.password;
 
   //profile fields are intially set to empty strings.
-  userInfo.profile = {email: '', about: ''}
+  userInfo.profile = {name: '', about: ''}
   var user = new User(userInfo);
   user.save(function(err){
     if (err){
@@ -80,13 +80,13 @@ exports.signIn = function(req, res) {
 }
 
 //overwrites current profile information
-//will overwrite all three fields (email, about, interests) 
+//will overwrite all three fields (name, about, interests) 
 exports.submitProfile = function(req, res){
   //grabs the username from request URL
   var username = req.path.substring(7);
 
   var profileInfo = {}; 
-  profileInfo.email = req.body.email;
+  profileInfo.name = req.body.name;
   profileInfo.about = req.body.about;
   profileInfo.interests = req.body.interests;
 
@@ -116,7 +116,6 @@ exports.sendMessage = function(req, res){
   messageInfo.from = req.body.from;
   messageInfo.text = req.body.text;
   
-  console.log('who am i trying to send this to??', messageInfo.to);
   //TODO
   //verify that the sender exists
   //and has a session to prove who they are

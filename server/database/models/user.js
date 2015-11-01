@@ -9,7 +9,7 @@ var UserSchema = new Schema({
     },
     password: String,
     profile: {
-    	email: String,
+    	name: String,
     	about: String,
     	interests: []
     }

@@ -17,7 +17,7 @@
       {'username': 'helen_of_troy', 'password': '1234'},
       {'username': 'wizard_of_sound', 'password': 'wizard!'}
     ]
-    var profile = {'email': 'email@email.com', 'about': 'I don\'t actually exist', 'interests': ['backbone']};
+    var profile = {'name': 'User McUsersen', 'about': 'I don\'t actually exist', 'interests': ['backbone']};
     var messages = [
       {'to': 'shady_joe', 'from': 'user', 'text': 'yo man, u got the goods?'},
       {'to': 'user', 'from': 'shady_joe', 'text': 'yeah, meet me down by the docks'},
@@ -47,7 +47,7 @@
         .expect(201)
         .expect(function(res){
           var newProfile = res.body
-          expect(newProfile.email).to.equal(profile.email)
+          expect(newProfile.name).to.equal(profile.name)
           expect(newProfile.about).to.equal(profile.about)
           expect(newProfile.interests[0]).to.equal(profile.interests[0])
         })
@@ -136,7 +136,7 @@
       return signUp(users[0], function(){
         return request(app)
         .post('/users/user')
-        .send({email: '', about: '', interests: ['backbone', 'MORE backbone']})
+        .send({name: '', about: '', interests: ['backbone', 'MORE backbone']})
         .expect(201)
         .expect(function(res){
           var interests = res.body.interests
@@ -150,11 +150,11 @@
     return newProfile(function(){
       return request(app)
       .post('/users/user')
-      .send({email: '', about: '', interests: []})
+      .send({name: '', about: '', interests: []})
       .expect(201)
       .expect(function(res){
         var newProfile = res.body
-        expect(newProfile.email).to.equal('')
+        expect(newProfile.name).to.equal('')
         expect(newProfile.about).to.equal('')
         expect(newProfile.interests.length).to.equal(0)
       })
@@ -165,7 +165,7 @@
     return newProfile(function(){
       return request(app)
       .post('/users/consuelo')
-      .send({email: '', about: '', interests: ''})
+      .send({name: '', about: '', interests: ''})
       .expect(404)
     })
   })
@@ -195,7 +195,7 @@
       .get('/users/user')
       .expect(200)
       .expect(function(res){
-        expect(res.body.email).to.equal('')
+        expect(res.body.name).to.equal('')
         expect(res.body.about).to.equal('')
         expect(res.body.interests.length).to.equal(0)
       })
