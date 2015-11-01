@@ -43,7 +43,7 @@ var Profile = React.createClass({
     var self = this;
     $.ajax({
       type : 'GET',
-      url : '/users/helen_of_troy',
+      url : '/users/Scott',
       success : function(res) {
         if (self.isMounted()) {
           self.setState({
@@ -88,7 +88,7 @@ var Profile = React.createClass({
     $.ajax({
       type : 'POST',
       dataType : 'json',
-      url : '/users/helen_of_troy',
+      url : '/users/Scott',
       data : data
     })
     this.setState({ modalIsOpen : false })

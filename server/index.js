@@ -58,25 +58,20 @@ passport.use('local-signup', new LocalStrategy({
     });
   }));
 
-passport.use('local-login', new LocalStrategy({
-    usernameField: "username",
-    passwordField: "password",
-    passReqToCallback: true,
-  },
-  function(req, username, password, done) {
+passport.use('local-login', new LocalStrategy({},
+  function(username, password, done) {
     process.nextTick(function() {
       User.findOne({
         'username': username
       }, function(err, user) {
-        console.log('user in strategy:', user)
         if (err) {
           return done(err);
         }
         if (!user) {
-          return done(null, false, req.flash('loginMessage', 'No User'));
+          return done(null, false);
         }
         if (!user.validPassword(password)) {
-          return done(null, false, req.flash('loginMessage', 'Bad Pass'));
+          return done(null, false);
         }
         return done(null, user);
       });
@@ -86,13 +81,15 @@ passport.use('local-login', new LocalStrategy({
 ));
 
 function isLoggedIn(req, res, next) {
+  console.log('are they authed?????', req.isAuthenticated());
   if (req.isAuthenticated()) {
     return next();
-  }
+  } else {
   // res.json(404, {user: "Not Found"})
-  res.status(404).json({
-    user: "Not Found"
-  });
+    res.status(404).json({
+      user: "Not Found"
+    });
+  }
 }
 
 
@@ -122,23 +119,19 @@ routes.post('/users/*', isLoggedIn, Helpers.submitProfile);
 routes.post('/messages', isLoggedIn, Helpers.sendMessage);
 
 
-routes.post('/signin', function(req, res, next) {
-  passport.authenticate('local-login', function(err, user, info) {
-    console.log('user to authenticate:', user)
-    if (err) {
-      return next(err)
-    }
+routes.post('/signin',
+  passport.authenticate('local-login'),
+  function(req, res, next) {
+    user = req.user;
     if (!user) {
       return res.status(404).json({
         user: "Not Found"
       });
     }
-    console.log('got user');
       return res.status(200).json({
         'user' : user,
         authenticated: true
       });
-  })(req, res, next);
 });
 
 routes.post('/signup', function(req, res, next) {
