@@ -68,6 +68,7 @@ passport.use('local-login', new LocalStrategy({
       User.findOne({
         'username': username
       }, function(err, user) {
+        console.log('user in strategy:', user)
         if (err) {
           return done(err);
         }
@@ -123,6 +124,7 @@ routes.post('/messages', isLoggedIn, Helpers.sendMessage);
 
 routes.post('/signin', function(req, res, next) {
   passport.authenticate('local-login', function(err, user, info) {
+    console.log('user to authenticate:', user)
     if (err) {
       return next(err)
     }
@@ -132,35 +134,37 @@ routes.post('/signin', function(req, res, next) {
       });
     }
     console.log('got user');
-    return res.status(200).json({
-      user: "Found"
-    });
+      return res.status(200).json({
+        'user' : user,
+        authenticated: true
+      });
   })(req, res, next);
 });
 
 routes.post('/signup', function(req, res, next) {
   passport.authenticate('local-signup', function(err, user, info) {
     if (err) {
+      res.status(404).send();
       return next(err)
-    }
-    if (!user) {
-      console.log('got user');
+    } else {
       return res.status(200).json({
-        user: "Found"
+        'user' : user,
+        authenticated: true
       });
     }
-    return res.status(404).json({
-      user: "Not Found"
-    });
+
 
   })(req, res, next);
 });
 
 
 routes.get('/logout', function(req, res) {
-  req.logout();
+  console.log('logged out', req.body)
+  req.session.destroy(function(err) {
+    console.log('ok it worked')
+  })
   //passport
-  res.redirect('/');
+  // res.redirect('/');
 });
 
 
