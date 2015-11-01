@@ -8,6 +8,92 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var mongoose = require('./database/config');
 var Helpers = require('./request_handler');
+var User = require('./database/models/user.js');
+var LocalStrategy = require('passport-local').Strategy;
+var MongoStore = require('connect-mongo')(session);
+
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+
+passport.use('local-signup', new LocalStrategy({
+    usernameField: "username",
+    passwordField: "password",
+    passReqToCallback: true
+  },
+  //process of sign up -
+  function(req, username, password, done) {
+    //node. asnychc
+    process.nextTick(function() {
+      User.findOne({
+        username: username
+      }, function(err, user) {
+        if (err) {
+          return done(err);
+        }
+        if (user) {
+          return done(null, false, req.flash('signupMessage', 'username takend'));
+        } else {
+          var newUser = new User();
+          newUser.username = username;
+          newUser.password = newUser.generateHash(password);
+
+          newUser.save(function(err) {
+            if (err) {
+              throw err;
+            } else {
+              return done(null, newUser);
+            }
+          });
+        }
+      });
+    });
+  }));
+
+passport.use('local-login', new LocalStrategy({
+    usernameField: "username",
+    passwordField: "password",
+    passReqToCallback: true,
+  },
+  function(req, username, password, done) {
+    process.nextTick(function() {
+      User.findOne({
+        'username': username
+      }, function(err, user) {
+        if (err) {
+          return done(err);
+        }
+        if (!user) {
+          return done(null, false, req.flash('loginMessage', 'No User'));
+        }
+        if (!user.validPassword(password)) {
+          return done(null, false, req.flash('loginMessage', 'Bad Pass'));
+        }
+        return done(null, user);
+      });
+    });
+  }
+
+));
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  // res.json(404, {user: "Not Found"})
+  res.status(404).json({
+    user: "Not Found"
+  });
+}
+
 
 var app = express()
 var routes = express.Router()
@@ -16,7 +102,7 @@ var routes = express.Router()
 routes.get('/app-bundle.js',
   // Tell browserify to user reactify as it's JSX compiler
   browserify('./client/app.js', {
-    transform: [ require('reactify') ]
+    transform: [require('reactify')]
   }))
 
 //redo once we have some public stuffs
@@ -26,20 +112,69 @@ routes.get('/api/tags-example', function(req, res) {
 
 //Here are all my endpoints! See the README for details
 //on what kind of data is expected/being returned
-routes.get('/users', Helpers.getUsers);
-routes.get('/users/*', Helpers.getProfile);
-routes.get('/messages/*', Helpers.getMessages);
-routes.post('/signup', Helpers.signUp);
-routes.post('/signin', Helpers.signIn);
-routes.post('/users/*', Helpers.submitProfile);
-routes.post('/messages', Helpers.sendMessage);
+routes.get('/users', isLoggedIn, Helpers.getUsers);
+routes.get('/users/*', isLoggedIn, Helpers.getProfile);
+routes.get('/messages/*', isLoggedIn, Helpers.getMessages);
+// routes.post('/signup', Helpers.signUp);
+// routes.post('/signin', Helpers.signIn);
+routes.post('/users/*', isLoggedIn, Helpers.submitProfile);
+routes.post('/messages', isLoggedIn, Helpers.sendMessage);
+
+
+routes.post('/signin', function(req, res, next) {
+  passport.authenticate('local-login', function(err, user, info) {
+    if (err) {
+      return next(err)
+    }
+    if (!user) {
+      return res.status(404).json({
+        user: "Not Found"
+      });
+    }
+    console.log('got user');
+    return res.status(200).json({
+      user: "Found"
+    });
+  })(req, res, next);
+});
+
+routes.post('/signup', function(req, res, next) {
+  passport.authenticate('local-signup', function(err, user, info) {
+    if (err) {
+      return next(err)
+    }
+    if (!user) {
+      console.log('got user');
+      return res.status(200).json({
+        user: "Found"
+      });
+    }
+    return res.status(404).json({
+      user: "Not Found"
+    });
+
+  })(req, res, next);
+});
+
+
+routes.get('/logout', function(req, res) {
+  req.logout();
+  //passport
+  res.redirect('/');
+});
+
+
+
+
 
 var assetFolder = Path.resolve(__dirname, '../client/public')
 routes.use(express.static(assetFolder))
 
 if (process.env.NODE_ENV !== 'test') {
   app.use(require('body-parser').json())
-  app.use(require('body-parser').urlencoded({ extended: true }));
+  app.use(require('body-parser').urlencoded({
+    extended: true
+  }));
 
   routes.get('/*', function(req, res) {
     res.sendFile(assetFolder + '/index.html')
@@ -55,11 +190,15 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(session({
     secret: 'Jang',
     saveUninitialized: true,
-    resave: true
+    resave: true,
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection,
+      ttl: 1 * 24 * 60 * 60
+    })
   }));
-//saveUninitialized saves session to database for persistence log in
-//if set to true - it will save
-// resave -  if nothing is changed - save it again
+  //saveUninitialized saves session to database for persistence log in
+  //if set to true - it will save
+  // resave -  if nothing is changed - save it again
 
   app.use(passport.initialize());
   app.use(passport.session());
@@ -68,7 +207,6 @@ if (process.env.NODE_ENV !== 'test') {
 
 
   app.use('/', routes)
-  require('./routes.js')(app, passport);
 
 
   // Start the server!

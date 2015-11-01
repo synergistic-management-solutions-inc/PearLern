@@ -1,9 +1,9 @@
-//this code expects Mongo to be installed 
+//this code expects Mongo to be installed
 //and a db called 'pairLearning' to exist
 
 var mongoose = require('mongoose');
 
-var mongodb;
+var mongodb
 //Once we deploy this will become relevant
 
 var config = {
@@ -15,6 +15,6 @@ mongoose.connect(config.mongoUrl);
 
 mongoose.connection.on('error', function(err){
 	console.log('Mango problem', err)
-})	
+})
 
 module.exports = mongoose;
