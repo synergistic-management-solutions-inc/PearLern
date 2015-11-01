@@ -1,6 +1,7 @@
 var React = require('react')
 var $ = require('jquery');
 const RaisedButton = require('material-ui/lib/raised-button');
+var Link = require('react-router').Link
 
 var Users = React.createClass({
   getInitialState: function() {
@@ -21,6 +22,8 @@ var Users = React.createClass({
     });
   },
   render: function() {
+    var message = this.props.message;
+
     return (
       <div className="other-users-view">
         <div className="row">
@@ -30,7 +33,9 @@ var Users = React.createClass({
           <h4 className="other-users-header">All Users</h4>
           {this.state.users.map(
             function (element) {
-              return <User key={element.username} user={element} />
+              return <User  key={element.username} 
+                            user={element} 
+                            message={message} />
             }
           )}
         </div>
@@ -41,21 +46,30 @@ var Users = React.createClass({
 
 
 var User = React.createClass({
+  openMessenger: function(){
+    var username = this.props.user.username;
+    this.props.message(username);
+  },
   render: function() {
+    var user = this.props.user;
+
     return (
       <div className="col s6">
         <ul>
           <li>
-            Username: {this.props.user.username}
+            Username: {user.username}
           </li>
           <li>
-            Email: {this.props.user.email}
+            Email: {user.email}
           </li>
           <li>
-            Interests: {this.props.user.interests.toString().split(',').join(', ')}
+            Interests: {user.interests.toString().split(',').join(', ')}
           </li>
         </ul>
-        <RaisedButton label="Message" />
+        <Link to="/messenger">
+          <RaisedButton onClick={this.openMessenger} 
+                        label="Message" />
+        </Link>
       </div>
     );
   }
