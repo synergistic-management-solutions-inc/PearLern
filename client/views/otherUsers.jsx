@@ -23,6 +23,7 @@ var Users = React.createClass({
   },
   render: function() {
     var message = this.props.message;
+    var currentUser = this.props.currentUser;
 
     return (
       <div className="other-users-view">
@@ -37,7 +38,9 @@ var Users = React.createClass({
                             user={element} 
                             message={message} />
             }
-          )}
+          ).filter(function (element) {
+            return element.username !== currentUser;
+          })}
         </div>
       </div>
     );
@@ -60,7 +63,7 @@ var User = React.createClass({
             Username: {user.username}
           </li>
           <li>
-            Email: {user.email}
+            Name: {user.name}
           </li>
           <li>
             Interests: {user.interests.toString().split(',').join(', ')}
