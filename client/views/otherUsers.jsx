@@ -31,6 +31,7 @@ var Users = React.createClass({
           <div className="col s6">
             <img className="responsive-img" src="http://www.actclassy.com/wp-content/uploads/2012/04/Computer-Programmers.jpg" />
           </div>
+          <div className="col s6">
           <h4 className="other-users-header">All Users</h4>
           {this.state.users
             .filter(function (element) {
@@ -43,6 +44,7 @@ var Users = React.createClass({
                             message={message} />
             }
           )}
+          </div>
         </div>
       </div>
     );
