@@ -32,7 +32,7 @@ var Profile = React.createClass({
   getInitialState : function() {
     return { 
       modalIsOpen : false,
-      emailValue : '',
+      nameValue : '',
       aboutValue : '',
       interestsValue : ''
     };
@@ -43,11 +43,11 @@ var Profile = React.createClass({
     var self = this;
     $.ajax({
       type : 'GET',
-      url : '/users/Scott',
+      url : '/users/',
       success : function(res) {
         if (self.isMounted()) {
           self.setState({
-            emailValue : res.email,
+            nameValue : res.name,
             aboutValue : res.about,
             interestsValue : res.interests[0]
           });
@@ -66,8 +66,8 @@ var Profile = React.createClass({
   },
 
   // Handlers for user input fields. Updates state (value of input)
-  updateEmail : function(event) {
-    this.setState({ emailValue : event.target.value });
+  updateName : function(event) {
+    this.setState({ nameValue : event.target.value });
   },
 
   updateAbout : function(event) {
@@ -80,7 +80,7 @@ var Profile = React.createClass({
 
   saveData : function() {
     var data = {
-      email : this.state.emailValue,
+      name : this.state.nameValue,
       about : this.state.aboutValue,
       interests : this.state.interestsValue
     }
@@ -88,7 +88,7 @@ var Profile = React.createClass({
     $.ajax({
       type : 'POST',
       dataType : 'json',
-      url : '/users/Scott',
+      url : '/users/' + this.state.nameValue,
       data : data
     })
     this.setState({ modalIsOpen : false })
@@ -98,13 +98,13 @@ var Profile = React.createClass({
 
   // Render all the things!
   render : function () {
-    var email = this.state.emailValue;
+    var name = this.state.nameValue;
     var about = this.state.aboutValue;
     var interests = this.state.interestsValue;
     return (<div>
               <div className="container">
-                <div className="email-label">Email</div>
-                <div className="email">{email}</div>
+                <div className="name-label">Name</div>
+                <div className="name">{name}</div>
                 <div className="about-label">About</div>
                 <div className="about">{about}</div>
                 <div className="interests-label">Interests</div>
@@ -115,8 +115,8 @@ var Profile = React.createClass({
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
                 style={customStyles}>
-                <div className="edit-email">Email
-                  <input type="text" value={email} onChange={this.updateEmail} />
+                <div className="edit-name">Name
+                  <input type="text" value={name} onChange={this.updateName} />
                 </div>
                 <div className="edit-about">About
                   <input type="text" value={about} onChange={this.updateAbout} />
