@@ -10,41 +10,12 @@ var $ = require('jquery');
   [] learn more about keys
   [] look into console warnings 
   [] get it to stop pinging when the page is left
-  [] figure out how to pass in otherUser state on redirect 
+  [x] figure out how to pass in otherUser state on redirect 
   [x] auto rerender page  
-  [] get current user in a more formalized way
+  [x] get current user in a more formalized way
   [] prevent page from breaking if no other users exist
   [] clean up/comment code 
 */
-
-  //this should be a variable stored as a prop in our highest 
-  //component and passed down
-  var currentUser = 'user'
-
-//sample data
-  var conversations = [
-    {'username': 'shady_pete',
-    'messages': [
-      {
-        'to': 'shady_pete',
-        'from': 'user',
-        'text': 'You got the goods?'
-      }
-    ]},
-    {'username': 'helen_of_troy',
-    'messages': [
-      {
-        'to': 'user',
-        'from': 'helen_of_troy',
-        'text': 'Wassup?'
-      },
-      {
-        'to': 'helen_of_troy',
-        'from': 'user',
-        'text': 'Not much.'
-      }
-    ]}
-  ]
 
   //an individual contact component
   var Contact = React.createClass({
@@ -70,6 +41,7 @@ var $ = require('jquery');
     },
     componentDidMount: function(){
       var component = this;
+      var currentUser = this.props.currentUser;
 
       $.ajax({
         type: 'GET',
@@ -134,6 +106,7 @@ var $ = require('jquery');
   var NewMessage = React.createClass({
     sendMessage: function(text){
       var update = this.props.update;
+      var currentUser = this.props.currentUser;
       var message = {
         'to': this.props.otherUser,
         'from': currentUser,
@@ -163,6 +136,7 @@ var $ = require('jquery');
   //the component for the entire conversation with one other user
   var Conversation = React.createClass({
     render: function(){
+      var currentUser = this.props.currentUser;
       var conversation = this.props.conversation.messages.map(function(message){
         //checks if the message in incoming or outgoing
         //for styling purposes
@@ -173,14 +147,15 @@ var $ = require('jquery');
           var className = 'outgoing';
         } 
 
-        return <div className={className}><Message key={message.text} message={message} /></div>
+        return <div className={className}><Message key={message.text} message={message} currentUser={currentUser}/></div>
       })
 
       return (
         <div>
           <OtherUser otherUser={this.props.conversation.username}/>
           {conversation}
-          <NewMessage otherUser={this.props.conversation.username}
+          <NewMessage currentUser={currentUser}
+                      otherUser={this.props.conversation.username}
                       update={this.props.update}/> 
         </div>
         ) 
@@ -190,12 +165,7 @@ var $ = require('jquery');
   //the component for every conversation
   var Conversations = React.createClass({
     getInitialState: function(){
-      //hard coded version for testing:
-      //return {conversations: conversations}
-
-      //real version
       return {conversations: []}
-
     },
     componentDidMount: function(){
       var update = this.update;
@@ -207,6 +177,7 @@ var $ = require('jquery');
     },
     update: function(){
       var component = this;
+      var currentUser = this.props.currentUser;
 
       $.ajax({
         type: 'GET',
@@ -219,6 +190,7 @@ var $ = require('jquery');
     },
     render: function(){
       var otherUser = this.props.otherUser;
+      var currentUser = this.props.currentUser;
       var conversation = {username: otherUser, messages: []}
 
       //grabs any messages from the state
@@ -232,7 +204,8 @@ var $ = require('jquery');
         <div>
           <Conversation key={conversation.messages} 
                         conversation={conversation}
-                        update={this.update} />
+                        update={this.update} 
+                        currentUser={currentUser}/>
         </div>
       )
     }
@@ -258,8 +231,10 @@ var $ = require('jquery');
       return (
         <div>
           <Contacts displayConversation={this.displayConversation} 
-                    otherUser={this.state.otherUser} />
-          <Conversations otherUser={this.state.otherUser} />
+                    otherUser={this.state.otherUser} 
+                    currentUser={this.props.currentUser}/>
+          <Conversations otherUser={this.state.otherUser} 
+                          currentUser={this.props.currentUser}/>
         </div>
       )
     }
