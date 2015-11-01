@@ -21,23 +21,30 @@ var SignUp = React.createClass({
     }
   },
   addUser: function () {
+    var storeUser = this.props.storeUser;
+    var username = this.state.username;
+    var password = this.state.password;
+    var history = this.props.history;
+
     //Composes new user instance from current username/password state & posts to server
     var newUser = {
       username: this.state.username,
       password: this.state.password
-    } 
-    console.log("newUser:", newUser);
+    }
+     
     $.ajax({
       type: 'POST',
       url: '/signup',
-      data: newUser,
-      success : function(res) {
-        console.log('response', res)
-      },
-      error : function(err) {
-        console.log(err);
-      }
-    })
+      data: newUser
+    }).then(function (res){
+       //TODO: check that the user is validated
+      
+      //sets the app state currentUser
+      storeUser(username);
+      
+      //redirects to profile page 
+      history.pushState(null, '/profile');
+    });
   },
   updateUsername: function (event) {
     this.setState({
