@@ -24,11 +24,9 @@ passport.deserializeUser(function(id, done) {
 });
 
 
-passport.use('local-signup', new LocalStrategy({
-    passReqToCallback: true
-  },
+passport.use('local-signup', new LocalStrategy({},
   //process of sign up -
-  function(req, username, password, done) {
+  function(username, password, done) {
     //node. asnychc
     process.nextTick(function() {
       User.findOne({
@@ -150,9 +148,8 @@ routes.post('/signup', function(req, res, next) {
 
 
 routes.get('/logout', function(req, res) {
-  console.log('logged out', req.body)
   req.session.destroy(function(err) {
-    console.log('ok it worked')
+    res.status(200).send('destroyed');
   })
   //passport
   // res.redirect('/');

@@ -32,11 +32,13 @@ var SignIn = React.createClass({
     $.ajax({
       type: 'POST',
       url: '/signin',
-      data: User
+      data: User,
+      error : function(err) {
+        console.log('this is the err', err)
+      }
     })
     .then(function (res){
       //TODO: check that the user is validated
-      
       //sets the app state currentUser
       storeUser(username);
       
