@@ -38,8 +38,12 @@ var SignUp = React.createClass({
     })
     .then(function (res){
        //TODO: check that the user is validated
+      
+      //sets the app state currentUser
       storeUser(username);
-      //TODO: some sort of redirect? 
+      
+      //redirects to profile page 
+      history.pushState(null, '/profile');
     });
   },
   updateUsername: function (event) {

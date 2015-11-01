@@ -21,7 +21,7 @@ There's some unforunate hacky stuff going on here.
 
 Specifically: 
   - 'state.messageTo' should only be passed to the Messenger component   
-  - 'storeUser' should only be passed to the SignUp and SignIn components
+  - 'storeUser' and 'history' should only be passed to the SignUp and SignIn components
   - 'message' should only be passed to the AllUsers component
 
 Doing that seems like it should be quite straight forward. Ran out of time 
@@ -37,15 +37,12 @@ var App = React.createClass({
     }
   },
   storeUser: function(username){ 
-    console.log('storing', username);
     this.setState({currentUser: username})
   },
   message: function(username){
     this.setState({messageTo: username})
   },
   render: function() {
-    console.log('rendering');
-    //console.log(React.Children.toArray(this.props.children));
     return (
       <div className="container">
         <Nav currentUser={this.state.currentUser}
@@ -54,7 +51,8 @@ var App = React.createClass({
             currentUser: this.state.currentUser,
             messageTo: this.state.messageTo,
             storeUser: this.storeUser,
-            message: this.message
+            message: this.message,
+            history: this.props.history
           })}
         <Footer />
       </div>

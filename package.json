@@ -17,9 +17,9 @@
     "cookie-parser": "latest",
     "express": "^4.12.4",
     "express-session": "latest",
-    "history": "^1.12.5",
+    "history": "^1.13.0",
     "jquery": "^2.1.4",
-    "material-ui": "^0.13.0",
+    "material-ui": "~0.13.0",
     "materialize-css": "^0.97.1",
     "mongoose": "^4.2.2",
     "morgan": "^1.6.1",
@@ -36,8 +36,7 @@
     "react-router": "^1.0.0-rc3",
     "react-tap-event-plugin": "^0.2.1",
     "reactify": "^1.1.1",
-    "underscore": "^1.8.3",
-    "material-ui": "~0.13.0"
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "chai": "^3.4.0",

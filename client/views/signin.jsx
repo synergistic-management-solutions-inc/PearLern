@@ -2,7 +2,6 @@ var React = require('react')
 var ReactDOM = require('react-dom')
 var $ = require('jquery')
 var Link = require('react-router').Link
-
 var SignInHead = require('./landinghead2.jsx')
 const RaisedButton = require('material-ui/lib/raised-button');
 
@@ -22,6 +21,7 @@ var SignIn = React.createClass({
     var storeUser = this.props.storeUser;
     var username = this.state.username;
     var password = this.state.password;
+    var history = this.props.history;
 
     //Composes new user instance from current username/password state & posts to server
     var User = {
@@ -36,8 +36,12 @@ var SignIn = React.createClass({
     })
     .then(function (res){
       //TODO: check that the user is validated
+      
+      //sets the app state currentUser
       storeUser(username);
-      //TODO: some sort of redirect?
+      
+      //redirects to profile page 
+      history.pushState(null, '/profile');
 
       //this will work but is a bit uncouth
       //also, need sessions  

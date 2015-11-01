@@ -17,32 +17,6 @@ var $ = require('jquery');
   [] clean up/comment code 
 */
 
-
-//sample data
-  var conversations = [
-    {'username': 'shady_pete',
-    'messages': [
-      {
-        'to': 'shady_pete',
-        'from': 'user',
-        'text': 'You got the goods?'
-      }
-    ]},
-    {'username': 'helen_of_troy',
-    'messages': [
-      {
-        'to': 'user',
-        'from': 'helen_of_troy',
-        'text': 'Wassup?'
-      },
-      {
-        'to': 'helen_of_troy',
-        'from': 'user',
-        'text': 'Not much.'
-      }
-    ]}
-  ]
-
   //an individual contact component
   var Contact = React.createClass({
     selectUser: function(){
@@ -191,12 +165,7 @@ var $ = require('jquery');
   //the component for every conversation
   var Conversations = React.createClass({
     getInitialState: function(){
-      //hard coded version for testing:
-      //return {conversations: conversations}
-
-      //real version
       return {conversations: []}
-
     },
     componentDidMount: function(){
       var update = this.update;
