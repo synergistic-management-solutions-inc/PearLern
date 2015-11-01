@@ -30,13 +30,14 @@ var SignUp = React.createClass({
     $.ajax({
       type: 'POST',
       url: '/signup',
-      data: newUser
+      data: newUser,
+      success : function(res) {
+        console.log('response', res)
+      },
+      error : function(err) {
+        console.log(err);
+      }
     })
-    .then(function (err,res){
-      if (err) {
-        console.log(err)
-      } //send 20? on success?
-    });
   },
   updateUsername: function (event) {
     this.setState({
