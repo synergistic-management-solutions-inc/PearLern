@@ -9,8 +9,13 @@ var Nav = React.createClass({
       test: 'test value'
     }
   },
+  logout: function(){
+    console.log('logging!');
+  },
   render: function (){
     var currentUser = this.props.currentUser;
+    var logout = this.logout;
+
     var links = function(){
       if (currentUser){
         return (
@@ -18,7 +23,7 @@ var Nav = React.createClass({
             <li><Link to="/profile">My Profile</Link></li>
             <li><Link to="/all">All Users</Link></li>
             <li><Link to="/messenger">Messenger</Link></li>
-            <li>Sign Out</li> 
+            <li onClick={logout}><Link to="/signin">Sign Out</Link></li> 
           </ul>
         )
       } else {

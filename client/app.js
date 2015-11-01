@@ -47,7 +47,8 @@ var App = React.createClass({
     //console.log(React.Children.toArray(this.props.children));
     return (
       <div className="container">
-        <Nav currentUser={this.state.currentUser}/>
+        <Nav currentUser={this.state.currentUser}
+            storeUser={this.state.storeUser}/>
         {React.cloneElement(this.props.children, {
             currentUser: this.state.currentUser,
             messageTo: this.state.messageTo,
