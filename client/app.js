@@ -37,6 +37,7 @@ var App = React.createClass({
     }
   },
   storeUser: function(username){ 
+    console.log('storing', username);
     this.setState({currentUser: username})
   },
   message: function(username){

@@ -28,6 +28,7 @@ var SignIn = React.createClass({
       username: username,
       password: password
     } 
+
     $.ajax({
       type: 'POST',
       url: '/signin',
@@ -36,7 +37,11 @@ var SignIn = React.createClass({
     .then(function (res){
       //TODO: check that the user is validated
       storeUser(username);
-      //TODO: some sort of redirect? 
+      //TODO: some sort of redirect?
+
+      //this will work but is a bit uncouth
+      //also, need sessions  
+      // window.location.assign("/");
     });
   },
   updateUsername: function (event) {
