@@ -17,7 +17,8 @@ var Nav = React.createClass({
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li><Link to="/profile">My Profile</Link></li>
             <li><Link to="/all">All Users</Link></li>
-            <li><Link to="/messenger">Messenger</Link></li> 
+            <li><Link to="/messenger">Messenger</Link></li>
+            <li>Sign Out</li> 
           </ul>
         )
       } else {

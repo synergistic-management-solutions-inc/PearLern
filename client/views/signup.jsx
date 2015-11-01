@@ -21,6 +21,10 @@ var SignUp = React.createClass({
     }
   },
   addUser: function () {
+    var storeUser = this.props.storeUser;
+    var username = this.state.username;
+    var password = this.state.password;
+
     //Composes new user instance from current username/password state & posts to server
     var newUser = {
       username: this.state.username,
@@ -32,10 +36,10 @@ var SignUp = React.createClass({
       url: '/signup',
       data: newUser
     })
-    .then(function (err,res){
-      if (err) {
-        console.log(err)
-      } //send 20? on success?
+    .then(function (res){
+       //TODO: check that the user is validated
+      storeUser(username);
+      //TODO: some sort of redirect? 
     });
   },
   updateUsername: function (event) {

@@ -19,20 +19,24 @@ var SignIn = React.createClass({
     }
   },
   validateUser: function () {
+    var storeUser = this.props.storeUser;
+    var username = this.state.username;
+    var password = this.state.password;
+
     //Composes new user instance from current username/password state & posts to server
     var User = {
-      username: this.state.username,
-      password: this.state.password
+      username: username,
+      password: password
     } 
     $.ajax({
       type: 'POST',
       url: '/signin',
       data: User
     })
-    .then(function (err,res){
-      if (err) {
-        console.log(err)
-      } //send 20? on success?
+    .then(function (res){
+      //TODO: check that the user is validated
+      storeUser(username);
+      //TODO: some sort of redirect? 
     });
   },
   updateUsername: function (event) {
