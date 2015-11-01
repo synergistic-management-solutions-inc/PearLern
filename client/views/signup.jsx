@@ -24,6 +24,7 @@ var SignUp = React.createClass({
     var storeUser = this.props.storeUser;
     var username = this.state.username;
     var password = this.state.password;
+    var history = this.props.history;
 
     //Composes new user instance from current username/password state & posts to server
     var newUser = {
