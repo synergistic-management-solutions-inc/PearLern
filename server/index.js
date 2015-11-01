@@ -16,11 +16,13 @@ var MongoStore = require('connect-mongo')(session);
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
+
 passport.deserializeUser(function(id, done) {
   User.findById(id, function(err, user) {
     done(err, user);
   });
 });
+
 
 passport.use('local-signup', new LocalStrategy({
     usernameField: "username",
@@ -82,6 +84,17 @@ passport.use('local-login', new LocalStrategy({
 
 ));
 
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  // res.json(404, {user: "Not Found"})
+  res.status(404).json({
+    user: "Not Found"
+  });
+}
+
+
 var app = express()
 var routes = express.Router()
 
@@ -99,26 +112,49 @@ routes.get('/api/tags-example', function(req, res) {
 
 //Here are all my endpoints! See the README for details
 //on what kind of data is expected/being returned
-routes.get('/users', Helpers.getUsers);
-routes.get('/users/*', Helpers.getProfile);
-routes.get('/messages/*', Helpers.getMessages);
+routes.get('/users', isLoggedIn, Helpers.getUsers);
+routes.get('/users/*', isLoggedIn, Helpers.getProfile);
+routes.get('/messages/*', isLoggedIn, Helpers.getMessages);
 // routes.post('/signup', Helpers.signUp);
 // routes.post('/signin', Helpers.signIn);
-routes.post('/users/*', Helpers.submitProfile);
-routes.post('/messages', Helpers.sendMessage);
+routes.post('/users/*', isLoggedIn, Helpers.submitProfile);
+routes.post('/messages', isLoggedIn, Helpers.sendMessage);
 
 
-routes.post('signin', passport.authenticate('local-login', {
-  successRedirect: '/profile',
-  failureRedirect: '/signUp',
-  failureFlash: true
-}));
+routes.post('/signin', function(req, res, next) {
+  passport.authenticate('local-login', function(err, user, info) {
+    if (err) {
+      return next(err)
+    }
+    if (!user) {
+      return res.status(404).json({
+        user: "Not Found"
+      });
+    }
+    console.log('got user');
+    return res.status(200).json({
+      user: "Found"
+    });
+  })(req, res, next);
+});
 
-routes.post('/signup', passport.authenticate('local-signup', {
-  successRedirect: '/', //redirect home page
-  failureRedirect: '/signUp',
-  failureFlash: true
-}));
+routes.post('/signup', function(req, res, next) {
+  passport.authenticate('local-signup', function(err, user, info) {
+    if (err) {
+      return next(err)
+    }
+    if (!user) {
+      console.log('got user');
+      return res.status(200).json({
+        user: "Found"
+      });
+    }
+    return res.status(404).json({
+      user: "Not Found"
+    });
+
+  })(req, res, next);
+});
 
 
 routes.get('/logout', function(req, res) {
@@ -171,7 +207,6 @@ if (process.env.NODE_ENV !== 'test') {
 
 
   app.use('/', routes)
-  require('./routes.js')(app, passport);
 
 
   // Start the server!
