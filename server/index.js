@@ -25,8 +25,6 @@ passport.deserializeUser(function(id, done) {
 
 
 passport.use('local-signup', new LocalStrategy({
-    usernameField: "username",
-    passwordField: "password",
     passReqToCallback: true
   },
   //process of sign up -

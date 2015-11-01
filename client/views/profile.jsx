@@ -43,8 +43,9 @@ var Profile = React.createClass({
     var self = this;
     $.ajax({
       type : 'GET',
-      url : '/users/',
+      url : '/users/Scott',
       success : function(res) {
+        console.log('get users', res)
         if (self.isMounted()) {
           self.setState({
             nameValue : res.name,
