@@ -12,6 +12,10 @@ html, body {
   margin: 0 auto -75px; /* the bottom margin is the negative value of the footer's height */
 }
 
+nav {
+  margin-bottom: 20px;
+}
+
 .pear-logo {
   height: 60px;
 
