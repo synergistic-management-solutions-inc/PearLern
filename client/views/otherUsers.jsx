@@ -86,17 +86,24 @@ var Users = React.createClass({
       <div>
         {this.state.users
           .filter(function (element) {
-            return element.username !== currentUser;
-          })
-          .filter(function (element) {
-            if (element.interests.length === 0){
+            //filters out current user 
+            //and users who haven't entered interests
+            if (element.username == currentUser){
+              return false;
+            }
+            else if (element.interests.length === 0){
               return false;
             }
             else if (!query){
               return true;
             }
 
-            return element.interests[0].toLowerCase().indexOf(query.toLowerCase()) !== -1;
+            //filters based on search query 
+            return element.interests.some(function(interest){
+              interest = interest.toLowerCase();
+              query = query.toLowerCase();
+              return interest.indexOf(query) !== -1;
+            })
           })
           .map(function (element) {
             return <User  key={element.username} 
@@ -130,7 +137,7 @@ var User = React.createClass({
             About: {user.about}
           </li>
           <li>
-            Interests: {user.interests.toString().split(',').join(', ')}
+            Interests: {user.interests.join(', ')}
           </li>
         </ul>
         <Link to="/messenger">

@@ -50,10 +50,11 @@ var Profile = React.createClass({
       url : '/users/' + currentUser,
       success : function(res) {
         if (self.isMounted()) {
+
           self.setState({
             nameValue : res.name,
             aboutValue : res.about,
-            interestsValue : res.interests[0]
+            interestsValue : res.interests.join(',')
           });
         }
       }
@@ -84,11 +85,13 @@ var Profile = React.createClass({
 
   saveData : function() {
     var currentUser = this.props.currentUser
+    var interests = this.state.interestsValue.split(',')
+    console.log('interest', interests); 
 
     var data = {
       name : this.state.nameValue,
       about : this.state.aboutValue,
-      interests : this.state.interestsValue
+      interests : interests
     }
 
     $.ajax({
