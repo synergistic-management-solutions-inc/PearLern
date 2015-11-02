@@ -9,7 +9,6 @@ var UserView = React.createClass({
   },
   search: function(query) {
     this.setState({query: query});
-    console.log(query)
   },
   render: function() {
     return (
@@ -81,19 +80,23 @@ var Users = React.createClass({
       <div>
         {this.state.users
           .filter(function (element) {
-            return element.username !== currentUser;
-          })
-          .filter(function (element) {
-            console.log('queryblargl', query);
-            console.log('interests', element.interests)
-            if (element.interests.length === 0){
+            //filters out current user 
+            //and users who haven't entered interests
+
+            if (element.username == currentUser){
+              return false
+            }
+            else if (element.interests.length === 0){
               return false;
             }
             else if (!query){
               return true;
             }
 
-            return element.interests[0].indexOf(query) !== -1;
+            //filters based on search query 
+            return element.interests.some(function(interest){
+              return interest.indexOf(query) !== -1;
+            })
           })
           .map(function (element) {
             return <User  key={element.username} 
@@ -126,7 +129,7 @@ var User = React.createClass({
             About: {user.about}
           </li>
           <li>
-            Interests: {user.interests.toString().split(',').join(', ')}
+            Interests: {user.interests.join(', ')}
           </li>
         </ul>
         <Link to="/messenger">
