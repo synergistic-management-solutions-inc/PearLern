@@ -7,7 +7,7 @@ var mongodb
 //Once we deploy this will become relevant
 
 var config = {
-  mongoUrl: mongodb || 'mongodb://localhost/pairLearning'
+  mongoUrl: process.env.MONGOLAB_URI || 'mongodb://localhost/pairLearning'
   //this url may or may not be incorrect
 };
 
