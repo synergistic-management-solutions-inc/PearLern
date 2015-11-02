@@ -1,29 +1,24 @@
-# Project Name #
-	Learn Together!
- 
-## Heading ##
-  Connect with others who share your learning goals.
-
-## Sub-Heading ##
+  PearLern:
+  Connect with others who share your programming goals.
   
 
-## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  PearLern connects you with users from around the globe who share your programming interests.
 
-## Problem ##
-  > Describe the problem your product solves.
 
-## Solution ##
-  > Describe how your product elegantly solves the problem.
+  Would you like to meet a study partner? Have a great idea for a project, but need a hand? 
+  PearLern is here to save the day.
+  
 
-## Quote from You ##
-  > A quote from a spokesperson in your company.
+  "We created PearLern to save our users time. No one should have to do months of networking
+  to find a programming partner. Now, you don't have to."
+      -- Bob Rogers, CEO and founder of Synergistic Management Solutions World Enterprises
 
-## How to Get Started ##
-  > Describe how easy it is to get started.
 
-## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  PearLern makes finding a programming partner easy. Just fill out our patented PearLern profile and you'll
+  be able to connect with millions of users just like you. 
 
-## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+
+  "It's so fast and easy! I found a study partner in seconds with PearLearn!" 
+      --Pam from Washington
+
+  Programming is more fun with two. So head over to PearLearn and start programming together, today!
