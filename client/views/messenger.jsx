@@ -1,5 +1,6 @@
 var React = require('react')
 var $ = require('jquery');
+const RaisedButton = require('material-ui/lib/raised-button');
 
   //an individual contact component
   var Contact = React.createClass({
@@ -111,7 +112,7 @@ var $ = require('jquery');
       return (
         <div>
           <input ref='message' type='text'></input>
-          <button onClick={this.sendMessage}>Send</button>
+          <RaisedButton label="Send" className="send-button" onClick={this.sendMessage}/>        
         </div>
       )
     }
