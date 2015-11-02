@@ -11,14 +11,19 @@ var Nav = React.createClass({
   },
   logout: function(){
     var storeUser = this.props.storeUser;
+    console.log('props', this.props);
+    //hardcoded
+    storeUser('');
     
+    /*real code 
     $.ajax({
       type: 'GET',
-      url: '/logout'
+      url: '/signout'
     })
     .then(function (res){
       storeUser(''); 
     });
+    */
   },
   render: function (){
     var currentUser = this.props.currentUser;
