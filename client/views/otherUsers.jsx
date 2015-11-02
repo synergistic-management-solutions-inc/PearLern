@@ -60,10 +60,8 @@ var User = React.createClass({
 
     return (
       <div className="col s6">
+      <h5>{user.username}</h5>
         <ul>
-          <li>
-            Username: {user.username}
-          </li>
           <li>
             Name: {user.name}
           </li>
