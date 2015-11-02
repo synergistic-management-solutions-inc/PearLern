@@ -2,6 +2,9 @@
   "name": "node-catapult",
   "version": "1.0.0",
   "description": "A rapid project starter for node and browserify.",
+  "engines": {
+    "node": "4.0.0"
+  },
   "main": "server/index.js",
   "scripts": {
     "start": "nodemon server/ --ignore client/",
