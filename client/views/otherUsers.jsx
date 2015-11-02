@@ -11,9 +11,11 @@ var UserView = React.createClass({
   getInitialState: function() {
     return {query: null};
   },
+
   search: function(query) {
     this.setState({query: query});
   },
+
   componentWillMount: function(){
     //this is a pretty hacky fix to the fact
     //that we don't know how sessions work 
@@ -22,8 +24,10 @@ var UserView = React.createClass({
       this.props.history.pushState(null, '/signin'); 
     }
   },
+  
+  // We would love to see the images be in the assets folder instead of linked from a url
+  // but we ran into difficulty doing so.
   render: function() {
-
     return (
       <div>
         <div className="row">
@@ -49,12 +53,14 @@ var UserView = React.createClass({
 });
 
 
+
 // Seach bar component
 var UserFilter = React.createClass({
   handleInput: function(e) {
     this.props.search(e.target.value);
 
   },
+
   render: function() {
     return (
       <form>
@@ -65,11 +71,14 @@ var UserFilter = React.createClass({
   }
 });
 
+
+
 // Users component queries database for users
 var Users = React.createClass({
   getInitialState: function() {
     return {users: []};
   },
+
   componentDidMount: function () {
     var self = this;
 
@@ -86,6 +95,7 @@ var Users = React.createClass({
       }
     });
   },
+
   render: function() {
     var currentUser = this.props.currentUser;
     var message = this.props.message;
@@ -95,20 +105,23 @@ var Users = React.createClass({
       <div>
         {this.state.users
           .filter(function (element) {
-            //filters out current user 
-            //and users who haven't entered interests
+            // filters out current user 
             if (element.username == currentUser){
               return false;
             }
+            // filters out users who haven't entered interests
             else if (element.interests.length === 0){
               return false;
             }
+            // if there is no search query, return all users
             else if (!query){
               return true;
             }
 
-            //filters based on search query 
-            return element.interests.some(function(interest){
+            // filters to show only users whose 
+            // interests contain the search query
+            return element.interests
+            .some(function(interest){
               interest = interest.toLowerCase();
               query = query.toLowerCase();
               return interest.indexOf(query) !== -1;
@@ -125,8 +138,9 @@ var Users = React.createClass({
   }
 })
 
-// User component. Interests is an array, 
-// but all of the interests are currently a string in index 0
+
+
+// User component
 var User = React.createClass({
   openMessenger: function(){
     var username = this.props.user.username;
