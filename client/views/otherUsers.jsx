@@ -14,7 +14,16 @@ var UserView = React.createClass({
   search: function(query) {
     this.setState({query: query});
   },
+  componentWillMount: function(){
+    //this is a pretty hacky fix to the fact
+    //that we don't know how sessions work 
+    //in passport
+    if (!this.props.currentUser){ 
+      this.props.history.pushState(null, '/signin'); 
+    }
+  },
   render: function() {
+
     return (
       <div>
         <div className="row">
