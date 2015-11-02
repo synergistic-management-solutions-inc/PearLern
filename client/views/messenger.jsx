@@ -35,8 +35,8 @@ const RaisedButton = require('material-ui/lib/raised-button');
       .then(function(res){
         var state = {contacts: []}
         res.users.forEach(function(user){
-          if (user.username !== currentUser){            
-            state.contacts.push(user.username); 
+          if (user.username !== currentUser){
+            state.contacts.push(user.username);
           }
         })
         
@@ -55,14 +55,16 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
       var userSelected = this.userSelected;
       var contacts = this.state.contacts.map(function(contact){
-        return <Contact userSelected={userSelected} key={contact} contact={contact} />
+        return <div className="z-depth-1"><Contact userSelected={userSelected} key={contact} contact={contact} /></div>
       })
 
       return (
-        <div>
-          <h4>Contacts</h4>
-          <div>
-            {contacts}
+        <div className="col s2">
+          <div className="contacts" >
+            <h4>Contacts</h4>
+            <div>
+              {contacts}
+            </div>
           </div>
         </div>
       )
@@ -122,14 +124,17 @@ const RaisedButton = require('material-ui/lib/raised-button');
   var Conversation = React.createClass({
     render: function(){
       var currentUser = this.props.currentUser;
+      var otherUser = this.props.otherUser;
       var conversation = this.props.conversation.messages.map(function(message){
         //checks if the message in incoming or outgoing
         //for styling purposes
         if (message.to === currentUser){
           var className = 'incoming';
+          var user = otherUser;
         }
         else {
           var className = 'outgoing';
+          var user = currentUser;
         } 
 
         return <div className={className}><Message key={message.text} message={message} currentUser={currentUser}/></div>
@@ -137,6 +142,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
       return (
         <div>
+          <div className="convoWith">Your conversation with:</div>
           <OtherUser otherUser={this.props.conversation.username}/>
           {conversation}
           <NewMessage currentUser={currentUser}
@@ -189,7 +195,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
       })
 
       return (
-        <div>
+        <div className="col s4 offset-s3">
           <Conversation key={conversation.messages} 
                         conversation={conversation}
                         update={this.update} 
@@ -217,7 +223,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
     },
     render: function(){
       return (
-        <div>
+        <div className="row">
           <Contacts displayConversation={this.displayConversation} 
                     otherUser={this.state.otherUser} 
                     currentUser={this.props.currentUser}/>
