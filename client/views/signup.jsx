@@ -3,21 +3,21 @@ var ReactDOM = require('react-dom')
 var $ = require('jquery')
 var Link = require('react-router').Link
 
-// var LandingHead = require('./landinghead.jsx')
 const RaisedButton = require('material-ui/lib/raised-button');
 
 //TODOs: 
 //Add form validation
-//Add novaldiate to forms to override default HTML 5 validation?
 //Server response codes
+//Warning when passwords do not match
 
+//Sign-up component takes in user input on sign-up & posts to server
+//Page view comprises left-aligned image & right-aligned input box.
 var SignUp = React.createClass({
   getInitialState: function (){
     return {
       username: '',
       password: '',
-      validate: '',
-      matchFail: false
+      validate: ''
     }
   },
   addUser: function () {
@@ -56,12 +56,6 @@ var SignUp = React.createClass({
       password: event.target.value.substr(0, 30)
     });
   },
-  validatePassword: function (event) {
-    this.setState({
-      validate: event.target.value.substr(0, 30)
-    });
-    this.state.valdiate !== this.state.password ? this.setState({matchFail: true}) : this.setState({matchFail: false}) 
-  },
   render: function () {
     return (
       <div className="sign-up-view">
@@ -74,7 +68,6 @@ var SignUp = React.createClass({
             <input type="text" className="username-input" placeholder="Choose a Username" onChange={this.updateUsername}/> <br />
             <input type="password" className="password-input" placeholder="Choose a Password"  onChange={this.updatePassword}/>
             <input type="password" className="password-validate" placeholder="Re-enter Password"  onChange={this.validatePassword}/>
-            {this.state.matchFail ? <p className="validate-text">Passwords do not match!</p> : <br />}
             <RaisedButton label="Register" className="submit-button" onClick={this.addUser}/> 
             <p className="signup-footer">Already registered? <Link to='/signin'>Sign in!</Link></p>
           </div>
