@@ -34,7 +34,7 @@
       return request(app)
         .post('/signup')
         .send(user)
-        .expect(201)
+        .expect(200)
         .then(cb)
     }
 
