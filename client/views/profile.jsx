@@ -3,6 +3,8 @@ var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var Modal = require('react-modal');
 
+const RaisedButton = require('material-ui/lib/raised-button');
+
 // Modal options see: https://www.npmjs.com/package/react-modal
 var customStyles = {
 
@@ -104,13 +106,25 @@ var Profile = React.createClass({
     var interests = this.state.interestsValue;
     return (<div>
               <div className="container">
-                <div className="name-label">Name</div>
-                <div className="name">{name}</div>
-                <div className="about-label">About</div>
-                <div className="about">{about}</div>
-                <div className="interests-label">Interests</div>
-                <div className="interests">{interests}</div>
-                <button className="edit-profile" onClick={this.openModal}>Edit Profile</button>
+                <div className="row">
+                  <div className="col s12 m6">
+                    <div className="card light-blue">
+                      <div className="card-content white-text">
+                        <span className="card-title">My Profile</span>
+                        <div className="card-action">
+                          <div className="black-text">Email:</div>
+                          <div className="email">{email}</div>
+                          <div className="black-text">About:</div>
+                          <div className="about">{about}</div>
+                          <div className="black-text">Interests:</div>
+                          <div className="interests">{interests}</div>
+                          <div className="push"></div>
+                          <RaisedButton label="Edit Profile" className="edit-profile" onClick={this.openModal}/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <Modal
                 isOpen={this.state.modalIsOpen}

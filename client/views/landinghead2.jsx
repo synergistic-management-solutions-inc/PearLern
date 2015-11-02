@@ -12,7 +12,7 @@ var SignInHead = React.createClass({
       <div>
         <div className="row">
             <div className="col s12 s6">
-              <h3>Sign in & Get Learning</h3>
+              <h3>Pair Up & Get Learning</h3>
             </div>
         </div>
           <div className="col s12">
