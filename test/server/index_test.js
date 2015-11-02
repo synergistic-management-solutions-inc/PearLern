@@ -1,3 +1,7 @@
+  /*!!!!!!!
+    Once upon a time, not so long ago, these tests worked beautifully. Then passport happened. 
+  */
+
   var request = require('supertest-as-promised');
   var routes = require(__server + '/index');
   var User = require(__server + '/database/models/user');
@@ -85,17 +89,16 @@
     })
 
 
-    it("creates new accepts sign up and sign in requests", function(){
+    it("accepts sign up and sign in requests", function(){
       return request(app)
         .post('/signup')
         .send(users[0])
-        .expect(201)
+        .expect(200)
         .expect(function(res){
-          var newUser = res.body
-
+          var newUser = res.body.user
           expect(newUser._id).to.not.be.undefined
           expect(newUser.username).to.equal('user')
-          expect(newUser.password).to.equal('pass')
+          expect(newUser.password).to.not.be.undefined
         })
         .then(function(){
           return request(app)
@@ -103,10 +106,10 @@
             .send(users[0])
             .expect(200)
             .expect(function(res){
-              var newUser = res.body
+              var newUser = res.body.user
               expect(newUser._id).to.not.be.undefined
               expect(newUser.username).to.equal('user')
-              expect(newUser.password).to.equal('pass')
+              expect(newUser.password).to.not.be.undefined
             })
         })
       })
