@@ -1,15 +1,18 @@
+// Dependencies
 var React = require('react')
 var $ = require('jquery');
 const RaisedButton = require('material-ui/lib/raised-button');
 var Link = require('react-router').Link
 
+
+// Top-level component
+// currentUser and message props are passed down from app.js
 var UserView = React.createClass({
   getInitialState: function() {
     return {query: null};
   },
   search: function(query) {
     this.setState({query: query});
-    console.log(query)
   },
   render: function() {
     return (
@@ -36,6 +39,8 @@ var UserView = React.createClass({
   }
 });
 
+
+// Seach bar component
 var UserFilter = React.createClass({
   handleInput: function(e) {
     this.props.search(e.target.value);
@@ -51,7 +56,7 @@ var UserFilter = React.createClass({
   }
 });
 
-
+// Users component queries database for users
 var Users = React.createClass({
   getInitialState: function() {
     return {users: []};
@@ -84,8 +89,6 @@ var Users = React.createClass({
             return element.username !== currentUser;
           })
           .filter(function (element) {
-            console.log('queryblargl', query);
-            console.log('interests', element.interests)
             if (element.interests.length === 0){
               return false;
             }
@@ -93,7 +96,7 @@ var Users = React.createClass({
               return true;
             }
 
-            return element.interests[0].indexOf(query) !== -1;
+            return element.interests[0].toLowerCase().indexOf(query.toLowerCase()) !== -1;
           })
           .map(function (element) {
             return <User  key={element.username} 
@@ -106,7 +109,8 @@ var Users = React.createClass({
   }
 })
 
-
+// User component. Interests is an array, 
+// but all of the interests are currently a string in index 0
 var User = React.createClass({
   openMessenger: function(){
     var username = this.props.user.username;
