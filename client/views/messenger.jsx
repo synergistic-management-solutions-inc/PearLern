@@ -1,22 +1,6 @@
 var React = require('react')
 var $ = require('jquery');
 
-/*TODO
-  [x] fix server
-  [x] test ajax
-    [x] contacts
-    [x] convos
-    [x] submit
-  [] learn more about keys
-  [] look into console warnings 
-  [] get it to stop pinging when the page is left
-  [x] figure out how to pass in otherUser state on redirect 
-  [x] auto rerender page  
-  [x] get current user in a more formalized way
-  [] prevent page from breaking if no other users exist
-  [] clean up/comment code 
-*/
-
   //an individual contact component
   var Contact = React.createClass({
     selectUser: function(){
@@ -171,22 +155,25 @@ var $ = require('jquery');
       var update = this.update;
 
       //grabs the initial message data
-      //then checks for new messages every two seconds
       update();
+      
+      //checks for new messages every two seconds
       setInterval(update, 2000);
     },
     update: function(){
       var component = this;
       var currentUser = this.props.currentUser;
 
-      $.ajax({
-        type: 'GET',
-        url: '/messages/'+currentUser
-      })
-      .then(function(res){
-        //gives conversation data to the state and automatically re-renders
-         component.setState(res);
-      })
+      if (this.isMounted()){
+        $.ajax({
+          type: 'GET',
+          url: '/messages/'+currentUser
+        })
+        .then(function(res){
+          //gives conversation data to the state and automatically re-renders
+           component.setState(res);
+        }) 
+      }
     },
     render: function(){
       var otherUser = this.props.otherUser;
