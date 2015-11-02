@@ -43,9 +43,11 @@ var Profile = React.createClass({
   // This fires right before the component mounts. This is where we'll get user profile data.
   componentWillMount: function() {
     var self = this;
+    var currentUser = this.props.currentUser;
+
     $.ajax({
       type : 'GET',
-      url : '/users/Scott',
+      url : '/users/' + currentUser,
       success : function(res) {
         console.log('get users', res)
         if (self.isMounted()) {
@@ -82,6 +84,8 @@ var Profile = React.createClass({
   },
 
   saveData : function() {
+    var currentUser = this.props.currentUser
+
     var data = {
       name : this.state.nameValue,
       about : this.state.aboutValue,
@@ -91,7 +95,7 @@ var Profile = React.createClass({
     $.ajax({
       type : 'POST',
       dataType : 'json',
-      url : '/users/' + this.state.nameValue,
+      url : '/users/' + currentUser,
       data : data
     })
     this.setState({ modalIsOpen : false })

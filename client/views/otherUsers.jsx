@@ -32,15 +32,17 @@ var Users = React.createClass({
             <img className="responsive-img" src="http://www.actclassy.com/wp-content/uploads/2012/04/Computer-Programmers.jpg" />
           </div>
           <h4 className="other-users-header">All Users</h4>
-          {this.state.users.map(
+          {this.state.users
+            .filter(function (element) {
+              return element.username !== currentUser;
+            })
+            .map(
             function (element) {
               return <User  key={element.username} 
                             user={element} 
                             message={message} />
             }
-          ).filter(function (element) {
-            return element.username !== currentUser;
-          })}
+          )}
         </div>
       </div>
     );
@@ -64,6 +66,9 @@ var User = React.createClass({
           </li>
           <li>
             Name: {user.name}
+          </li>
+          <li>
+            About: {user.about}
           </li>
           <li>
             Interests: {user.interests.toString().split(',').join(', ')}
