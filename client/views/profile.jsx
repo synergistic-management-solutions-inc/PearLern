@@ -44,6 +44,12 @@ var Profile = React.createClass({
   componentWillMount: function() {
     var self = this;
     var currentUser = this.props.currentUser;
+    //this is a pretty hacky fix to the fact
+    //that we don't know how sessions work 
+    //in passport
+    if (!currentUser){
+      this.props.history.pushState(null, '/signin'); 
+    }
 
     $.ajax({
       type : 'GET',
@@ -86,7 +92,6 @@ var Profile = React.createClass({
   saveData : function() {
     var currentUser = this.props.currentUser
     var interests = this.state.interestsValue.split(',')
-    console.log('interest', interests); 
 
     var data = {
       name : this.state.nameValue,
@@ -101,15 +106,6 @@ var Profile = React.createClass({
       data : data
     })
     this.setState({ modalIsOpen : false })
-  },
-  // /Handlers
-  componentWillMount: function(){
-    //this is a pretty hacky fix to the fact
-    //that we don't know how sessions work 
-    //in passport
-    if (!this.props.currentUser){ 
-      this.props.history.pushState(null, '/signin'); 
-    }
   },
 
   // Render all the things!
