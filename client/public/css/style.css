@@ -22,3 +22,11 @@ footer .row, .push {
   margin-bottom: 0;
   height: 75px;
 }
+
+.incoming {
+  color : blue;
+}
+
+.outgoing {
+  color : red;
+}
