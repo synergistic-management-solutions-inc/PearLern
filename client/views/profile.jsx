@@ -49,7 +49,6 @@ var Profile = React.createClass({
       type : 'GET',
       url : '/users/' + currentUser,
       success : function(res) {
-        console.log('get users', res)
         if (self.isMounted()) {
           self.setState({
             nameValue : res.name,
