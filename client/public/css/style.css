@@ -27,10 +27,34 @@ footer .row, .push {
   height: 75px;
 }
 
+.contacts p {
+  padding: 5px;
+}
+
+.contacts p:hover {
+  background-color: #ededed;
+  cursor: pointer;
+}
+
+.userMsg {
+  color : black;
+}
+
 .incoming {
   color : blue;
+  text-align: right;
 }
 
 .outgoing {
   color : red;
+  text-align: left;
+}
+
+.convoWith {
+  margin-top: 30px;
+
+}
+
+.z-depth-1 {
+  border-radius: 5px;
 }

@@ -113,7 +113,7 @@ var Profile = React.createClass({
     return (<div>
               <div className="container">
                 <div className="row">
-                  <div className="col s12 m6">
+                  <div className="col s6 offset-s3">
                     <div className="card light-blue">
                       <div className="card-content white-text">
                         <span className="card-title">My Profile</span>
