@@ -1,12 +1,12 @@
-var React = require('react')
-var ReactDOM = require('react-dom')
-var $ = require('jquery')
+var React = require('react');
+var ReactDOM = require('react-dom');
+var $ = require('jquery');
 
 var Landing = React.createClass({
   getInitialState: function () {
     return {
       test: 'test value'
-    }
+    };
   },
   render: function (){
     return (
@@ -28,9 +28,4 @@ var Landing = React.createClass({
   }
 });
 
-
 module.exports = Landing;
-
-
-
-

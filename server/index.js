@@ -1,6 +1,6 @@
-var browserify = require('browserify-middleware')
-var express = require('express')
-var Path = require('path')
+var browserify = require('browserify-middleware');
+var express = require('express');
+var Path = require('path');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
@@ -75,7 +75,6 @@ passport.use('local-login', new LocalStrategy({},
       });
     });
   }
-
 ));
 
 function isLoggedIn(req, res, next) {
@@ -90,21 +89,20 @@ function isLoggedIn(req, res, next) {
   }
 }
 
-
-var app = express()
-var routes = express.Router()
+var app = express();
+var routes = express.Router();
 
 //redo once we have some public stuffs
 routes.get('/app-bundle.js',
   // Tell browserify to user reactify as it's JSX compiler
   browserify('./client/app.js', {
     transform: [require('reactify')]
-  }))
+  }));
 
 //redo once we have some public stuffs
 routes.get('/api/tags-example', function(req, res) {
-  res.send(['node', 'express', 'browserify'])
-})
+  res.send(['node', 'express', 'browserify']);
+});
 
 //Here are all my endpoints! See the README for details
 //on what kind of data is expected/being returned
@@ -136,44 +134,37 @@ routes.post('/signup', function(req, res, next) {
   passport.authenticate('local-signup', function(err, user, info) {
     if (err) {
       res.status(404).send();
-      return next(err)
+      return next(err);
     } else {
       return res.status(200).json({
         'user' : user,
         authenticated: true
       });
     }
-
-
   })(req, res, next);
 });
 
-
 routes.get('/logout', function(req, res) {
-  console.log('logged out', req.body)
+  console.log('logged out', req.body);
   req.session.destroy(function(err) {
-    console.log('ok it worked')
-  })
+    console.log('ok it worked');
+  });
   //passport
   // res.redirect('/');
 });
 
-
-
-
-
-var assetFolder = Path.resolve(__dirname, '../client/public')
-routes.use(express.static(assetFolder))
+var assetFolder = Path.resolve(__dirname, '../client/public');
+routes.use(express.static(assetFolder));
 
 if (process.env.NODE_ENV !== 'test') {
-  app.use(require('body-parser').json())
+  app.use(require('body-parser').json());
   app.use(require('body-parser').urlencoded({
     extended: true
   }));
 
   routes.get('/*', function(req, res) {
-    res.sendFile(assetFolder + '/index.html')
-  })
+    res.sendFile(assetFolder + '/index.html');
+  });
 
   //middleware - executes on any client and server interaction trade
   //marks the request and time on console
@@ -200,15 +191,13 @@ if (process.env.NODE_ENV !== 'test') {
 
   app.use(flash());
 
-
-  app.use('/', routes)
-
+  app.use('/', routes);
 
   // Start the server!
-  var port = process.env.PORT || 4000
-  app.listen(port)
-  console.log("Listening on port", port)
+  var port = process.env.PORT || 4000;
+  app.listen(port);
+  console.log("Listening on port", port);
 } else {
 
-  module.exports = routes
+  module.exports = routes;
 }

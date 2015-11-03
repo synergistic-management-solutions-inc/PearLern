@@ -3,7 +3,7 @@
 
 var mongoose = require('mongoose');
 
-var mongodb
+var mongodb;
 //Once we deploy this will become relevant
 
 var config = {
@@ -14,7 +14,7 @@ var config = {
 mongoose.connect(config.mongoUrl);
 
 mongoose.connection.on('error', function(err){
-	console.log('Mango problem', err)
-})
+ console.log('Mango problem', err);
+});
 
 module.exports = mongoose;
