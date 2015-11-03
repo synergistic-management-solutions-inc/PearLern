@@ -17,11 +17,11 @@ exports.getUsers = function(req, res){
         name: profile.name || '',
         about: profile.about || '',
         interests: profile.interests || ''
-      })
-    })
+      });
+    });
     res.status(200).send({'users': userData});
-  })
-}
+  });
+};
 
 //retrieves the profile information for the current user
 exports.getProfile = function(req, res){
@@ -35,8 +35,8 @@ exports.getProfile = function(req, res){
       return;
     }
     res.status(200).send(user.profile);
-  })
-}
+  });
+};
 
 //creates a new user in the DB
 exports.signUp = function(req, res) {
@@ -45,7 +45,7 @@ exports.signUp = function(req, res) {
   userInfo.password = req.body.password;
 
   //profile fields are intially set to empty strings.
-  userInfo.profile = {name: '', about: ''}
+  userInfo.profile = {name: '', about: ''};
   var user = new User(userInfo);
   user.save(function(err){
     if (err){
@@ -58,8 +58,8 @@ exports.signUp = function(req, res) {
     //should redirect to main
     //create a session
     res.status(201).send(user);
-  })
-}
+  });
+};
 
 //checks that user exists in DB and verifies password
 exports.signIn = function(req, res) {
@@ -76,8 +76,8 @@ exports.signIn = function(req, res) {
     }
     //should create session and perhaps redirect here
     res.status(200).send(user);
-  })
-}
+  });
+};
 
 //overwrites current profile information
 //will overwrite all three fields (name, about, interests) 
@@ -104,18 +104,17 @@ exports.submitProfile = function(req, res){
         return; 
       }
 
-      res.status(201).send(user.profile);     
-    })
-
-  })
-}
+      res.status(201).send(user.profile);
+    });
+  });
+};
 
 exports.sendMessage = function(req, res){
   var messageInfo = {};
   messageInfo.to = req.body.to;
   messageInfo.from = req.body.from;
   messageInfo.text = req.body.text;
-  
+
   //TODO
   //verify that the sender exists
   //and has a session to prove who they are
@@ -137,9 +136,9 @@ exports.sendMessage = function(req, res){
         return;
       }
       res.status(201).send(message);
-    })
-  })
-}
+    });
+  });
+};
 
 //finds all messages from a particular user and sorts them by conversation 
 //the shape of the data here is a bit convoluted and I apologize for that, 
@@ -157,7 +156,7 @@ exports.getMessages = function(req, res){
     return;
   }
 
-  //TODO 
+  //TODO
   //verify that this user is who they say they are
   //via sessions or something
 
@@ -176,7 +175,7 @@ exports.getMessages = function(req, res){
         }
 
         allMessages[from].push(message);
-      })
+      });
 
       Message.find({'from': username}, function(err, sentMessages){
         if (err){
@@ -192,15 +191,15 @@ exports.getMessages = function(req, res){
             allMessages[to] = [];
           }
 
-          allMessages[to].push(message)
-        })
+          allMessages[to].push(message);
+        });
 
         // Sort the messages
         // By created_at timestamp
         // Using underscore
         _.each(allMessages, function(messages, user) {
           allMessages[user] = _.sortBy(messages, 'created_at');
-        })
+        });
 
         var conversations = [];
 
@@ -211,12 +210,12 @@ exports.getMessages = function(req, res){
           var conversation = {
             username: user,
             messages: messages
-          }
+          };
           conversations.push(conversation);
-        })
+        });
 
         res.status(200).send({conversations: conversations});
-      })
-    })  
-  }) 
-}
+      });
+    });
+  });
+};
