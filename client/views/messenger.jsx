@@ -1,4 +1,4 @@
-var React = require('react')
+var React = require('react');
 var $ = require('jquery');
 const RaisedButton = require('material-ui/lib/raised-button');
 
@@ -39,7 +39,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
             state.contacts.push(user.username);
           }
         })
-        
+
         if (!component.props.otherUser){
           var firstContact = state.contacts[0];
           component.props.displayConversation(firstContact);
@@ -163,7 +163,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
       //grabs the initial message data
       update();
-      
+
       //checks for new messages every two seconds
       setInterval(update, 2000);
     },

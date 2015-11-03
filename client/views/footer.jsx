@@ -1,11 +1,11 @@
-var React = require('react')
-var ReactDOM = require('react-dom')
+var React = require('react');
+var ReactDOM = require('react-dom');
 
 var Footer = React.createClass({
   getInitialState: function () {
     return {
       test: 'test value'
-    }
+    };
   },
   render: function (){
     return (

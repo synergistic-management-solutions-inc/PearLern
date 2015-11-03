@@ -1,4 +1,4 @@
-var React = require('react')
+var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var Modal = require('react-modal');
@@ -90,22 +90,22 @@ var Profile = React.createClass({
   },
 
   saveData : function() {
-    var currentUser = this.props.currentUser
-    var interests = this.state.interestsValue.split(',')
+    var currentUser = this.props.currentUser;
+    var interests = this.state.interestsValue.split(',');
 
     var data = {
       name : this.state.nameValue,
       about : this.state.aboutValue,
       interests : interests
-    }
+    };
 
     $.ajax({
       type : 'POST',
       dataType : 'json',
       url : '/users/' + currentUser,
       data : data
-    })
-    this.setState({ modalIsOpen : false })
+    });
+    this.setState({ modalIsOpen : false });
   },
 
   // Render all the things!
