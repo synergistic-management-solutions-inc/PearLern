@@ -21,6 +21,7 @@
     "cookie-parser": "latest",
     "express": "^4.12.4",
     "express-session": "latest",
+    "flux": "^2.1.1",
     "history": "^1.13.0",
     "jquery": "^2.1.4",
     "material-ui": "~0.13.0",
