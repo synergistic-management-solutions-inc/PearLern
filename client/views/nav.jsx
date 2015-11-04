@@ -15,15 +15,14 @@ var Nav = React.createClass({
     //hardcoded
     storeUser('');
 
-    /*real code 
     $.ajax({
       type: 'GET',
-      url: '/signout'
+      url: '/logout'
     })
     .then(function (res){
-      storeUser(''); 
+      storeUser('');
+      console.log('/logout response', res);
     });
-    */
   },
   render: function (){
     var currentUser = this.props.currentUser;
