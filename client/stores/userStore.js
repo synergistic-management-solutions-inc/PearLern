@@ -9,22 +9,22 @@ var _store = {
   list: []
 };
 
-var addItem = function(item){
-  _store.list.push(item);
+var addUser = function(user){
+  _store.list.push(user);
 };
 
-var removeItem = function(index){
-  _store.list.splice(index, 1);
+var editUser = function(user){
+  // _store.list.splice(index, 1);
 }
 
-var todoStore = objectAssign({}, EventEmitter.prototype, {
+var userStore = objectAssign({}, EventEmitter.prototype, {
   addChangeListener: function(cb){
     this.on(CHANGE_EVENT, cb);
   },
   removeChangeListener: function(cb){
     this.removeListener(CHANGE_EVENT, cb);
   },
-  getList: function(){
+  getUsers: function(){
     return _store.list;
   },
 });
@@ -32,11 +32,11 @@ var todoStore = objectAssign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(payload){
   var action = payload.action;
   switch(action.actionType){
-    case appConstants.ADD_ITEM:
+    case appConstants.ADD_USER:
       addItem(action.data);
       todoStore.emit(CHANGE_EVENT);
       break;
-    case appConstants.REMOVE_ITEM:
+    case appConstants.EDIT_USER:
       removeItem(action.data);
       todoStore.emit(CHANGE_EVENT);
       break;
@@ -45,4 +45,4 @@ AppDispatcher.register(function(payload){
   }
 });
 
-module.exports = todoStore;
+module.exports = userStore;
