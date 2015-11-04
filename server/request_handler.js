@@ -13,6 +13,7 @@ exports.getUsers = function(req, res){
       //if these users have profiles
       //I'll send empty strings
       userData.push({
+        id: user._id,
         username: user.username,
         name: profile.name || '',
         about: profile.about || '',
