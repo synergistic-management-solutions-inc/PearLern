@@ -1,9 +1,9 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var Router = require('react-router').Router
-var Route = require('react-router').Route
-var IndexRoute = require('react-router').IndexRoute 
-var Link = require('react-router').Link
+var Router = require('react-router').Router;
+var Route = require('react-router').Route;
+var IndexRoute = require('react-router').IndexRoute;
+var Link = require('react-router').Link;
 var $ = require('jquery');
 
 // ----------------REACT VIEWS----------------
@@ -11,7 +11,7 @@ var Profile = require('./views/profile.jsx');
 var SignUp = require('./views/signup.jsx');
 var SignIn = require('./views/signin.jsx');
 var Landing = require('./views/landing.jsx');
-var Nav = require('./views/nav.jsx')
+var Nav = require('./views/nav.jsx');
 var AllUsers = require('./views/otherUsers.jsx');
 var Messenger = require('./views/messenger.jsx');
 var Footer = require('./views/footer.jsx');
@@ -34,13 +34,13 @@ var App = React.createClass({
     return {
       currentUser: null,
       messageTo: null
-    }
+    };
   },
   storeUser: function(username){ 
-    this.setState({currentUser: username})
+    this.setState({currentUser: username});
   },
   message: function(username){
-    this.setState({messageTo: username})
+    this.setState({messageTo: username});
   },
   render: function() {
     return (

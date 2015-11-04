@@ -1,29 +1,28 @@
-var React = require('react')
-var ReactDOM = require('react-dom')
-var $ = require('jquery')
-var Link = require('react-router').Link
+var React = require('react');
+var ReactDOM = require('react-dom');
+var $ = require('jquery');
+var Link = require('react-router').Link;
 
 var Nav = React.createClass({
   getInitialState: function () {
     return {
       test: 'test value'
-    }
+    };
   },
   logout: function(){
     var storeUser = this.props.storeUser;
     console.log('props', this.props);
     //hardcoded
     storeUser('');
-    
-    /*real code 
+
     $.ajax({
       type: 'GET',
-      url: '/signout'
+      url: '/logout'
     })
     .then(function (res){
-      storeUser(''); 
+      storeUser('');
+      console.log('/logout response', res);
     });
-    */
   },
   render: function (){
     var currentUser = this.props.currentUser;
@@ -56,11 +55,10 @@ var Nav = React.createClass({
             {links()}
           </div>
         </nav>
-              
+
     )
   }
 });
 
-
-
 module.exports = Nav;
+
