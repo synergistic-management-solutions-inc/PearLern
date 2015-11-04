@@ -14,7 +14,7 @@ module.exports = function(app, passport) {
   routes.get('/app-bundle.js',
     // Tell browserify to user reactify as it's JSX compiler
     browserify('./client/app.js', {
-      transform: [require('reactify')]
+      transform: ['reactify']
     }));
 
   //redo once we have some public stuffs

@@ -3,10 +3,11 @@ var appConstants = require('../constants/appConstants');
 
 var userActions = {
   getAllUsers: function() {
+    console.log("action fired #2");
     AppDispatcher.handleAction({
-      actionType: appConstants.GET_ALL_USERS,
-    })
-  }
+      actionType: appConstants.GET_ALL_USERS
+    });
+  },
 
   addUser: function(user){
     AppDispatcher.handleAction({
@@ -18,7 +19,7 @@ var userActions = {
     AppDispatcher.handleAction({
       actionType: appConstants.EDIT_USER,
       data: user
-    })
+    });
   }
 };
 
