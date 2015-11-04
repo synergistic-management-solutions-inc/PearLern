@@ -62,9 +62,10 @@ module.exports = function(app, passport) {
   });
 
   routes.get('/logout', function(req, res) {
-    console.log('logged out', req.body);
+    req.logout();
     req.session.destroy(function(err) {
-      console.log('ok it worked');
+      res.clearCookie('isLoggedIn');
+      res.send({ loggedIn: false });
     });
     //passport
     // res.redirect('/');

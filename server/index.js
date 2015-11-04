@@ -48,12 +48,12 @@ if (process.env.NODE_ENV !== 'test') {
     next();
   });
 
-  var routes = require('./routes')(app, passport);
+  require('./routes')(app, passport);
 
   // Start the server!
   var port = process.env.PORT || 4000;
   app.listen(port);
   console.log("Listening on port", port);
 } else {
-  module.exports = routes;
+  module.exports = express.Router();
 }
