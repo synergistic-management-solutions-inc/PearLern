@@ -9,13 +9,13 @@ var _store = {
   list: []
 };
 
-var addItem = function(item){
-  _store.list.push(item);
+var addMessage = function(message){
+  _store.list.push(message);
 };
 
-var removeItem = function(index){
-  _store.list.splice(index, 1);
-}
+// var removeItem = function(index){
+//   _store.list.splice(index, 1);
+// }
 
 var todoStore = objectAssign({}, EventEmitter.prototype, {
   addChangeListener: function(cb){

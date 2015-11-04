@@ -2,16 +2,16 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var appConstants = require('../constants/appConstants');
 
 var userActions = {
-  addItem: function(item){
+  addUser: function(user){
     AppDispatcher.handleAction({
-      actionType: appConstants.ADD_ITEM,
-      // data: item
+      actionType: appConstants.ADD_USER,
+      data: user
     });
   },
-  removeItem: function(index){
+  editUser: function(user){
     AppDispatcher.handleAction({
-      actionType: appConstants.REMOVE_ITEM,
-      // data: index
+      actionType: appConstants.EDIT_USER,
+      data: user
     })
   }
 };

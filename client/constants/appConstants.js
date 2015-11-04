@@ -1,6 +1,7 @@
 var appConstants = {
-  ADD_ITEM: "ADD_ITEM",
-  REMOVE_ITEM: "REMOVE_ITEM"
+  ADD_MESSAGE: "ADD_MESSAGE",
+  ADD_USER: "ADD_USER",
+  EDIT_USER: "EDIT_USER"
 };
 
 module.exports = appConstants;

@@ -2,18 +2,18 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var appConstants = require('../constants/appConstants');
 
 var messageActions = {
-  addItem: function(item){
+  addMessage: function(item){
     AppDispatcher.handleAction({
-      actionType: appConstants.ADD_ITEM,
+      actionType: appConstants.ADD_MESSAGE,
       // data: item
     });
   },
-  removeItem: function(index){
-    AppDispatcher.handleAction({
-      actionType: appConstants.REMOVE_ITEM,
-      // data: index
-    })
-  }
+  // removeItem: function(index){
+  //   AppDispatcher.handleAction({
+  //     actionType: appConstants.REMOVE_ITEM,
+  //     // data: index
+  //   })
+  // }
 };
 
 module.exports = messageActions;
