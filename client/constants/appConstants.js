@@ -2,6 +2,9 @@ var appConstants = {
   ADD_MESSAGE: "ADD_MESSAGE",
   ADD_USER: "ADD_USER",
   EDIT_USER: "EDIT_USER"
+  LOAD_USERS: "LOAD_USERS",
+  LOAD_USERS_SUCCESS: "LOAD_USERS_SUCCESS",
+  LOAD_USERS_FAIL: "LOAD_USERS_FAIL"
 };
 
 module.exports = appConstants;
