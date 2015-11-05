@@ -7,6 +7,10 @@ var Footer = React.createClass({
       test: 'test value'
     };
   },
+  componentWillMount: function() {
+    console.log('Footer got mounted, yo');
+  },
+
   render: function (){
     return (
       <footer>
