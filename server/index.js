@@ -8,8 +8,11 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var ExpressPeerServer = require('peer').ExpressPeerServer;
 // var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
+
+var envify = require('envify/custom');
 
 var mongoose = require('./database/config');
 var MongoStore = require('connect-mongo')(session);
@@ -48,7 +51,6 @@ if (process.env.NODE_ENV !== 'test') {
     next();
   });
 
-  require('./routes')(app, passport);
 
   // Start the server!
   var port = process.env.PORT || 4000;
@@ -57,10 +59,12 @@ if (process.env.NODE_ENV !== 'test') {
     browserify('./client/app.js', {
       transform: [
         'reactify', // Tell browserify to user reactify as its JSX compiler
-        envify({ PORT: app.address.port() }) // Provide listed env variables to client
+        envify({ PORT: port }) // Transform listed env variables in client app.js
       ]
     })
   );
+  app.use('/peerjs', new ExpressPeerServer(server, {}));
+  require('./routes')(app, passport);
   console.log('Listening on port', port);
 } else {
   module.exports = express.Router();

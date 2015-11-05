@@ -1,8 +1,6 @@
 var express = require('express');
 var routes = express.Router();
-var ExpressPeerServer = require('peer').ExpressPeerServer;
 
-var envify = require('envify/custom');
 var browserify = require('browserify-middleware');
 var Path = require('path');
 
