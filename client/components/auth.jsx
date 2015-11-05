@@ -23,6 +23,7 @@ var Auth = React.createClass({
       password: ''
     };
   },
+
   render: function () {
     return (
       <div className="sign-in-view">
