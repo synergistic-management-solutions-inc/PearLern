@@ -14,10 +14,10 @@ var Footer = React.createClass({
   render: function (){
     return (
       <footer>
-        <div className="nav-wrapper light-blue">
+        <div className="nav-wrapper blue-grey darken-4">
           <div className="row">
             <div className="col s12">
-              <p>PearLern is a Synergistic Management Solutions Company © 2015 SMS World Enterprises plc</p>
+              <p className='footer-text'>PearLern is a Horse Management Solutions Company © 2015 SMS World Enterprises plc</p>
             </div>
           </div>
         </div>

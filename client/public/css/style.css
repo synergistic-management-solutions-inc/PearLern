@@ -36,6 +36,9 @@ footer .row, .push {
   height: 75px;
 }
 
+.footer-text {
+  color:white;
+}
 .contacts p {
   padding: 5px;
 }
@@ -67,3 +70,4 @@ footer .row, .push {
   width: 100%;
   margin: auto;
 }
+
