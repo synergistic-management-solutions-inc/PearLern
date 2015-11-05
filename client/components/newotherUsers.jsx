@@ -54,10 +54,6 @@ var UserView = React.createClass({
 });
 
 var Users = React.createClass({
-  componentDidMount: function() {
-    var users = this.props.userList
-    console.log(users)
-  },
   render: function() {
     return (
       <div>{this.props.userList
@@ -71,22 +67,22 @@ var Users = React.createClass({
 
 var User = React.createClass({
   render: function() {
-  var user = this.props.user
-    return (
-      <div className="col s6">
-        <ul>
-          <h5>{user.username}</h5>
-          <li>
-            Name: {user.name}
-          </li>
-          <li>
-            About: {user.about}
-          </li>
-          <li>
-            Interests: {user.interests.join(', ')}
-          </li>
-        </ul>
-      </div>
+    var user = this.props.user;
+      return (
+        <div className="col s6">
+          <ul>
+            <h5>{user.username}</h5>
+            <li>
+              Name: {user.name}
+            </li>
+            <li>
+              About: {user.about}
+            </li>
+            <li>
+              Interests: {user.interests.join(', ')}
+            </li>
+          </ul>
+        </div>
   )}
 });
 

@@ -2,7 +2,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var appConstants = require('../constants/appConstants');
 var objectAssign = require('react/lib/Object.assign');
 var EventEmitter = require('events').EventEmitter;
-var $ = require('jquery')
+var $ = require('jquery');
 
 var CHANGE_EVENT = 'change';
 
@@ -18,34 +18,20 @@ var addUser = function(user) {
 
 var editUser = function(user) {
   // _store.list.splice(index, 1);
-}
+};
 
 var getAll = function(cb) {
-  console.log("getting all users #5")
+  console.log("getting all users #5");
   return $.ajax({
     type: 'GET',
-    url: '/users/',
-
-    // success: function(res) {
-    //   //   if (self.isMounted()) {
-    //   //     self.setState({
-    //   //       users: res.users,
-    //   //       message: self.props.message,
-    //   //       currentUser: self.props.currentUser
-    //   //     })
-    //   //   }
-    //   // }
-    //   console.log("users received #6 " , res.users)
-    //   var data = res.users;
-    //   _store.list = data;
-    // }
+    url: '/users/'
   }).then(function(res) {
     console.log("users received #6", res.users);
     var data = res.users;
     _store.list = data;
     return data;
   });
-}
+};
 
 var userStore = objectAssign({}, EventEmitter.prototype, {
   addChangeListener: function(cb) {
@@ -71,11 +57,11 @@ AppDispatcher.register(function(payload) {
       userStore.emit(CHANGE_EVENT);
       break;
     case appConstants.GET_ALL_USERS:
-      console.log("get all fired #4")
+      console.log("get all fired #4");
       getAll().then(function() {
-      console.log("change event fired #7")
+      console.log("change event fired #7");
         userStore.emit(CHANGE_EVENT);
-      })
+      });
       break;
     default:
       return true;

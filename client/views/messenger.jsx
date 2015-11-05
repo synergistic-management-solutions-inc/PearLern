@@ -18,8 +18,8 @@ const RaisedButton = require('material-ui/lib/raised-button');
   var Contacts = React.createClass({
     getInitialState: function(){
 
-      //the empty array 
-      //a placeholder until the 
+      //the empty array
+      //a placeholder until the
       //server sends data
       return {contacts: []}
 
@@ -105,7 +105,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
         url: '/messages',
         data: message,
         success: function(res){
-          //should re-render page; 
+          //should re-render page;
           update();
         }
       })
@@ -114,7 +114,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
       return (
         <div>
           <input ref='message' type='text'></input>
-          <RaisedButton label="Send" className="send-button" onClick={this.sendMessage}/>        
+          <RaisedButton label="Send" className="send-button" onClick={this.sendMessage}/>
         </div>
       )
     }
@@ -135,7 +135,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
         else {
           var className = 'outgoing';
           var user = currentUser;
-        } 
+        }
 
         return <div className={className}><Message key={message.text} message={message} currentUser={currentUser}/></div>
       })
@@ -147,9 +147,9 @@ const RaisedButton = require('material-ui/lib/raised-button');
           {conversation}
           <NewMessage currentUser={currentUser}
                       otherUser={this.props.conversation.username}
-                      update={this.props.update}/> 
+                      update={this.props.update}/>
         </div>
-        ) 
+        )
     }
   })
 
@@ -179,7 +179,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
         .then(function(res){
           //gives conversation data to the state and automatically re-renders
            component.setState(res);
-        }) 
+        })
       }
     },
     render: function(){
@@ -196,24 +196,24 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
       return (
         <div className="col s4 offset-s3">
-          <Conversation key={conversation.messages} 
+          <Conversation key={conversation.messages}
                         conversation={conversation}
-                        update={this.update} 
+                        update={this.update}
                         currentUser={currentUser}/>
         </div>
       )
     }
   })
 
-  //the main component 
+  //the main component
   var Messenger = React.createClass({
     getInitialState: function(){
       return {
         //other user represents the user whose conversation
         //is currently being displayed
 
-        //this can be intially set to a particular user when 
-        //linked from the otherUsers page or it will be auto 
+        //this can be intially set to a particular user when
+        //linked from the otherUsers page or it will be auto
         //set to the first user on the list
         otherUser: this.props.messageTo
       }
@@ -223,23 +223,23 @@ const RaisedButton = require('material-ui/lib/raised-button');
     },
     componentWillMount: function(){
       //this is a pretty hacky fix to the fact
-      //that we don't know how sessions work 
+      //that we don't know how sessions work
       //in passport
-      if (!this.props.currentUser){ 
-        this.props.history.pushState(null, '/signin'); 
+      if (!this.props.currentUser){
+        this.props.history.pushState(null, '/signin');
       }
     },
     render: function(){
       return (
         <div className="row">
-          <Contacts displayConversation={this.displayConversation} 
-                    otherUser={this.state.otherUser} 
+          <Contacts displayConversation={this.displayConversation}
+                    otherUser={this.state.otherUser}
                     currentUser={this.props.currentUser}/>
-          <Conversations otherUser={this.state.otherUser} 
+          <Conversations otherUser={this.state.otherUser}
                           currentUser={this.props.currentUser}/>
         </div>
       )
     }
   })
 
-module.exports = Messenger; 
+module.exports = Messenger;
