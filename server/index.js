@@ -52,8 +52,16 @@ if (process.env.NODE_ENV !== 'test') {
 
   // Start the server!
   var port = process.env.PORT || 4000;
-  app.listen(port);
-  console.log("Listening on port", port);
+  var server = app.listen(port);
+  app.get('/app-bundle.js',
+    browserify('./client/app.js', {
+      transform: [
+        'reactify', // Tell browserify to user reactify as its JSX compiler
+        envify({ PORT: app.address.port() }) // Provide listed env variables to client
+      ]
+    })
+  );
+  console.log('Listening on port', port);
 } else {
   module.exports = express.Router();
 }

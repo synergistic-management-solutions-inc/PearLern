@@ -1,5 +1,8 @@
 var express = require('express');
 var routes = express.Router();
+var ExpressPeerServer = require('peer').ExpressPeerServer;
+
+var envify = require('envify/custom');
 var browserify = require('browserify-middleware');
 var Path = require('path');
 
@@ -9,13 +12,6 @@ var User = require('./database/models/user.js');
 var assetFolder = Path.resolve(__dirname, '../client/public');
 
 module.exports = function(app, passport) {
-
-  //redo once we have some public stuffs
-  routes.get('/app-bundle.js',
-    // Tell browserify to user reactify as it's JSX compiler
-    browserify('./client/app.js', {
-      transform: ['reactify']
-    }));
 
   //redo once we have some public stuffs
   routes.get('/api/tags-example', function(req, res) {
