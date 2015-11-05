@@ -5,6 +5,13 @@ const RaisedButton = require('material-ui/lib/raised-button');
   //an individual contact component
   var Contact = React.createClass({
     selectUser: function(){
+      var peer = this.props.peer.peer;
+      this.props.peer.con[this.props.otherUser] = peer.connect(this.props.otherUser);
+      con = this.props.peer.con[this.props.otherUser];
+      con.on('open', function() {
+        console.log('Connected to peer:', this.props.otherUser);
+        con.send('Hi ' + this.props.otherUser + '! I am ' + this.props.currentUser);
+      });
       this.props.userSelected(this.props.contact);
     },
     render: function(){
@@ -44,6 +51,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
         //   var firstContact = state.contacts[0];
         //   component.props.displayConversation(firstContact);
         // }
+
         //setting the state will automatically re-render
         component.setState(state);
       })
@@ -55,7 +63,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
       var userSelected = this.userSelected;
       var contacts = this.state.contacts.map(function(contact){
-        return <div className="z-depth-1"><Contact userSelected={userSelected} key={contact} contact={contact} /></div>
+        return ( <div className="z-depth-1"><Contact userSelected={userSelected} key={contact} contact={contact} /></div> )
       })
 
       return (
@@ -258,32 +266,91 @@ const RaisedButton = require('material-ui/lib/raised-button');
         //this can be intially set to a particular user when
         //linked from the otherUsers page or it will be auto
         //set to the first user on the list
+        stuff: 'adsf',
+        // peer: null,
         otherUser: this.props.messageTo
       }
+    },
+    getDefaultProps: function() {
+      return {
+        stuff: 'asdf'
+      };
     },
     displayConversation: function(username){
       this.setState({otherUser: username});
     },
     componentWillMount: function(){
+      console.log('Messenger will mount')
       //this is a pretty hacky fix to the fact
       //that we don't know how sessions work
       //in passport
       if (!this.props.currentUser){
         this.props.history.pushState(null, '/signin');
+        return;
       }
+
+      // Connect to the peer server that facilitates the initial connection between 2 users
+      this.setState({ stuff: 'qwer' }, function() {
+        console.log('Peer stuff:', window.location.hostname, process.env.PORT, this.state.stuff, this.props.stuff);
+      });
+
+      this.setState({
+        con: {},
+        peer: new Peer(this.props.currentUser, {
+          host: window.location.hostname,
+          port: process.env.PORT, // provided to client by envify
+          path: '/peerjs'
+        })
+      }, function() {
+        console.log('peer:', this.state)
+      });
+
+      // this.props.peer.on('connection', function(con) {
+      //   console.log('New connection');
+      //   con.on('data', function(data) {
+      //     console.log(data);
+      //   });
+      // });
+
     },
     render: function(){
       return (
         <div className="row">
-          <Contacts displayConversation={this.displayConversation}
+          <Contacts peer={this.props.peer} displayConversation={this.displayConversation}
                     otherUser={this.state.otherUser}
                     currentUser={this.props.currentUser}/>
           <Conversations otherUser={this.state.otherUser}
                           currentUser={this.props.currentUser}/>
-          <VideoCall />
+          <VideoCall peer={this.props.peer}/>
+          <FileShare peer={this.props.peer}/>
+          <FileDisplay peer={this.props.peer}/>
         </div>
       )
     }
   })
+
+  var VideoChat = React.createClass({
+    render: function() {
+      return (
+        <div>Video chat</div>
+      )
+    }
+  });
+
+  var FileShare = React.createClass({
+    render: function() {
+      return (
+        <div>FileShare</div>
+      );
+    }
+  });
+
+  var FileDisplay = React.createClass({
+    render: function() {
+      return (
+        <div>FileDisplay</div>
+      )
+    }
+  });
 
 module.exports = Messenger;

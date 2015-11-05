@@ -32,7 +32,7 @@ module.exports = function(app, passport) {
       user = req.user;
       if (!user) {
         return res.status(404).json({
-          user: "Not Found"
+          user: 'Not Found'
         });
       }
         return res.status(200).json({

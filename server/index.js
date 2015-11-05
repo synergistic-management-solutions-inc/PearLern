@@ -51,7 +51,6 @@ if (process.env.NODE_ENV !== 'test') {
     next();
   });
 
-
   // Start the server!
   var port = process.env.PORT || 4000;
   var server = app.listen(port);
@@ -63,7 +62,7 @@ if (process.env.NODE_ENV !== 'test') {
       ]
     })
   );
-  app.use('/peerjs', new ExpressPeerServer(server, {}));
+  app.use('/peerjs', new ExpressPeerServer(server, { debug: true }));
   require('./routes')(app, passport);
   console.log('Listening on port', port);
 } else {
