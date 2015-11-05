@@ -62,11 +62,31 @@ var Users = React.createClass({
     return (
       <div>{this.props.userList
         .map(function(element) {
-          return element.name
+          return <User user={element} />
         })
       }</div>
     )
   }
+});
+
+var User = React.createClass({
+  render: function() {
+    return (
+      <div className="col s6">
+        <ul>
+          <h5>{this.props.user.username}</h5>
+          <li>
+            Name: {this.props.user.name}
+          </li>
+          <li>
+            About: {this.props.user.about}
+          </li>
+          <li>
+            Interests: {this.props.user.interests.join(', ')}
+          </li>
+        </ul>
+        </div>
+  )}
 });
 
 
