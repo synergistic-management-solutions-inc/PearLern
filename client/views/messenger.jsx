@@ -40,10 +40,10 @@ const RaisedButton = require('material-ui/lib/raised-button');
           }
         })
 
-        if (!component.props.otherUser){
-          var firstContact = state.contacts[0];
-          component.props.displayConversation(firstContact);
-        }
+        // if (!component.props.otherUser){
+        //   var firstContact = state.contacts[0];
+        //   component.props.displayConversation(firstContact);
+        // }
         //setting the state will automatically re-render
         component.setState(state);
       })
@@ -59,11 +59,13 @@ const RaisedButton = require('material-ui/lib/raised-button');
       })
 
       return (
-        <div className="col s2">
-          <div className="contacts" >
-            <h4>Contacts</h4>
-            <div>
-              {contacts}
+        <div className="col s3">
+          <div className="card light-blue darken-1">
+            <div className="contacts">
+              <div className="card-content">
+                <h4>Contacts</h4>
+                {contacts}
+              </div>
             </div>
           </div>
         </div>
@@ -75,7 +77,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
   var OtherUser = React.createClass({
     render: function(){
       return (
-        <h5>{this.props.otherUser} </h5>
+        <h5>{this.props.otherUser}</h5>
       );
     }
   })
@@ -98,7 +100,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
         'to': this.props.otherUser,
         'from': currentUser,
         'text': this.refs.message.getDOMNode().value
-        };
+      };
 
       $.ajax({
         type: 'POST',
@@ -113,8 +115,8 @@ const RaisedButton = require('material-ui/lib/raised-button');
     render: function(){
       return (
         <div>
-          <input ref='message' type='text'></input>
-          <RaisedButton label="Send" className="send-button" onClick={this.sendMessage}/>
+          <input id='mess' ref='message' type='text'></input>
+          <RaisedButton id='messButton' label="Send" type="button" className="send-button" onClick={this.sendMessage}/>
         </div>
       )
     }
@@ -142,12 +144,11 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
       return (
         <div>
-          <div className="convoWith">Your conversation with:</div>
           <OtherUser otherUser={this.props.conversation.username}/>
-          {conversation}
           <NewMessage currentUser={currentUser}
                       otherUser={this.props.conversation.username}
                       update={this.props.update}/>
+          {conversation}
         </div>
         )
     }
@@ -194,12 +195,54 @@ const RaisedButton = require('material-ui/lib/raised-button');
         }
       })
 
+      if (this.props.otherUser) {
+        return (
+          <div className="col s4">
+            <div className="card grey lighten-3">
+              <div className="card-content">
+                <Conversation key={conversation.messages}
+                              conversation={conversation}
+                              update={this.update}
+                              currentUser={currentUser}/>
+              </div>
+            </div>
+          </div>
+        )
+      } else {
+        return (
+          <div className="col s4">
+            <div className="card grey lighten-3">
+              <div className="card-content">
+                Select a contact to connect with.
+              </div>
+            </div>
+          </div>
+        )
+      }
+    }
+  })
+
+  var VideoCall = React.createClass({
+    getInitialState: function() {
+      return {
+        holla: []
+      };
+    },
+
+    render: function() {
       return (
-        <div className="col s4 offset-s3">
-          <Conversation key={conversation.messages}
-                        conversation={conversation}
-                        update={this.update}
-                        currentUser={currentUser}/>
+        <div className="col s5">
+          <div className="vidWindow card light-blue darken-1">
+            <div className="card-content">
+              <div className="z-depth-1 video-container videoPlaceholder">
+                <iframe width="853" height="480" src="//www.youtube.com/embed/Q8TXgCzxEnw?rel=0"
+                  frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+            <div className="card-action">
+              <a href="#">CONNECT</a>
+            </div>
+          </div>
         </div>
       )
     }
@@ -237,6 +280,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
                     currentUser={this.props.currentUser}/>
           <Conversations otherUser={this.state.otherUser}
                           currentUser={this.props.currentUser}/>
+          <VideoCall />
         </div>
       )
     }

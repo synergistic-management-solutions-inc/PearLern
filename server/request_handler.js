@@ -208,7 +208,7 @@ exports.getMessages = function(req, res){
         // By created_at timestamp
         // Using underscore
         _.each(allMessages, function(messages, user) {
-          allMessages[user] = _.sortBy(messages, 'created_at');
+          allMessages[user] = _.sortBy(messages, 'created_at').reverse();
         });
 
         var conversations = [];
