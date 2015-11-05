@@ -24,21 +24,7 @@ var getAll = function(cb) {
   console.log("getting all users #5");
   return $.ajax({
     type: 'GET',
-    url: '/users/',
-
-    // success: function(res) {
-    //   //   if (self.isMounted()) {
-    //   //     self.setState({
-    //   //       users: res.users,
-    //   //       message: self.props.message,
-    //   //       currentUser: self.props.currentUser
-    //   //     })
-    //   //   }
-    //   // }
-    //   console.log("users received #6 " , res.users)
-    //   var data = res.users;
-    //   _store.list = data;
-    // }
+    url: '/users/'
   }).then(function(res) {
     console.log("users received #6", res.users);
     var data = res.users;
