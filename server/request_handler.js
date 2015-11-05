@@ -12,12 +12,16 @@ exports.getUsers = function(req, res){
       //the client must check
       //if these users have profiles
       //I'll send empty strings
+
       userData.push({
         id: user._id,
         username: user.username,
         name: profile.name || '',
         about: profile.about || '',
-        interests: profile.interests || ''
+        location: profile.location || '',
+        website: profile.website || '',
+        github: profile.github || '',
+        lenguages: profile.lenguages || ''
       });
     });
     res.status(200).send({'users': userData});

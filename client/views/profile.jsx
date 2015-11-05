@@ -34,9 +34,13 @@ var Profile = React.createClass({
   getInitialState : function() {
     return { 
       modalIsOpen : false,
-      nameValue : '',
-      aboutValue : '',
-      interestsValue : ''
+      nameVal : '',
+      aboutVal : '',
+      locationVal: '',
+      websiteVal: '',
+      githubVal: '',
+      joinedVal: '',
+      lenguagesVal : ''
     };
   },
 
@@ -58,15 +62,18 @@ var Profile = React.createClass({
         if (self.isMounted()) {
 
           self.setState({
-            nameValue : res.name,
-            aboutValue : res.about,
-            interestsValue : res.interests.join(',')
+            nameVal : res.name,
+            aboutVal : res.about,
+            locationVal: res.location,
+            websiteVal: res.website,
+            githubVal: res.github,
+            joinedVal: res.joined,
+            lenguagesVal : res.lenguages.join(',')
           });
         }
       }
     });
   },
-
 
   openModal : function() {
     this.setState({modalIsOpen: true});
@@ -78,25 +85,42 @@ var Profile = React.createClass({
 
   // Handlers for user input fields. Updates state (value of input)
   updateName : function(event) {
-    this.setState({ nameValue : event.target.value });
+    this.setState({ nameVal : event.target.value });
   },
-
+  
   updateAbout : function(event) {
-    this.setState({ aboutValue : event.target.value });
+    this.setState({ aboutVal : event.target.value });
+  },
+  
+  updateLocation : function(event) {
+    this.setState({ locationVal : event.target.value });
+  },
+  
+  updateWebsite : function(event) {
+    this.setState({ websiteVal : event.target.value });
   },
 
-  updateInterests : function(event) {
-    this.setState({ interestsValue : event.target.value });
+  updateGithub : function(event) {
+    this.setState({ githubVal : event.target.value });
+  },
+
+  updateLenguages : function(event) {
+    this.setState({ lenguagesVal : event.target.value });
   },
 
   saveData : function() {
     var currentUser = this.props.currentUser;
-    var interests = this.state.interestsValue.split(',');
-
+    var leguanges = this.state.lenguagesVal.split(',');
+    // var interests = this.state.interestsValue.split(',');
+    // take care of the lenguages
+    
     var data = {
-      name : this.state.nameValue,
-      about : this.state.aboutValue,
-      interests : interests
+      name : this.state.nameVal,
+      about : this.state.aboutVal,
+      location: this.state.locationVal,
+      website: this.state.websiteVal,
+      github: this.state.githubVal,
+      lenguages : lenguages
     };
 
     $.ajax({
@@ -110,23 +134,39 @@ var Profile = React.createClass({
 
   // Render all the things!
   render : function () {
-    var name = this.state.nameValue;
-    var about = this.state.aboutValue;
-    var interests = this.state.interestsValue;
+    var name = this.state.nameVal;
+    var about = this.state.aboutVal;
+    var location = this.state.aboutVal;
+    var website = this.state.aboutVal;
+    var github = this.state.aboutVal;
+    var joined = this.state.joinedVal;
+    var lenguages = this.state.lenguagesVal;
     return (<div>
               <div className="container">
                 <div className="row">
-                  <div className="col s6 offset-s3">
-                    <div className="card light-blue">
+                  <div className="col s12">
+                    <div className="card blue-grey darken-1">
                       <div className="card-content white-text">
                         <span className="card-title">My Profile</span>
                         <div className="card-action">
                           <div className="black-text">Name:</div>
-                          <div className="email">{name}</div>
+                          <div className="name">{name}</div>
+                          
                           <div className="black-text">About:</div>
                           <div className="about">{about}</div>
-                          <div className="black-text">Interests:</div>
-                          <div className="interests">{interests}</div>
+                          
+                          <div className="black-text">Location:</div>
+                          <div className="location">{location}</div>
+                          
+                          <div className="black-text">Website:</div>
+                          <div className="website">{website}</div>
+                          
+                          <div className="black-text">Github:</div>
+                          <div className="github">{github}</div>
+                          
+                          <div className="black-text">Lenguages:</div>
+                          <div className="lenguages">{lenguages}</div>
+                          
                           <div className="push"></div>
                           <RaisedButton label="Edit Profile" className="edit-profile" onClick={this.openModal}/>
                         </div>
@@ -145,8 +185,17 @@ var Profile = React.createClass({
                 <div className="edit-about">About
                   <input type="text" value={about} onChange={this.updateAbout} />
                 </div>
-                <div className="edit-interests">Interests
-                  <input type="text" value={interests} onChange={this.updateInterests} />
+                <div className="edit-location">Location
+                  <input type="text" value={location} onChange={this.updateLocation} />
+                </div>
+                <div className="edit-website">Website
+                  <input type="text" value={website} onChange={this.updateWebsite} />
+                </div>
+                <div className="edit-github">Github
+                  <input type="text" value={github} onChange={this.updateGithub} />
+                </div>
+                <div className="edit-lenguages">lenguages
+                  <input type="text" value={lenguages} onChange={this.updateLenguages} />
                 </div>
                 <button className="edit-save" onClick={this.saveData}>Save</button>
                 </Modal>
