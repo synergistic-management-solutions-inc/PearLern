@@ -21,6 +21,8 @@ var Nav = React.createClass({
     })
     .then(function (res){
       storeUser('');
+      window.localStorage.removeItem('theUser');
+      window.localStorage.removeItem('messageTo');
       console.log('/logout response', res);
     });
   },

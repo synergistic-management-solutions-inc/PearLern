@@ -32,16 +32,22 @@ component. That's what's happening in the cloneElement line.
 
 var App = React.createClass({
   getInitialState: function(){
+    var currUser = window.localStorage.getItem('theUser');
+    var messTo = window.localStorage.getItem('messageTo');
     return {
-      currentUser: null,
-      messageTo: null
+      currentUser: currUser || null,
+      messageTo: messTo || null
     };
   },
   storeUser: function(username){
-    this.setState({currentUser: username});
+    this.setState({currentUser: username}, function() {
+      window.localStorage.setItem('theUser', username);
+    });
   },
   message: function(username){
-    this.setState({messageTo: username});
+    this.setState({messageTo: username}, function() {
+      window.localStorage.setItem('messageTo', username);
+    });
   },
   render: function() {
     return (
