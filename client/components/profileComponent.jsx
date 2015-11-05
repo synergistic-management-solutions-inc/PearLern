@@ -2,6 +2,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var Modal = require('react-modal');
+var profileActions = require('../actions/profileActions');
+var userStore = require('../stores/userStore');
 
 const RaisedButton = require('material-ui/lib/raised-button');
 
@@ -35,10 +37,11 @@ var Profile = React.createClass({
 	      nameValue : '',
 	      aboutValue : '',
 	      interestsValue : ''
-    	}
+    	};
   },
 
   componentWillMount: function() {
+    console.log("Did you reach me?")
     var self = this;
     var currentUser = this.props.currentUser;
     //this is a pretty hacky fix to the fact
