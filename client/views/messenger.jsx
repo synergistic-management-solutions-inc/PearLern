@@ -2,9 +2,23 @@ var React = require('react');
 var $ = require('jquery');
 const RaisedButton = require('material-ui/lib/raised-button');
 
+  var peer = null;
+  var cons = {};
+
   //an individual contact component
   var Contact = React.createClass({
-    selectUser: function(){
+    selectUser: function() {
+      console.log('Contact - this.props:', this.props);
+      var contact = this.props.contact;
+      var currentUser = this.props.currentUser;
+      var peerCon = peer.connect(contact);
+      cons[this.props.contact] = peerCon;
+
+      console.log('Contact peerCon:', peerCon);
+      peerCon.on('open', function() {
+        console.log('Connected to peer:', contact);
+        peerCon.send('Hi ' + contact + '! I am ' + currentUser);
+      });
       this.props.userSelected(this.props.contact);
     },
     render: function(){
@@ -44,6 +58,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
         //   var firstContact = state.contacts[0];
         //   component.props.displayConversation(firstContact);
         // }
+
         //setting the state will automatically re-render
         component.setState(state);
       })
@@ -54,8 +69,9 @@ const RaisedButton = require('material-ui/lib/raised-button');
     render: function(){
 
       var userSelected = this.userSelected;
+      var currentUser = this.props.currentUser;
       var contacts = this.state.contacts.map(function(contact){
-        return <div className="z-depth-1"><Contact userSelected={userSelected} key={contact} contact={contact} /></div>
+        return ( <div className="z-depth-1"><Contact currentUser={currentUser} userSelected={userSelected} key={contact} contact={contact} /></div> )
       })
 
       return (
@@ -231,17 +247,14 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
     render: function() {
       return (
-        <div className="col s5">
-          <div className="vidWindow card light-blue darken-1">
-            <div className="card-content">
-              <div className="z-depth-1 video-container videoPlaceholder">
-                <iframe width="853" height="480" src="//www.youtube.com/embed/Q8TXgCzxEnw?rel=0"
-                  frameborder="0" allowfullscreen></iframe>
-              </div>
+        <div className="vidWindow card light-blue darken-1">
+          <div className="card-content">
+            <div className="z-depth-1 video-container videoPlaceholder">
+
             </div>
-            <div className="card-action">
-              <a href="#">CONNECT</a>
-            </div>
+          </div>
+          <div className="card-action">
+            <a href="#">CONNECT</a>
           </div>
         </div>
       )
@@ -261,16 +274,33 @@ const RaisedButton = require('material-ui/lib/raised-button');
         otherUser: this.props.messageTo
       }
     },
+
     displayConversation: function(username){
       this.setState({otherUser: username});
     },
     componentWillMount: function(){
+      console.log('Messenger will mount')
       //this is a pretty hacky fix to the fact
       //that we don't know how sessions work
       //in passport
       if (!this.props.currentUser){
         this.props.history.pushState(null, '/signin');
+        return;
       }
+
+      peer = new Peer(this.props.currentUser, {
+        host: window.location.hostname,
+        port: process.env.PORT, // provided to client by envify
+        path: '/peerjs'
+      });
+
+      peer.on('connection', function(con) {
+        console.log('New connection');
+        con.on('data', function(data) {
+          console.log(data);
+        });
+      });
+
     },
     render: function(){
       return (
@@ -280,10 +310,35 @@ const RaisedButton = require('material-ui/lib/raised-button');
                     currentUser={this.props.currentUser}/>
           <Conversations otherUser={this.state.otherUser}
                           currentUser={this.props.currentUser}/>
-          <VideoCall />
+          <div className="col s5">
+            <div className="row"><VideoCall /></div>
+            <div className="row"><FileShare /></div>
+            <div className="row"><FileDisplay /></div>
+          </div>
         </div>
       )
     }
   })
+
+  var FileShare = React.createClass({
+    render: function() {
+      return (
+        <div className="file-field input-field">
+          <div className="btn">
+            <span>File</span>
+            <input type="file" />
+          </div>
+        </div>
+      );
+    }
+  });
+
+  var FileDisplay = React.createClass({
+    render: function() {
+      return (
+        <div>FileDisplay</div>
+      )
+    }
+  });
 
 module.exports = Messenger;
