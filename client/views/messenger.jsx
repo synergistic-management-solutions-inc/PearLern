@@ -5,6 +5,16 @@ const RaisedButton = require('material-ui/lib/raised-button');
   var peer = null;
   var cons = {};
 
+  var getFileType = function(fileType) {
+    if (fileType.match(/image.*/)) {
+      return 'image';
+    } else if (fileType.match(/text.*/)) {
+      return 'text';
+    } else {
+      return 'text';
+    }
+  };
+
   //an individual contact component
   var Contact = React.createClass({
     selectUser: function() {
@@ -321,12 +331,22 @@ const RaisedButton = require('material-ui/lib/raised-button');
   })
 
   var FileShare = React.createClass({
+    selectFile: function(e) {
+      var el = e.target;
+      console.log('we are doing stuff!!!!', e);
+      var file = el.files[0];
+      // var type = getFileType(file.type);
+      console.log('File got!', file);
+
+      $('#fileInfo').text('asdf');
+    },
+
     render: function() {
       return (
         <div className="file-field input-field">
           <div className="btn">
-            <span>File</span>
-            <input type="file" />
+            <span>Select a File</span>
+            <input type="file" onChange={this.selectFile} />
           </div>
         </div>
       );
@@ -336,7 +356,14 @@ const RaisedButton = require('material-ui/lib/raised-button');
   var FileDisplay = React.createClass({
     render: function() {
       return (
-        <div>FileDisplay</div>
+        <div>
+          <div id="fileInfo">
+            FileInfo
+          </div>
+          <div id="displayArea">
+            DisplayArea
+          </div>
+        </div>
       )
     }
   });

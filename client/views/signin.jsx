@@ -41,7 +41,7 @@ var SignIn = React.createClass({
       storeUser(username);
 
       //redirects to profile page 
-      history.pushState(null, '/profile');
+      history.pushState(null, '/messenger');
 
       //this will work but is a bit uncouth
       //also, need sessions  
