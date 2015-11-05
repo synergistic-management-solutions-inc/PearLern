@@ -54,10 +54,6 @@ var UserView = React.createClass({
 });
 
 var Users = React.createClass({
-  componentDidMount: function() {
-    var users = this.props.userList
-    console.log(users)
-  },
   render: function() {
     return (
       <div>{this.props.userList
