@@ -94,7 +94,10 @@ exports.submitProfile = function(req, res){
   var profileInfo = {};
   profileInfo.name = req.body.name;
   profileInfo.about = req.body.about;
-  profileInfo.interests = req.body.interests;
+  profileInfo.location = req.body.location;
+  profileInfo.website = req.body.website;
+  profileInfo.github = req.body.github;
+  profileInfo.lenguages = req.body.lenguages;
 
   User.findOne({_id: userId}, function(err, user){
     if (err || !user){
