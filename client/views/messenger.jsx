@@ -140,9 +140,10 @@ const RaisedButton = require('material-ui/lib/raised-button');
     },
     render: function(){
       return (
-        <div>
-          <input id='mess' ref='message' type='text'></input>
-          <RaisedButton id='messButton' label="Send" type="button" className="send-button" onClick={this.sendMessage}/>
+        <div className="row messageInput">
+          <input className="col s9" id="mess" ref="message" type="text" placeholder="Type here"></input>
+          <a id="messButton" label="Send" type="button" className="btn btn-small"
+            onClick={this.sendMessage}>+</a>
         </div>
       )
     }
