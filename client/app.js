@@ -15,16 +15,14 @@ var Nav = require('./views/nav.jsx');
 var AllUsers = require('./views/otherUsers.jsx');
 var Messenger = require('./views/messenger.jsx');
 var Footer = require('./views/footer.jsx');
-var UserTest = require('./components/otherUsers.jsx')
+var UserView = require('./components/newotherUsers.jsx');
 
 /*
 There's some unforunate hacky stuff going on here.
-
 Specifically:
   - 'state.messageTo' should only be passed to the Messenger component
   - 'storeUser' and 'history' should only be passed to the SignUp and SignIn components
   - 'message' should only be passed to the AllUsers component
-
 Doing that seems like it should be quite straight forward. Ran out of time
 to figure it out. So instead I passed all of them to every single child
 component. That's what's happening in the cloneElement line.
@@ -55,7 +53,6 @@ var App = React.createClass({
             message: this.message,
             history: this.props.history
           })}
-        <UserTest />
         <Footer />
       </div>
     );
@@ -71,6 +68,7 @@ ReactDOM.render((
       <Route path="profile" component={Profile} />
       <Route path="all" component={AllUsers} />
       <Route path="messenger" component={Messenger} />
+      <Route path="newAll" component={UserView} />
     </Route>
   </Router>
 ),

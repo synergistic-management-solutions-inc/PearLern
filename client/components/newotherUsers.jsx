@@ -7,7 +7,7 @@ var userStore = require('../stores/userStore');
 
 
 
-var Users = React.createClass({
+var UserView = React.createClass({
   getInitialState: function() {
     return {
       users: []
@@ -37,15 +37,37 @@ var Users = React.createClass({
   },
 
   render: function() {
-      console.log('users information: ' + this.state.users);
-      if (this.state.users.length) {
-        var holla = this.state.users.map(function (e) {
-          return e.name;
-        });
-        return <div>{holla}</div>
-      }
-      return <div>hi</div>
-    }
+    return (
+      <div>
+        <div className="row">
+          <div className="col s6">
+            <img className="responsive-img" src="http://www.actclassy.com/wp-content/uploads/2012/04/Computer-Programmers.jpg" />
+          </div>
+          <div className="col s6">
+            <h4 className="other-users-header">Find A Partner</h4>
+            <Users userList={this.state.users} />
+          </div>
+        </div>
+      </div>
+    )
+  }
 });
 
-module.exports = Users;
+var Users = React.createClass({
+  componentDidMount: function() {
+    var users = this.props.userList
+    console.log(users)
+  },
+  render: function() {
+    return (
+      <div>{this.props.userList
+        .map(function(element) {
+          return element.name
+        })
+      }</div>
+    )
+  }
+});
+
+
+module.exports = UserView;
