@@ -3,6 +3,15 @@ html, body {
     height: 100%;
 }
 
+#app {
+  margin: 0;
+  width: 100%;
+}
+
+.videoPlaceholder {
+  margin: auto;
+}
+
 .nav-wrapper {
   padding-left: 30px;
 }
@@ -52,9 +61,9 @@ footer .row, .push {
 
 .convoWith {
   margin-top: 30px;
-
 }
 
-.z-depth-1 {
-  border-radius: 5px;
+.container {
+  width: 100%;
+  margin: auto;
 }
