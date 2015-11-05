@@ -15,7 +15,7 @@ var UserSchema = new Schema({
       website: String,
       joined: String,
       github: String,
-      lenguages: []
+      interests: []
     }
 });
 

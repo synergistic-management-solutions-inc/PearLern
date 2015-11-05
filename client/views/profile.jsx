@@ -34,13 +34,13 @@ var Profile = React.createClass({
   getInitialState : function() {
     return { 
       modalIsOpen : false,
-      nameVal : '',
-      aboutVal : '',
+      nameValue : '',
+      aboutValue : '',
       locationVal: '',
       websiteVal: '',
       githubVal: '',
       joinedVal: '',
-      lenguagesVal : ''
+      interestValue : ''
     };
   },
 
@@ -63,13 +63,13 @@ var Profile = React.createClass({
         console.log('get response: ', res);
         if (self.isMounted()) {
           self.setState({
-            nameVal : res.name,
-            aboutVal : res.about,
+            nameValue : res.name,
+            aboutValue : res.about,
             locationVal: res.location,
             websiteVal: res.website,
             githubVal: res.github,
             joinedVal: res.joined,
-            lenguagesVal : res.lenguages.join(',')
+            interestsValue : res.interests.join(',')
           });
 
         }
@@ -87,11 +87,11 @@ var Profile = React.createClass({
 
   // Handlers for user input fields. Updates state (value of input)
   updateName : function(event) {
-    this.setState({ nameVal : event.target.value });
+    this.setState({ nameValue : event.target.value });
   },
   
   updateAbout : function(event) {
-    this.setState({ aboutVal : event.target.value });
+    this.setState({ aboutValue : event.target.value });
   },
   
   updateLocation : function(event) {
@@ -106,23 +106,22 @@ var Profile = React.createClass({
     this.setState({ githubVal : event.target.value });
   },
 
-  updateLenguages : function(event) {
-    this.setState({ lenguagesVal : event.target.value });
+  updateInterests : function(event) {
+    this.setState({ interestsValue : event.target.value });
   },
 
   saveData : function() {
-    var currentUser = this.props.currentUser;
-    var lenguages = this.state.lenguagesVal.split(',');
-    // var interests = this.state.interestsValue.split(',');
-    // take care of the lenguages
+    var currentUser = this.props.currentUser;    
+    var interests = this.state.interestsValue.split(',');
+
 
     var data = {
-      name : this.state.nameVal,
-      about : this.state.aboutVal,
+      name : this.state.nameValue,
+      about : this.state.aboutValue,
       location: this.state.locationVal,
       website: this.state.websiteVal,
       github: this.state.githubVal,
-      lenguages : lenguages
+      interests : interests
     };
     console.log(data);
     $.ajax({
@@ -136,13 +135,13 @@ var Profile = React.createClass({
 
   // Render all the things!
   render : function () {
-    var name = this.state.nameVal;
-    var about = this.state.aboutVal;
+    var name = this.state.nameValue;
+    var about = this.state.aboutValue;
     var location = this.state.locationVal;
     var website = this.state.websiteVal;
     var github = this.state.githubVal;
     var joined = this.state.joinedVal;
-    var lenguages = this.state.lenguagesVal;
+    var interests = this.state.interestsValue;
     return (<div>
               <div className="container">
                 <div className="row">
@@ -166,8 +165,8 @@ var Profile = React.createClass({
                           <div className="black-text">Github:</div>
                           <div className="github">{github}</div>
                           
-                          <div className="black-text">Lenguages:</div>
-                          <div className="lenguages">{lenguages}</div>
+                          <div className="black-text">Interests:</div>
+                          <div className="interests">{interests}</div>
                           
                           <div className="push"></div>
                           <RaisedButton label="Edit Profile" className="edit-profile" onClick={this.openModal}/>
@@ -187,7 +186,7 @@ var Profile = React.createClass({
                 <div className="edit-about">About
                   <input type="text" value={about} onChange={this.updateAbout} />
                 </div>
-                <div className="edit-location">Loc
+                <div className="edit-location">Location
                   <input type="text" value={location} onChange={this.updateLocation} />
                 </div>
                 <div className="edit-website">Website
@@ -196,8 +195,8 @@ var Profile = React.createClass({
                 <div className="edit-github">Github
                   <input type="text" value={github} onChange={this.updateGithub} />
                 </div>
-                <div className="edit-lenguages">lenguages
-                  <input type="text" value={lenguages} onChange={this.updateLenguages} />
+                <div className="edit-interests">Interests
+                  <input type="text" value={interests} onChange={this.updateInterests} />
                 </div>
                 <button className="edit-save" onClick={this.saveData}>Save</button>
                 </Modal>

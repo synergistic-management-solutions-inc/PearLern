@@ -21,7 +21,7 @@ exports.getUsers = function(req, res){
         location: profile.location || '',
         website: profile.website || '',
         github: profile.github || '',
-        lenguages: profile.lenguages || ''
+        interests: profile.interests || ''
       });
     });
     res.status(200).send({'users': userData});
@@ -97,7 +97,7 @@ exports.submitProfile = function(req, res){
   profileInfo.location = req.body.location;
   profileInfo.website = req.body.website;
   profileInfo.github = req.body.github;
-  profileInfo.lenguages = req.body.lenguages;
+  profileInfo.interests = req.body.interests;
 
   User.findOne({_id: userId}, function(err, user){
     if (err || !user){
