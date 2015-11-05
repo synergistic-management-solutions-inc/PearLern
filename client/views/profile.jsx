@@ -59,8 +59,9 @@ var Profile = React.createClass({
       type : 'GET',
       url : '/users/' + currentUser,
       success : function(res) {
+        console.log('self is mounted? ', self.isMounted());
+        console.log('get response: ', res);
         if (self.isMounted()) {
-
           self.setState({
             nameVal : res.name,
             aboutVal : res.about,
@@ -70,6 +71,7 @@ var Profile = React.createClass({
             joinedVal: res.joined,
             lenguagesVal : res.lenguages.join(',')
           });
+
         }
       }
     });
@@ -110,10 +112,10 @@ var Profile = React.createClass({
 
   saveData : function() {
     var currentUser = this.props.currentUser;
-    var leguanges = this.state.lenguagesVal.split(',');
+    var lenguages = this.state.lenguagesVal.split(',');
     // var interests = this.state.interestsValue.split(',');
     // take care of the lenguages
-    
+
     var data = {
       name : this.state.nameVal,
       about : this.state.aboutVal,
@@ -122,7 +124,7 @@ var Profile = React.createClass({
       github: this.state.githubVal,
       lenguages : lenguages
     };
-
+    console.log(data);
     $.ajax({
       type : 'POST',
       dataType : 'json',
@@ -136,9 +138,9 @@ var Profile = React.createClass({
   render : function () {
     var name = this.state.nameVal;
     var about = this.state.aboutVal;
-    var location = this.state.aboutVal;
-    var website = this.state.aboutVal;
-    var github = this.state.aboutVal;
+    var location = this.state.locationVal;
+    var website = this.state.websiteVal;
+    var github = this.state.githubVal;
     var joined = this.state.joinedVal;
     var lenguages = this.state.lenguagesVal;
     return (<div>
@@ -185,7 +187,7 @@ var Profile = React.createClass({
                 <div className="edit-about">About
                   <input type="text" value={about} onChange={this.updateAbout} />
                 </div>
-                <div className="edit-location">Location
+                <div className="edit-location">Loc
                   <input type="text" value={location} onChange={this.updateLocation} />
                 </div>
                 <div className="edit-website">Website

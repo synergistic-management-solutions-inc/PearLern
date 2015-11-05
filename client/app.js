@@ -65,7 +65,7 @@ ReactDOM.render((
   <Router>
     <Route path="/" component={App}>
       <IndexRoute component={Landing} />
-      <Route path="signin" component={AuthView} />
+      <Route path="signin" component={SignIn} />
       <Route path="signup" component={SignUp} />
       <Route path="profile" component={Profile} />
       <Route path="all" component={AllUsers} />
