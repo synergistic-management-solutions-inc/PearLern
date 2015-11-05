@@ -2,12 +2,12 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../database/models/user.js');
 
-
 module.exports = function(passport) {
-  //for sessions
+
   passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user._id);
   });
+
   passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
       done(err, user);
@@ -15,13 +15,11 @@ module.exports = function(passport) {
   });
 
   passport.use('local-signup', new LocalStrategy({
-      usernameField: "username",
-      passwordField: "password",
       passReqToCallback: true
     },
     //process of sign up -
     function(req, username, password, done) {
-      //node. asnychc
+      //node. async
       process.nextTick(function() {
         User.findOne({
           username: username
@@ -48,12 +46,8 @@ module.exports = function(passport) {
       });
     }));
 
-  passport.use('local-login', new LocalStrategy({
-      usernameField: "username",
-      passwordField: "password",
-      passReqToCallback: true,
-    },
-    function(req, username, password, done) {
+  passport.use('local-login', new LocalStrategy({},
+    function(username, password, done) {
       process.nextTick(function() {
         User.findOne({
           'username': username
@@ -62,16 +56,14 @@ module.exports = function(passport) {
             return done(err);
           }
           if (!user) {
-            return done(null, false, req.flash('loginMessage', 'No User'));
+            return done(null, false);
           }
           if (!user.validPassword(password)) {
-            return done(null, false, req.flash('loginMessage', 'Bad Pass'));
+            return done(null, false);
           }
           return done(null, user);
         });
       });
     }
-
   ));
-
 };
