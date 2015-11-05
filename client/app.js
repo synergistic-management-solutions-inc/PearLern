@@ -17,6 +17,7 @@ var AllUsers = require('./views/otherUsers.jsx');
 var Messenger = require('./views/messenger.jsx');
 var Footer = require('./views/footer.jsx');
 var UserView = require('./components/newotherUsers.jsx');
+var AuthView = require('./components/auth.jsx');
 
 /*
 There's some unforunate hacky stuff going on here.
