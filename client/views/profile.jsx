@@ -40,7 +40,7 @@ var Profile = React.createClass({
       websiteVal: '',
       githubVal: '',
       joinedVal: '',
-      interestValue : ''
+      interestsValue : ''
     };
   },
 
