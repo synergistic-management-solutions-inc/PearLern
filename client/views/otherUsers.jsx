@@ -4,7 +4,7 @@ var $ = require('jquery');
 const RaisedButton = require('material-ui/lib/raised-button');
 var Link = require('react-router').Link;
 var userActions = require('../actions/userActions');
-var userStore = require('../stores/userStore')
+var userStore = require('../stores/userStore');
 
 
 // Top-level component
@@ -20,10 +20,10 @@ var UserView = React.createClass({
 
   componentWillMount: function(){
     //this is a pretty hacky fix to the fact
-    //that we don't know how sessions work
+    //that we don't know how sessions work 
     //in passport
-    if (!this.props.currentUser){
-      this.props.history.pushState(null, '/signin');
+    if (!this.props.currentUser){ 
+      this.props.history.pushState(null, '/signin'); 
     }
   },
 
@@ -90,8 +90,8 @@ var Users = React.createClass({
 
       success: function(res) {
         if (self.isMounted()) {
-          self.setState({users: res.users,
-            message: self.props.message,
+          self.setState({users: res.users, 
+            message: self.props.message, 
             currentUser: self.props.currentUser})
         }
       }
@@ -107,7 +107,7 @@ var Users = React.createClass({
       <div>
         {this.state.users
           .filter(function (element) {
-            // filters out current user
+            // filters out current user 
             if (element.username == currentUser){
               return false;
             }
@@ -120,7 +120,7 @@ var Users = React.createClass({
               return true;
             }
 
-            // filters to show only users whose
+            // filters to show only users whose 
             // interests contain the search query
             return element.interests
             .some(function(interest){
@@ -130,8 +130,8 @@ var Users = React.createClass({
             })
           })
           .map(function (element) {
-            return <User  key={element.username}
-                          user={element}
+            return <User  key={element.username} 
+                          user={element} 
                           message={message} />
           })
         }
@@ -164,7 +164,7 @@ var User = React.createClass({
           </li>
         </ul>
         <Link to="/messenger">
-          <RaisedButton onClick={this.openMessenger}
+          <RaisedButton onClick={this.openMessenger} 
                         label="Message" />
         </Link>
       </div>
