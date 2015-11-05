@@ -2,15 +2,22 @@ var React = require('react');
 var $ = require('jquery');
 const RaisedButton = require('material-ui/lib/raised-button');
 
+  var peer = null;
+  var cons = {};
+
   //an individual contact component
   var Contact = React.createClass({
-    selectUser: function(){
-      var peer = this.props.peer.peer;
-      this.props.peer.con[this.props.otherUser] = peer.connect(this.props.otherUser);
-      con = this.props.peer.con[this.props.otherUser];
-      con.on('open', function() {
-        console.log('Connected to peer:', this.props.otherUser);
-        con.send('Hi ' + this.props.otherUser + '! I am ' + this.props.currentUser);
+    selectUser: function() {
+      console.log('Contact - this.props:', this.props);
+      var contact = this.props.contact;
+      var currentUser = this.props.currentUser;
+      var peerCon = peer.connect(contact);
+      cons[this.props.contact] = peerCon;
+
+      console.log('Contact peerCon:', peerCon);
+      peerCon.on('open', function() {
+        console.log('Connected to peer:', contact);
+        peerCon.send('Hi ' + contact + '! I am ' + currentUser);
       });
       this.props.userSelected(this.props.contact);
     },
@@ -62,8 +69,9 @@ const RaisedButton = require('material-ui/lib/raised-button');
     render: function(){
 
       var userSelected = this.userSelected;
+      var currentUser = this.props.currentUser;
       var contacts = this.state.contacts.map(function(contact){
-        return ( <div className="z-depth-1"><Contact userSelected={userSelected} key={contact} contact={contact} /></div> )
+        return ( <div className="z-depth-1"><Contact currentUser={currentUser} userSelected={userSelected} key={contact} contact={contact} /></div> )
       })
 
       return (
@@ -239,17 +247,14 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
     render: function() {
       return (
-        <div className="col s5">
-          <div className="vidWindow card light-blue darken-1">
-            <div className="card-content">
-              <div className="z-depth-1 video-container videoPlaceholder">
-                <iframe width="853" height="480" src="//www.youtube.com/embed/Q8TXgCzxEnw?rel=0"
-                  frameborder="0" allowfullscreen></iframe>
-              </div>
+        <div className="vidWindow card light-blue darken-1">
+          <div className="card-content">
+            <div className="z-depth-1 video-container videoPlaceholder">
+
             </div>
-            <div className="card-action">
-              <a href="#">CONNECT</a>
-            </div>
+          </div>
+          <div className="card-action">
+            <a href="#">CONNECT</a>
           </div>
         </div>
       )
@@ -266,16 +271,10 @@ const RaisedButton = require('material-ui/lib/raised-button');
         //this can be intially set to a particular user when
         //linked from the otherUsers page or it will be auto
         //set to the first user on the list
-        stuff: 'adsf',
-        // peer: null,
         otherUser: this.props.messageTo
       }
     },
-    getDefaultProps: function() {
-      return {
-        stuff: 'asdf'
-      };
-    },
+
     displayConversation: function(username){
       this.setState({otherUser: username});
     },
@@ -289,58 +288,47 @@ const RaisedButton = require('material-ui/lib/raised-button');
         return;
       }
 
-      // Connect to the peer server that facilitates the initial connection between 2 users
-      this.setState({ stuff: 'qwer' }, function() {
-        console.log('Peer stuff:', window.location.hostname, process.env.PORT, this.state.stuff, this.props.stuff);
+      peer = new Peer(this.props.currentUser, {
+        host: window.location.hostname,
+        port: process.env.PORT, // provided to client by envify
+        path: '/peerjs'
       });
 
-      this.setState({
-        con: {},
-        peer: new Peer(this.props.currentUser, {
-          host: window.location.hostname,
-          port: process.env.PORT, // provided to client by envify
-          path: '/peerjs'
-        })
-      }, function() {
-        console.log('peer:', this.state)
+      peer.on('connection', function(con) {
+        console.log('New connection');
+        con.on('data', function(data) {
+          console.log(data);
+        });
       });
-
-      // this.props.peer.on('connection', function(con) {
-      //   console.log('New connection');
-      //   con.on('data', function(data) {
-      //     console.log(data);
-      //   });
-      // });
 
     },
     render: function(){
       return (
         <div className="row">
-          <Contacts peer={this.props.peer} displayConversation={this.displayConversation}
+          <Contacts displayConversation={this.displayConversation}
                     otherUser={this.state.otherUser}
                     currentUser={this.props.currentUser}/>
           <Conversations otherUser={this.state.otherUser}
                           currentUser={this.props.currentUser}/>
-          <VideoCall peer={this.props.peer}/>
-          <FileShare peer={this.props.peer}/>
-          <FileDisplay peer={this.props.peer}/>
+          <div className="col s5">
+            <div className="row"><VideoCall /></div>
+            <div className="row"><FileShare /></div>
+            <div className="row"><FileDisplay /></div>
+          </div>
         </div>
       )
     }
   })
 
-  var VideoChat = React.createClass({
-    render: function() {
-      return (
-        <div>Video chat</div>
-      )
-    }
-  });
-
   var FileShare = React.createClass({
     render: function() {
       return (
-        <div>FileShare</div>
+        <div className="file-field input-field">
+          <div className="btn">
+            <span>File</span>
+            <input type="file" />
+          </div>
+        </div>
       );
     }
   });

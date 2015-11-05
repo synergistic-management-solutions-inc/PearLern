@@ -35,10 +35,10 @@ module.exports = function(app, passport) {
           user: 'Not Found'
         });
       }
-        return res.status(200).json({
-          'user' : user,
-          authenticated: true
-        });
+      return res.status(200).json({
+        'user' : user,
+        authenticated: true
+      });
   });
 
   routes.post('/signup', function(req, res, next) {
@@ -68,7 +68,8 @@ module.exports = function(app, passport) {
   routes.use(express.static(assetFolder));
 
   routes.get('/*', function(req, res) {
-    res.sendFile(assetFolder + '/index.html');
+    res.redirect('/');
+    // res.sendFile(assetFolder + '/index.html');
   });
 
   app.use('/', routes);

@@ -62,6 +62,8 @@ if (process.env.NODE_ENV !== 'test') {
       ]
     })
   );
+
+  // routes.use('/assets', express.static('./assets'));
   app.use('/peerjs', new ExpressPeerServer(server, { debug: true }));
   require('./routes')(app, passport);
   console.log('Listening on port', port);
