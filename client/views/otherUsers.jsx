@@ -3,6 +3,8 @@ var React = require('react');
 var $ = require('jquery');
 const RaisedButton = require('material-ui/lib/raised-button');
 var Link = require('react-router').Link;
+var userActions = require('../actions/userActions');
+var userStore = require('../stores/userStore');
 
 
 // Top-level component
