@@ -49,7 +49,7 @@ var Nav = React.createClass({
     }
     return (
       <nav>
-        <div className="nav-wrapper light-blue">
+        <div className="nav-wrapper blue-grey darken-4">
           <img className="pear-logo img-responsive" src="http://www.clker.com/cliparts/y/p/p/E/u/H/green-pear.svg" />
           <a href="#" className="pear-logo brand-logo hide-on-med-and-down">
             PearLern</a>

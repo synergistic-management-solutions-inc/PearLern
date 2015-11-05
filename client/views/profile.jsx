@@ -2,8 +2,10 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var Modal = require('react-modal');
-
+var Link = require('react-router').Link;
+const Avatar = require('material-ui/lib/avatar')
 const RaisedButton = require('material-ui/lib/raised-button');
+
 
 // Modal options see: https://www.npmjs.com/package/react-modal
 var customStyles = {
@@ -142,40 +144,37 @@ var Profile = React.createClass({
     var github = this.state.githubVal;
     var joined = this.state.joinedVal;
     var interests = this.state.interestsValue;
+    //styles vars
+    var url = 'http://'+website; 
     return (<div>
               <div className="container">
                 <div className="row">
-                  <div className="col s12">
-                    <div className="card blue-grey darken-1">
+                  <div className="col s6">
+                    <div className="card blue-grey darken-3">
                       <div className="card-content white-text">
-                        <span className="card-title">My Profile</span>
+                        <span className="card-title">
+                          <Avatar>{name[0]}   </Avatar> 
+                          {name}'s' Profile
+                        </span> 
                         <div className="card-action">
-                          <div className="black-text">Name:</div>
-                          <div className="name">{name}</div>
-                          
-                          <div className="black-text">About:</div>
-                          <div className="about">{about}</div>
-                          
-                          <div className="black-text">Location:</div>
-                          <div className="location">{location}</div>
-                          
-                          <div className="black-text">Website:</div>
-                          <div className="website">{website}</div>
-                          
-                          <div className="black-text">Github:</div>
-                          <div className="github">{github}</div>
-                          
-                          <div className="black-text">Interests:</div>
-                          <div className="interests">{interests}</div>
-                          
-                          <div className="push"></div>
+                          <div className="profile-text">Name: {name}</div>
+                          <div className="profile-text">Location: {location}</div>
+                          <div className="link-text">Website: <a href='{url}'>{website}</a></div>
+                          <div className="link-text">Github: {github}</div> 
+                          <div className='push'></div> 
                           <RaisedButton label="Edit Profile" className="edit-profile" onClick={this.openModal}/>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div className="col s6">
+                    <div className="black-text">About:</div>
+                    <div className="about">{about}</div>
+                    <div className="black-text">Interests:</div>
+                    <div className="interests">{interests}</div>
+                  </div>
                 </div>
-              </div>
+              </div>                       
               <Modal
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
@@ -201,7 +200,7 @@ var Profile = React.createClass({
                 <button className="edit-save" onClick={this.saveData}>Save</button>
                 </Modal>
               <div className="push"></div>
-            </div>
+            </div>  
             );
   }
 })
