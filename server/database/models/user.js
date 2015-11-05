@@ -11,6 +11,10 @@ var UserSchema = new Schema({
     profile: {
       name: String,
       about: String,
+      location: String,
+      website: String,
+      joined: String,
+      github: String,
       interests: []
     }
 });

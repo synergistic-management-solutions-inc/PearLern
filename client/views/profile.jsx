@@ -36,6 +36,10 @@ var Profile = React.createClass({
       modalIsOpen : false,
       nameValue : '',
       aboutValue : '',
+      locationVal: '',
+      websiteVal: '',
+      githubVal: '',
+      joinedVal: '',
       interestsValue : ''
     };
   },
@@ -55,18 +59,23 @@ var Profile = React.createClass({
       type : 'GET',
       url : '/users/' + currentUser,
       success : function(res) {
+        console.log('self is mounted? ', self.isMounted());
+        console.log('get response: ', res);
         if (self.isMounted()) {
-
           self.setState({
             nameValue : res.name,
             aboutValue : res.about,
+            locationVal: res.location,
+            websiteVal: res.website,
+            githubVal: res.github,
+            joinedVal: res.joined,
             interestsValue : res.interests.join(',')
           });
+
         }
       }
     });
   },
-
 
   openModal : function() {
     this.setState({modalIsOpen: true});
@@ -80,9 +89,21 @@ var Profile = React.createClass({
   updateName : function(event) {
     this.setState({ nameValue : event.target.value });
   },
-
+  
   updateAbout : function(event) {
     this.setState({ aboutValue : event.target.value });
+  },
+  
+  updateLocation : function(event) {
+    this.setState({ locationVal : event.target.value });
+  },
+  
+  updateWebsite : function(event) {
+    this.setState({ websiteVal : event.target.value });
+  },
+
+  updateGithub : function(event) {
+    this.setState({ githubVal : event.target.value });
   },
 
   updateInterests : function(event) {
@@ -90,15 +111,19 @@ var Profile = React.createClass({
   },
 
   saveData : function() {
-    var currentUser = this.props.currentUser;
+    var currentUser = this.props.currentUser;    
     var interests = this.state.interestsValue.split(',');
+
 
     var data = {
       name : this.state.nameValue,
       about : this.state.aboutValue,
+      location: this.state.locationVal,
+      website: this.state.websiteVal,
+      github: this.state.githubVal,
       interests : interests
     };
-
+    console.log(data);
     $.ajax({
       type : 'POST',
       dataType : 'json',
@@ -112,21 +137,37 @@ var Profile = React.createClass({
   render : function () {
     var name = this.state.nameValue;
     var about = this.state.aboutValue;
+    var location = this.state.locationVal;
+    var website = this.state.websiteVal;
+    var github = this.state.githubVal;
+    var joined = this.state.joinedVal;
     var interests = this.state.interestsValue;
     return (<div>
               <div className="container">
                 <div className="row">
-                  <div className="col s6 offset-s3">
-                    <div className="card light-blue">
+                  <div className="col s12">
+                    <div className="card blue-grey darken-1">
                       <div className="card-content white-text">
                         <span className="card-title">My Profile</span>
                         <div className="card-action">
                           <div className="black-text">Name:</div>
-                          <div className="email">{name}</div>
+                          <div className="name">{name}</div>
+                          
                           <div className="black-text">About:</div>
                           <div className="about">{about}</div>
+                          
+                          <div className="black-text">Location:</div>
+                          <div className="location">{location}</div>
+                          
+                          <div className="black-text">Website:</div>
+                          <div className="website">{website}</div>
+                          
+                          <div className="black-text">Github:</div>
+                          <div className="github">{github}</div>
+                          
                           <div className="black-text">Interests:</div>
                           <div className="interests">{interests}</div>
+                          
                           <div className="push"></div>
                           <RaisedButton label="Edit Profile" className="edit-profile" onClick={this.openModal}/>
                         </div>
@@ -144,6 +185,15 @@ var Profile = React.createClass({
                 </div>
                 <div className="edit-about">About
                   <input type="text" value={about} onChange={this.updateAbout} />
+                </div>
+                <div className="edit-location">Location
+                  <input type="text" value={location} onChange={this.updateLocation} />
+                </div>
+                <div className="edit-website">Website
+                  <input type="text" value={website} onChange={this.updateWebsite} />
+                </div>
+                <div className="edit-github">Github
+                  <input type="text" value={github} onChange={this.updateGithub} />
                 </div>
                 <div className="edit-interests">Interests
                   <input type="text" value={interests} onChange={this.updateInterests} />

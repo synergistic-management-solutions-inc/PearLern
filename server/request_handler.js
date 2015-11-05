@@ -12,11 +12,15 @@ exports.getUsers = function(req, res){
       //the client must check
       //if these users have profiles
       //I'll send empty strings
+
       userData.push({
         id: user._id,
         username: user.username,
         name: profile.name || '',
         about: profile.about || '',
+        location: profile.location || '',
+        website: profile.website || '',
+        github: profile.github || '',
         interests: profile.interests || ''
       });
     });
@@ -90,6 +94,9 @@ exports.submitProfile = function(req, res){
   var profileInfo = {};
   profileInfo.name = req.body.name;
   profileInfo.about = req.body.about;
+  profileInfo.location = req.body.location;
+  profileInfo.website = req.body.website;
+  profileInfo.github = req.body.github;
   profileInfo.interests = req.body.interests;
 
   User.findOne({_id: userId}, function(err, user){
