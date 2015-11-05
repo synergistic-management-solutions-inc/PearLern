@@ -1,11 +1,11 @@
-var React = require('react')
-var ReactDOM = require('react-dom')
-var $ = require('jquery')
-var Link = require('react-router').Link
-var SignInContent = require('./landinghead2.jsx')
+var React = require('react');
+var ReactDOM = require('react-dom');
+var $ = require('jquery');
+var Link = require('react-router').Link;
+var SignInContent = require('./landinghead2.jsx');
 const RaisedButton = require('material-ui/lib/raised-button');
 
-//TODOs: 
+//TODOs:
 //Add form validation
 //Add novaldiate to forms to override default HTML 5 validation?
 //Server response
@@ -15,7 +15,7 @@ var SignIn = React.createClass({
     return {
       username: '',
       password: ''
-    }
+    };
   },
   validateUser: function () {
     var storeUser = this.props.storeUser;
@@ -27,7 +27,7 @@ var SignIn = React.createClass({
     var User = {
       username: username,
       password: password
-    } 
+    }
 
     $.ajax({
       type: 'POST',
@@ -36,10 +36,10 @@ var SignIn = React.createClass({
     })
     .then(function (res){
       //TODO: check that the user is validated
-      
+
       //sets the app state currentUser
       storeUser(username);
-      
+
       //redirects to profile page 
       history.pushState(null, '/profile');
 

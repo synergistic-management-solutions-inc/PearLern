@@ -1,8 +1,10 @@
 // Dependencies
-var React = require('react')
+var React = require('react');
 var $ = require('jquery');
 const RaisedButton = require('material-ui/lib/raised-button');
-var Link = require('react-router').Link
+var Link = require('react-router').Link;
+var userActions = require('../actions/userActions');
+var userStore = require('../stores/userStore');
 
 
 // Top-level component
@@ -24,7 +26,7 @@ var UserView = React.createClass({
       this.props.history.pushState(null, '/signin'); 
     }
   },
-  
+
   // We would love to see the images be in the assets folder instead of linked from a url
   // but we ran into difficulty doing so.
   render: function() {
@@ -137,8 +139,6 @@ var Users = React.createClass({
     );
   }
 })
-
-
 
 // User component
 var User = React.createClass({
