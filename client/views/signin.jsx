@@ -27,7 +27,7 @@ var SignIn = React.createClass({
     var User = {
       username: username,
       password: password
-    }
+    };
 
     $.ajax({
       type: 'POST',
