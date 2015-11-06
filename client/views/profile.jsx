@@ -27,7 +27,7 @@ var customStyles = {
   },
 
   content : {
-    top                   : '45%',
+    top                   : '53%',
     left                  : '50%',
     right                 : '-20%',
     bottom                : 'auto',
