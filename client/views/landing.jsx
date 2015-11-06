@@ -11,22 +11,13 @@ var Landing = React.createClass({
   render: function (){
     return (
       <div className="container">
-           <div className="slider">
-    <ul className="slides">
-      <li>
-        <img src="http://lorempixel.com/580/250/nature/1"/> 
-      </li>
-      <li>
-        <img src="http://lorempixel.com/580/250/nature/1"/> 
-      </li>
-    </ul>
-</div>
+           <img className="responsive-img" src="/images/LandingImage1.jpg"/>
         <div className="row">
             <div className="col s12 s6">
-              <h3>Find People to Learn With!</h3>
+              <h3 className = "landing-header">Find People to Learn With!</h3>
             </div>
         </div>
-          <div className="col s12">
+          <div className="text-header col s6 offset-s3">
             <p>PearLern helps match you with other people sharing the same learning objectives.  For a hefty fee, we will find you an accountabili-buddy to join you on your journey to learn the art of coding!</p>
           </div>
         <div className="push"></div>

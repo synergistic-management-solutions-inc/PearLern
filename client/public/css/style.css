@@ -75,4 +75,10 @@ footer .row, .push {
   margin: auto;
 }
 
+.landing-header{
+  text-align: center;
+}
+.text-header{
+  width: 80%
+}
 
