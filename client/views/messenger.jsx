@@ -527,8 +527,8 @@ var Messenger = React.createClass({
     return (
       <div className="vidWindow card blue-grey darken-1">
         <div className="card-content">
-          <div className="z-depth-1 video-container videoPlaceholder">
-            <div id="videoContainer"><video className="responsive-video" id="videoStream" autoPlay></video></div>
+          <div className="video-container videoPlaceholder">
+            <div className="z-depth-1" id="videoContainer"><video className="responsive-video" id="videoStream" autoPlay></video></div>
           </div>
         </div>
         <div className="card-action">
@@ -590,6 +590,7 @@ var Messenger = React.createClass({
         // $('#videoStream').prop('src', URL.createObjectURL(mediaStream));
         localCall = peer.call(other, mediaStream);
         localCall.on('close', function() {
+          self.hangUp();
           console.log('close asdfkljasdjfadskfjal');
         })
         localCall.on('stream', function(stream) {
@@ -613,9 +614,7 @@ var Messenger = React.createClass({
       // Somehow they are "in a call" but not connected to anything, gracefully hang up
     }
 
-    // if (localCall) {
-      console.log('Closing call')
-      // this.tearDownPlayer();
+    console.log('Closing call')
     try {
       // mediaStream.stop() is gonna be deprecated, this is supposed to be how to handle it after deprecation but it does not
       // if (mediaStream.getVideoTracks) {
@@ -626,11 +625,17 @@ var Messenger = React.createClass({
       //   mediaStream.stop();
       // }
       mediaStream.stop();
-      this.setState({ mediaStreamPerms: false, inCall: false });
+      currentCall.close();
       localCall.close();
     } catch (err) {
+      try {
+        localCall.close();
+      } catch (err) {
+        localCall = null;
+      }
       // Error closing localCall most likely
     }
+    this.setState({ mediaStreamPerms: false, inCall: false });
     // }
   },
 
