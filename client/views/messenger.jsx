@@ -5,16 +5,6 @@ const RaisedButton = require('material-ui/lib/raised-button');
   var peer = null;
   var cons = {};
 
-  var getFileType = function(fileType) {
-    if (fileType.match(/image.*/)) {
-      return 'image';
-    } else if (fileType.match(/text.*/)) {
-      return 'text';
-    } else {
-      return 'text';
-    }
-  };
-
   //an individual contact component
   var Contact = React.createClass({
     selectUser: function() {
@@ -81,15 +71,15 @@ const RaisedButton = require('material-ui/lib/raised-button');
       var userSelected = this.userSelected;
       var currentUser = this.props.currentUser;
       var contacts = this.state.contacts.map(function(contact){
-        return ( <div className="z-depth-1"><Contact currentUser={currentUser} userSelected={userSelected} key={contact} contact={contact} /></div> )
+        return ( <div className="z-depth-1 grey-text text-lighten-1"><Contact currentUser={currentUser} userSelected={userSelected} key={contact} contact={contact} /></div> )
       })
 
       return (
         <div className="col s3">
-          <div className="card light-blue darken-1">
+          <div className="card blue-grey darken-4">
             <div className="contacts">
               <div className="card-content">
-                <h4>Contacts</h4>
+                <h4 className="white-text">Contacts</h4>
                 {contacts}
               </div>
             </div>
@@ -258,7 +248,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
     render: function() {
       return (
-        <div className="vidWindow card light-blue darken-1">
+        <div className="vidWindow card blue-grey darken-4">
           <div className="card-content">
             <div className="z-depth-1 video-container videoPlaceholder">
 
@@ -332,22 +322,12 @@ const RaisedButton = require('material-ui/lib/raised-button');
   })
 
   var FileShare = React.createClass({
-    selectFile: function(e) {
-      var el = e.target;
-      console.log('we are doing stuff!!!!', e);
-      var file = el.files[0];
-      // var type = getFileType(file.type);
-      console.log('File got!', file);
-
-      $('#fileInfo').text('asdf');
-    },
-
     render: function() {
       return (
         <div className="file-field input-field">
           <div className="btn">
-            <span>Select a File</span>
-            <input type="file" onChange={this.selectFile} />
+            <span>File</span>
+            <input type="file" />
           </div>
         </div>
       );
@@ -357,14 +337,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
   var FileDisplay = React.createClass({
     render: function() {
       return (
-        <div>
-          <div id="fileInfo">
-            FileInfo
-          </div>
-          <div id="displayArea">
-            DisplayArea
-          </div>
-        </div>
+        <div>FileDisplay</div>
       )
     }
   });
