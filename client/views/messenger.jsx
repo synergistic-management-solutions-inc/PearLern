@@ -305,7 +305,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
     },
     render: function(){
       return (
-        <div className="row">
+        <div className="row" id="nosideMargin">
           <Contacts displayConversation={this.displayConversation}
                     otherUser={this.state.otherUser}
                     currentUser={this.props.currentUser}/>
