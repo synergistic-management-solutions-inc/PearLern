@@ -1,7 +1,7 @@
-var React = require('react')
-var ReactDOM = require('react-dom')
-var $ = require('jquery')
-var Link = require('react-router').Link
+var React = require('react');
+var ReactDOM = require('react-dom');
+var $ = require('jquery');
+var Link = require('react-router').Link;
 
 const RaisedButton = require('material-ui/lib/raised-button');
 
@@ -18,7 +18,7 @@ var SignUp = React.createClass({
       username: '',
       password: '',
       validate: ''
-    }
+    };
   },
   addUser: function () {
     var storeUser = this.props.storeUser;
@@ -30,18 +30,18 @@ var SignUp = React.createClass({
     var newUser = {
       username: this.state.username,
       password: this.state.password
-    }
-     
+    };
+
     $.ajax({
       type: 'POST',
       url: '/signup',
       data: newUser
     }).then(function (res){
        //TODO: check that the user is validated
-      
+
       //sets the app state currentUser
       // storeUser(username);
-      
+
       //redirects to profile page 
       history.pushState(null, '/signin');
     });
@@ -61,7 +61,7 @@ var SignUp = React.createClass({
       <div className="sign-up-view">
         <div className="row">
           <div className="col s6">
-            <img className="responsive-img" src="http://archsmarter.com/wp-content/uploads/Learn-to-code1.jpg"/>
+            <img className="responsive-img" src="/images/signUpImage.jpg"/>
           </div>
           <div className="col s6">
             <h4 className="signup-header">Sign Up</h4> 
