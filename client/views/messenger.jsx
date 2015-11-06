@@ -468,7 +468,7 @@ var Messenger = React.createClass({
     //   console.log('here');
       return (
         <a className="selectFile">
-          <input type="file" onChange={this.selectFile} />
+          <input className="fileCard" type="file" onChange={this.selectFile} />
           Select File
         </a>
       )
@@ -482,7 +482,7 @@ var Messenger = React.createClass({
     if (!this.isValidCon()) {
       return null;
     }
-    
+
     return (
       <a className="fileCard" onClick={this.sendFile}>
         <span>Send File</span>

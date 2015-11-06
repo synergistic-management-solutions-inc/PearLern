@@ -97,15 +97,15 @@ footer{
   color : black;
 }
 
-.incoming {
+.outgoing {
   color : blue;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid rgba(160,160,160,0.2);
   text-align: right;
 }
 
-.outgoing {
+.incoming {
   color : red;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid rgba(160,160,160,0.2);
   text-align: left;
 }
 
@@ -139,6 +139,7 @@ footer{
 
 .fileCard {
   margin: auto;
+  cursor: pointer;
 }
 
 .modal{
