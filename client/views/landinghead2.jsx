@@ -1,11 +1,11 @@
-var React = require('react')
-var ReactDOM = require('react-dom')
+var React = require('react');
+var ReactDOM = require('react-dom');
 
 var SignInHead = React.createClass({
   getInitialState: function () {
     return {
       test: 'test value'
-    }
+    };
   },
   render: function (){
     return (
@@ -23,9 +23,5 @@ var SignInHead = React.createClass({
   }
 });
 
-
 module.exports = SignInHead;
-
-
-
 

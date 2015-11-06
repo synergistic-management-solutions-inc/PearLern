@@ -10,8 +10,8 @@ var MessageSchema = new Schema({
 
 MessageSchema.pre('save', function(next){
   this.created_at = new Date();
-  next(); 
-})
+  next();
+});
 
 var Message = Mongoose.model('Message', MessageSchema);
 
