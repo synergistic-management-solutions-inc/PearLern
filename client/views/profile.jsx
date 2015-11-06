@@ -3,7 +3,14 @@ var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var Modal = require('react-modal');
 var Link = require('react-router').Link;
+const Card = require('material-ui/lib/card/card')
+// const Card = require('material-ui/lib/card/card-expandable')
+const CardHeader = require('material-ui/lib/card/card-header')
+const CardText = require('material-ui/lib/card/card-text')
+const CardActions = require('material-ui/lib/card/card-actions')
+
 const Avatar = require('material-ui/lib/avatar')
+const IconButton = require('material-ui/lib/icon-button')
 const RaisedButton = require('material-ui/lib/raised-button');
 
 
@@ -145,33 +152,45 @@ var Profile = React.createClass({
     var joined = this.state.joinedVal;
     var interests = this.state.interestsValue;
     //styles vars
-    var url = 'http://'+website; 
+    var url = 'http://'
+    var git = 'https://github.com/'
     return (<div>
               <div className="container">
                 <div className="row">
-                  <div className="col s6">
-                    <div className="card blue-grey darken-3">
+                  <div className="col s8 offset-s2">
+                    <div className="card blue-grey darken-1">
                       <div className="card-content white-text">
                         <span className="card-title">
-                          <Avatar>{name[0]}   </Avatar> 
-                          {name}'s' Profile
+                          <Avatar style={{backgroundColor:'white',color:'#546e7a'}}>{name[0]}</Avatar> 
+                          <span>      {name}'s' Profile</span>
                         </span> 
                         <div className="card-action">
                           <div className="profile-text">Name: {name}</div>
                           <div className="profile-text">Location: {location}</div>
-                          <div className="link-text">Website: <a href='{url}'>{website}</a></div>
-                          <div className="link-text">Github: {github}</div> 
-                          <div className='push'></div> 
-                          <RaisedButton label="Edit Profile" className="edit-profile" onClick={this.openModal}/>
+                          <div className="link-text">Website: <a href='#'>{url}{website}</a></div>
+                          <div className="link-text">Github:  <a href='#'>{git}{github}</a></div> 
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="col s6">
-                    <div className="black-text">About:</div>
-                    <div className="about">{about}</div>
-                    <div className="black-text">Interests:</div>
-                    <div className="interests">{interests}</div>
+                </div>
+                <div className="row">
+                  <div className="col s8 offset-s2">
+                    <Card initiallyExpanded={true}>
+                      <CardHeader
+                        title="About"
+                        subtitle={name}
+                        avatar={<Avatar style={{backgroundColor:'#546e7a',color:'white'}}>A</Avatar>}>
+                      </CardHeader>
+                      <CardText expandable={true}>
+                        <h6>About:</h6>
+                        <p>{about}</p>
+                        <h6>Interest:</h6>
+                        <p>{interests}</p>
+                      </CardText>
+                      <div className='push'></div> 
+                      <RaisedButton fullWidth ={true} label="Edit Profile" className="edit-profile" onClick={this.openModal}/>
+                    </Card>
                   </div>
                 </div>
               </div>                       
