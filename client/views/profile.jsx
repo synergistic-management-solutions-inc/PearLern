@@ -152,6 +152,7 @@ var Profile = React.createClass({
     var joined = this.state.joinedVal;
     var interests = this.state.interestsValue;
     //styles vars
+    var avatarL = name ? name[0]:'';
     var url = 'http://'
     var git = 'https://github.com/'
     return (<div>
@@ -161,14 +162,14 @@ var Profile = React.createClass({
                     <div className="card blue-grey darken-1">
                       <div className="card-content white-text">
                         <span className="card-title">
-                          <Avatar style={{backgroundColor:'white',color:'#546e7a'}}>{name[0]}</Avatar> 
+                          <Avatar style={{backgroundColor:'white',color:'#546e7a'}}>{avatarL}</Avatar> 
                           <span>      {name}'s Profile</span>
                         </span> 
                         <div className="card-action">
                           <div className="profile-text">Name: {name}</div>
                           <div className="profile-text">Location: {location}</div>
-                          <div className="link-text">Website: <a href='#'>{url}{website}</a></div>
-                          <div className="link-text">Github:  <a href='#'>{git}{github}</a></div> 
+                          <div className="link-text">Website: <a className ="link-text" href='#'>{url}{website}</a></div>
+                          <div className="link-text">Github:  <a className ="link-text" href='#'>{git}{github}</a></div> 
                         </div>
                       </div>
                     </div>
