@@ -1,51 +1,84 @@
+var express = require('express');
+var routes = express.Router();
+
+var browserify = require('browserify-middleware');
+var Path = require('path');
+
+var Helpers = require('./request_handler');
 var User = require('./database/models/user.js');
+
+var assetFolder = Path.resolve(__dirname, '../client/public');
 
 module.exports = function(app, passport) {
 
-  app.get('/login', function(req, res) {
-    //TODO add render page
-    res.render("Hello World", {
-      message: req.flash('lognInMessage')
-    });
+  //redo once we have some public stuffs
+  routes.get('/api/tags-example', function(req, res) {
+    res.send(['node', 'express', 'browserify']);
   });
 
-  app.post('signIn', passport.authenticate('local-login', {
-    successRedirect: '/profile',
-    failureRedirect: '/signUp',
-    failureFlash: true
-  }));
+  //Here are all my endpoints! See the README for details
+  //on what kind of data is expected/being returned
+  routes.get('/users', isLoggedIn, Helpers.getUsers);
+  routes.get('/users/*', isLoggedIn, Helpers.getProfile);
+  routes.get('/messages/*', isLoggedIn, Helpers.getMessages);
+  // routes.post('/signup', Helpers.signUp);
+  // routes.post('/signin', Helpers.signIn);
+  routes.post('/users/*', isLoggedIn, Helpers.submitProfile);
+  routes.post('/messages', isLoggedIn, Helpers.sendMessage);
 
-  app.get('/signup', function(req, res) {
-    //TODO add render page
-    res.render('Goodbye World', {
-      message: req.flash('signUpMessage')
-    });
+  routes.post('/signin',
+    passport.authenticate('local-login'),
+    function(req, res, next) {
+      user = req.user;
+      if (!user) {
+        return res.status(404).json({
+          user: 'Not Found'
+        });
+      }
+      return res.status(200).json({
+        'user' : user,
+        authenticated: true
+      });
   });
 
-  app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/', //redirect home page
-    failureRedirect: '/signUp',
-    failureFlash: true
-  }));
-
-  app.get('/profile', isLoggedIn, function(req, res) {
-    //TODO add profile page
-    res.render("I'm here", {
-      user: req.user
-    });
+  routes.post('/signup', function(req, res, next) {
+    passport.authenticate('local-signup', function(err, user, info) {
+      if (err) {
+        res.status(404).send();
+        return next(err);
+      } else {
+        return res.status(200).json({
+          'user' : user,
+          authenticated: true
+        });
+      }
+    })(req, res, next);
   });
 
-  app.get('/logout', function(req, res) {
+  routes.get('/logout', function(req, res) {
     req.logout();
+    req.session.destroy(function(err) {
+      res.clearCookie('isLoggedIn');
+      res.send({ loggedIn: false });
+    });
     //passport
-    res.redirect('/');
+    // res.redirect('/');
   });
 
-};
+  routes.use(express.static(assetFolder));
 
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
+  routes.get('/*', function(req, res) {
+    // res.redirect('/');
+    res.sendFile(assetFolder + '/index.html');
+  });
+
+  app.use('/', routes);
+
+  function isLoggedIn(req, res, next) {
+    console.log('are they authed?????', req.isAuthenticated());
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.redirect('/login');
   }
-  res.redirect('/login');
-}
+};
