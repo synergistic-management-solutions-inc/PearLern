@@ -5,6 +5,7 @@ var Link = require('react-router').Link;
 var SignInContent = require('./landinghead2.jsx');
 const RaisedButton = require('material-ui/lib/raised-button');
 
+
 //TODOs:
 //Add form validation
 //Add novaldiate to forms to override default HTML 5 validation?
@@ -65,11 +66,11 @@ var SignIn = React.createClass({
           <div className="col s6">
             <img className="responsive-img" src="/images/signInImage.jpg"/>
           </div>
-          <div className="col s6">
-            <h4 className="signin-header">Sign In</h4> 
+          <div className="input-field col s4">
+            <h5 className="signin-header">Sign In</h5>
             <input type="text" className="username-input" placeholder="Enter Username" onChange={this.updateUsername}/>
             <input type="password" className="password-input" placeholder="Enter Password"  onChange={this.updatePassword}/> 
-            <RaisedButton label="Sign In" className="submit-button" onClick={this.validateUser}/>
+            <RaisedButton fullWidth ={true} label="Sign In" className="submit-button" onClick={this.validateUser}/>
             <p className="signin-footer">Not yet registered? <Link to='/signup'>Sign up!</Link></p>
           </div>
         </div>
