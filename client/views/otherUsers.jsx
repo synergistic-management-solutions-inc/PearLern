@@ -212,11 +212,24 @@ var User = React.createClass({
                   isOpen={this.state.modalIsOpen}
                   onRequestClose={this.closeModal}
                   style={customStyles}>
-                  <div className="profile-text">Name: {user.name}</div>
-                  <div className="profile-text">Location: {user.about}</div>
-                  <div className="profile-text">Interests: {user.interests.join(', ')}</div>
-                  <div className="profile-link">Website: <a href={user.website}>{user.website}</a></div>
-                  <div className="profile-link">Github: <a href={"http://www.github.com/" + user.github}>{user.github}</a></div>
+                <div className="edit-field-p"><span className="edit-field">Name (Username to be displayed to other users)</span>
+                  <div>{user.name}</div>
+                </div>
+                <div className="edit-field-p"><span className='edit-field'>About (Tell us about you!)</span>
+                  <div>{user.about}</div>
+                </div>
+                <div className="edit-field-p"><span className="edit-field">Location (ex Austin,Tx)</span>
+                  <div>{user.location}</div>
+                </div>
+                <div className="edit-field-p"><span className="edit-field">Website (Your Website Adress)</span>
+                  <div><a href={user.website}>{user.website}</a></div>
+                </div>
+                <div className="edit-field-p"><span className="edit-field">Github (Your Handler)</span>
+                  <div><a href={"http://www.github.com/" + user.github}>{user.github}</a></div>
+                </div>
+                <div className="edit-field-p"><span className="edit-field">Programming Lenguage Interests (ex Javascript, Ruby, C++)</span>
+                  <div>{user.interests}</div>
+                </div>
 
 
                 </Modal>
