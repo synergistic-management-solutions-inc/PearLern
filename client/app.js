@@ -71,7 +71,8 @@ var App = React.createClass({
 ReactDOM.render((
   <Router history={createBrowserHistory()}>
     <Route path="/" component={App}>
-      <IndexRoute component={Landing} />
+      {/* <IndexRoute component={Landing} />*/}
+      <IndexRoute component={Messenger} />
       <Route path="signin" component={SignIn} />
       <Route path="signup" component={SignUp} />
       <Route path="profile" component={Profile} />
