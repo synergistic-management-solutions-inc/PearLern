@@ -63,7 +63,7 @@ var SignIn = React.createClass({
       <div className="sign-in-view">
         <div className="row">
           <div className="col s6">
-            <img className="responsive-img" src="https://zenpayroll.com/wp-content/uploads/2013/10/pair-programming.jpg"/>
+            <img className="responsive-img" src="/images/signInImage.jpg"/>
           </div>
           <div className="col s6">
             <h4 className="signin-header">Sign In</h4> 

@@ -61,7 +61,7 @@ var SignUp = React.createClass({
       <div className="sign-up-view">
         <div className="row">
           <div className="col s6">
-            <img className="responsive-img" src="http://archsmarter.com/wp-content/uploads/Learn-to-code1.jpg"/>
+            <img className="responsive-img" src="/images/signUpImage.jpg"/>
           </div>
           <div className="col s6">
             <h4 className="signup-header">Sign Up</h4> 

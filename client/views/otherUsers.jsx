@@ -34,7 +34,7 @@ var UserView = React.createClass({
       <div>
         <div className="row">
           <div className="col s6">
-            <img className="responsive-img" src="http://www.actclassy.com/wp-content/uploads/2012/04/Computer-Programmers.jpg" />
+            <img className="responsive-img" src="/images/otherUsersImage.jpg" />
           </div>
           <div className="col s6">
             <h4 className="other-users-header">Find A Partner</h4>
