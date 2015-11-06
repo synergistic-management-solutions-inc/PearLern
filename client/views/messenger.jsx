@@ -76,7 +76,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
       return (
         <div className="col s3">
-          <div className="card blue-grey darken-4">
+          <div className="card blue-grey darken-1">
             <div className="contacts">
               <div className="card-content">
                 <h4 className="white-text">Contacts</h4>
@@ -248,7 +248,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
     render: function() {
       return (
-        <div className="vidWindow card blue-grey darken-4">
+        <div className="vidWindow card blue-grey darken-1">
           <div className="card-content">
             <div className="z-depth-1 video-container videoPlaceholder">
 
