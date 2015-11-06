@@ -62,11 +62,9 @@ var SignIn = React.createClass({
   render: function () {
     return (
       <div className="sign-in-view">
+      <div className="push"></div>
         <div className="row">
-          <div className="col s6">
-            <img className="responsive-img" src="/images/signInImage.jpg"/>
-          </div>
-          <div className="input-field col s4">
+          <div className="input-field col s4 offset-s4 z-depth-5">
             <h5 className="signin-header">Sign In</h5>
             <input type="text" className="username-input" placeholder="Enter Username" onChange={this.updateUsername}/>
             <input type="password" className="password-input" placeholder="Enter Password"  onChange={this.updatePassword}/> 
@@ -74,8 +72,6 @@ var SignIn = React.createClass({
             <p className="signin-footer">Not yet registered? <Link to='/signup'>Sign up!</Link></p>
           </div>
         </div>
-        <SignInContent />
-        <div className="push"></div>
       </div>
     )
   }
