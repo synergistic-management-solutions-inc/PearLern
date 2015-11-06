@@ -218,16 +218,16 @@ var User = React.createClass({
                 <div className="edit-field-p"><span className='edit-field'>About (Tell us about you!)</span>
                   <div>{user.about}</div>
                 </div>
-                <div className="edit-field-p"><span className="edit-field">Location (ex Austin,Tx)</span>
+                <div className="edit-field-p"><span className="edit-field">Location (ex Austin, TX)</span>
                   <div>{user.location}</div>
                 </div>
-                <div className="edit-field-p"><span className="edit-field">Website (Your Website Adress)</span>
+                <div className="edit-field-p"><span className="edit-field">Website (Your Website Address)</span>
                   <div><a href={user.website}>{user.website}</a></div>
                 </div>
                 <div className="edit-field-p"><span className="edit-field">Github (Your Handler)</span>
                   <div><a href={"http://www.github.com/" + user.github}>{user.github}</a></div>
                 </div>
-                <div className="edit-field-p"><span className="edit-field">Programming Lenguage Interests (ex Javascript, Ruby, C++)</span>
+                <div className="edit-field-p"><span className="edit-field">Programming Language Interests (ex Javascript, Ruby, C++)</span>
                   <div>{user.interests}</div>
                 </div>
 
