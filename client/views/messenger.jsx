@@ -7,8 +7,20 @@ var peer = null;
 var cons = {};
 var file = null;
 var fileInfo = {};
+var mediaStream = null;
+var currentCall = null;
 
 var reader = new FileReader();
+// For compatibility with different browsers
+// navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+navigator.mediaDevices = navigator.mediaDevices || ((navigator.mozGetUserMedia || navigator.webkitGetUserMedia) ? {
+   getUserMedia: function(c) {
+     return new Promise(function(y, n) {
+       (navigator.mozGetUserMedia ||
+        navigator.webkitGetUserMedia).call(navigator, c, y, n);
+     });
+   }
+} : null);
 
 var getFileType = function(fileType) {
   if (fileType.match(/image.*/)) {
@@ -28,6 +40,7 @@ var Contact = React.createClass({
     var contact = this.props.contact;
     var currentUser = this.props.currentUser;
     var peerCon = peer.connect(contact);
+    var connectionState = this.props.connectionState;
     cons[this.props.contact] = {};
     cons[this.props.contact].con = peerCon;
     cons[this.props.contact].connected = false;
@@ -39,6 +52,7 @@ var Contact = React.createClass({
     peerCon.on('open', function() {
       userPeer.connected = true;
       console.log('Connected to peer:', contact);
+      connectionState(true);
       var toSend = {
         type: 'message',
         data: 'Hi ' + contact + '! I am ' + currentUser
@@ -46,12 +60,9 @@ var Contact = React.createClass({
       peerCon.send(toSend);
     });
 
-    peerCon.on('error', function(err) {
-      console.log('Peer error:', err);
-    });
-
     this.props.userSelected(this.props.contact);
   },
+
   render: function(){
     return (
       <p onClick={this.selectUser}>{this.props.contact}</p>
@@ -79,11 +90,13 @@ var Contacts = React.createClass({
     })
     .then(function(res){
       var state = {contacts: []}
-      res.users.forEach(function(user){
-        if (user.username !== currentUser){
-          state.contacts.push(user.username);
-        }
-      })
+      if (Array.isArray(res.users)) {
+        res.users.forEach(function(user){
+          if (user.username !== currentUser){
+            state.contacts.push(user.username);
+          }
+        })
+      }
 
       // if (!component.props.otherUser){
       //   var firstContact = state.contacts[0];
@@ -101,8 +114,9 @@ var Contacts = React.createClass({
 
     var userSelected = this.userSelected;
     var currentUser = this.props.currentUser;
+    var connectionState = this.props.connectionState;
     var contacts = this.state.contacts.map(function(contact){
-      return ( <div className="z-depth-1 grey-text text-lighten-1"><Contact currentUser={currentUser} userSelected={userSelected} key={contact} contact={contact} /></div> )
+      return ( <div className="z-depth-1 grey-text text-lighten-1"><Contact currentUser={currentUser} userSelected={userSelected} key={contact} contact={contact} connectionState={connectionState} /></div> )
     })
 
     return (
@@ -308,12 +322,32 @@ var Messenger = React.createClass({
     peer.on('connection', function(con) {
       console.log('New connection');
       con.on('data', function(data) {
-        console.log(data.dataType);
-        console.log(data.data);
         if (data.dataType === 'file') {
           self.receiveFile(data);
         }
       });
+    });
+
+    peer.on('disconnected', function() {
+
+    });
+
+
+
+    // peer.on('stream', function() {
+    //   $('#videoStream').prop('src', URL.createObjectURL(mediaStream));
+    // });
+
+    peer.on('call', function(call) {
+      currentCall = call;
+
+      console.log('Got a new call!!', currentCall);
+
+      currentCall.on('stream', function(stream) {
+        $('#videoStream').prop('src', URL.createObjectURL(stream));
+      });
+
+      currentCall.answer(mediaStream);
     });
 
     peer.on('error', function(err) {
@@ -378,7 +412,7 @@ var Messenger = React.createClass({
 
   isValidCon: function() {
     var other = this.state.otherUser;
-    console.log('isValidCon', cons[other].con);
+    // console.log('isValidCon', cons[other].con);
     if (other && cons[other] && cons[other].con.open) {
       return true;
     }
@@ -386,14 +420,17 @@ var Messenger = React.createClass({
   },
 
   displaySelectFile: function() {
+    console.log('Select file');
+    if (!this.isValidCon()) {
+      return null;
+    }
 
     // if (cons[other] !== undefined && cons[other].peer.open) {
     //   console.log('here');
       return (
         <a className="selectFile">
-          <input type="file" onChange={this.selectFile}>
+          <input type="file" onChange={this.selectFile} />
           Select File
-        </input>
         </a>
       )
     // }
@@ -403,48 +440,74 @@ var Messenger = React.createClass({
   displaySendButton: function() {
     // var other = this.state.otherUser;
     // console.log('displaySendButton:', other);
-
-    // if (!this.state.hasFile || cons[other] === undefined || !cons[other].peer.open) {
-    //   return null;
-    // }
+    if (!this.isValidCon()) {
+      return null;
+    }
+    
     return (
-      <a className="fileCard" onClick={this.sendFile}>
-        Send File
-      </a>
+      <div className="fileCard" onClick={this.sendFile}>
+        <span>Send File</span>
+      </div>
     )
   },
 
   displayDownloadButton: function() {
+    if (!this.isValidCon()) {
+      return null;
+    }
+
     return (
-      <a className="fileCard" onClick={this.downloadFile}>
-        Download File
-      </a>
+      <div className="fileCard" onClick={this.downloadFile}>
+        <span>Download File</span>
+      </div>
     )
   },
 
-  render: function() {
+  displayVideoCall: function() {
+    var self = this;
+
+    if (!self.isValidCon()) {
+      return null;
+    }
+
+    // Try to get permission for video calling
+    if (this.state.mediaStreamPerms !== true) {
+      navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      .then(function(stream) {
+        self.setState({ mediaStreamPerms: true });
+        mediaStream = stream;
+        // $('#videoStream').prop('src', URL.createObjectURL(mediaStream));
+      })
+      .catch(function(err) {
+        console.log('Error getting video permissions:', err);
+      });
+    }
+
+    // var video = '<video id="videoStream" autoplay></video>';
+
+    if (this.state.mediaStreamPerms === true) {
+      console.log('Have media perms');
+    }
+
+
     return (
-      <div className="row" id="nosideMargin">
-        <Contacts displayConversation={this.displayConversation}
-                  otherUser={this.state.otherUser}
-                  currentUser={this.props.currentUser} />
-        <Conversations otherUser={this.state.otherUser}
-                        currentUser={this.props.currentUser} />
-        <div className="col s5">
-
-          <div className="row">
-            <div className="vidWindow card blue-grey darken-1">
-              <div className="card-content">
-                <div className="z-depth-1 video-container videoPlaceholder">
-
-                </div>
-              </div>
-              <div className="card-action">
-                <a href="#">CONNECT</a>
-              </div>
-            </div>
+      <div className="vidWindow card blue-grey darken-1">
+        <div className="card-content">
+          <div className="z-depth-1 video-container videoPlaceholder">
+            <div id="videoContainer"><video id="videoStream" autoPlay></video></div>
           </div>
+        </div>
+        <div className="card-action">
+          <a href="#" onClick={this.call}>Call</a>
+          <a href="#" onClick={this.hangUp}>Hang Up</a>
+        </div>
+      </div>
+    )
+  },
 
+  buildPeerDisplay: function() {
+    if (this.isValidCon()) {
+      return (
           <div className="row card blue-grey darken-1">
             <div className="card-content white-text">
               <div className="card-action" id="topCard">
@@ -472,6 +535,55 @@ var Messenger = React.createClass({
               </div>
             </div>
           </div>
+      )
+    }
+    return null;
+  },
+
+  call: function() {
+    var other = this.state.otherUser;
+    console.log('Calling', other);
+    if (!this.isValidCon()) {
+      return;
+    }
+
+    var call = peer.call(other, mediaStream);
+
+  },
+
+  hangUp: function() {
+    console.log('Hang up', this.state.otherUser);
+    if (!this.isValidCon()) {
+      // Somehow they are "in a call" but not connected to anything, gracefully hang up
+    }
+
+    if (currentCall) {
+      currentCall.close();
+    }
+  },
+
+  connectionState: function(open) {
+    open = !!open;
+    console.log('Setting connected state');
+    this.setState({ connected: open });
+  },
+
+  render: function() {
+    return (
+      <div className="row" id="nosideMargin">
+        <Contacts displayConversation={this.displayConversation}
+                  otherUser={this.state.otherUser}
+                  currentUser={this.props.currentUser} connectionState={this.connectionState} />
+        <Conversations otherUser={this.state.otherUser}
+                        currentUser={this.props.currentUser} />
+        <div className="col s5">
+
+          <div className="row">
+            {this.displayVideoCall()}
+          </div>
+
+          {this.buildPeerDisplay()}
+
         </div>
       </div>
     )
