@@ -390,10 +390,11 @@ var Messenger = React.createClass({
     // if (cons[other] !== undefined && cons[other].peer.open) {
     //   console.log('here');
       return (
-        <div className="btn">
-          <span>Select a File</span>
-          <input className="btn" type="file" onChange={this.selectFile} />
-        </div>
+        <a className="selectFile">
+          <input type="file" onChange={this.selectFile}>
+          Select File
+        </input>
+        </a>
       )
     // }
     // return null;
@@ -407,17 +408,17 @@ var Messenger = React.createClass({
     //   return null;
     // }
     return (
-      <div className="btn" onClick={this.sendFile}>
-        <span>Send File</span>
-      </div>
+      <a className="fileCard" onClick={this.sendFile}>
+        Send File
+      </a>
     )
   },
 
   displayDownloadButton: function() {
     return (
-      <div className="btn" onClick={this.downloadFile}>
-        <span>Download File</span>
-      </div>
+      <a className="fileCard" onClick={this.downloadFile}>
+        Download File
+      </a>
     )
   },
 
@@ -432,7 +433,7 @@ var Messenger = React.createClass({
         <div className="col s5">
 
           <div className="row">
-            <div className="vidWindow card light-blue darken-1">
+            <div className="vidWindow card blue-grey darken-1">
               <div className="card-content">
                 <div className="z-depth-1 video-container videoPlaceholder">
 
@@ -444,19 +445,31 @@ var Messenger = React.createClass({
             </div>
           </div>
 
-          <div className="row">
-            <div className="file-field input-field">
-              {this.displaySelectFile()}
-            </div>
-          </div>
-              {this.displaySendButton()}
-              {this.displayDownloadButton()}
-          <div className="row">
-            <div>
-              {this.state.fileInfo}
-            </div>
-            <div>
-              <pre>{this.state.displayArea}</pre>
+          <div className="row card blue-grey darken-1">
+            <div className="card-content white-text">
+              <div className="card-action" id="topCard">
+                <div className="row valign-wrapper">
+                  <div className="col s8 center-align valign">
+                    <div className="file-field">
+                      {this.displaySelectFile()}
+                    </div>
+                  </div>
+                  <div className="col s8 center-align valign">
+                    {this.displaySendButton()}
+                  </div>
+                </div>
+              </div>
+              <div className="z-depth-2">
+                <div className="card-title">
+                  {this.state.fileInfo}
+                </div>
+                <div>
+                  <pre className="z-depth-1">{this.state.displayArea}</pre>
+                </div>
+              </div>
+              <div className="card-action">
+                {this.displayDownloadButton()}
+              </div>
             </div>
           </div>
         </div>
