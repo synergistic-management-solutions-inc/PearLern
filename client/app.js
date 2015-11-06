@@ -6,6 +6,7 @@ var Route = require('react-router').Route;
 var IndexRoute = require('react-router').IndexRoute;
 var Link = require('react-router').Link;
 var $ = require('jquery');
+var createBrowserHistory = require('history/lib/createBrowserHistory');
 
 // ----------------REACT VIEWS----------------
 var Profile = require('./views/profile.jsx');
@@ -68,7 +69,7 @@ var App = React.createClass({
 });
 
 ReactDOM.render((
-  <Router>
+  <Router history={createBrowserHistory()}>
     <Route path="/" component={App}>
       <IndexRoute component={Landing} />
       <Route path="signin" component={SignIn} />
