@@ -27,11 +27,11 @@ var customStyles = {
   },
 
   content : {
-    top                   : '50%',
+    top                   : '45%',
     left                  : '50%',
-    right                 : 'auto',
+    right                 : '-20%',
     bottom                : 'auto',
-    marginRight           : '-50%',
+    marginRight           : '0',
     transform             : 'translate(-50%, -50%)'
   }
 };
@@ -198,27 +198,28 @@ var Profile = React.createClass({
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
                 style={customStyles}>
-                <div className="edit-name">Name
+                <div className="edit-field-p"><span className="edit-field">Name (Username to be displayed to other users)</span>
                   <input type="text" value={name} onChange={this.updateName} />
                 </div>
-                <div className="edit-about">About
+                <div className="edit-field-p"><span className='edit-field'>About (Tell us about you!)</span>
                   <input type="text" value={about} onChange={this.updateAbout} />
                 </div>
-                <div className="edit-location">Location
+                <div className="edit-field-p"><span className="edit-field">Location (ex Austin,Tx)</span>
                   <input type="text" value={location} onChange={this.updateLocation} />
                 </div>
-                <div className="edit-website">Website
+                <div className="edit-field-p"><span className="edit-field">Website (Your Website Adress)</span>
                   <input type="text" value={website} onChange={this.updateWebsite} />
                 </div>
-                <div className="edit-github">Github
+                <div className="edit-field-p"><span className="edit-field">Github (Your Handler)</span>
                   <input type="text" value={github} onChange={this.updateGithub} />
                 </div>
-                <div className="edit-interests">Interests
+                <div className="edit-field-p"><span className="edit-field">Programming Lenguage Interests (ex Javascript, Ruby, C++)</span> 
                   <input type="text" value={interests} onChange={this.updateInterests} />
                 </div>
-                <button className="edit-save" onClick={this.saveData}>Save</button>
+                <div className='push'></div> 
+                <RaisedButton fullWidth ={true} label="Save Changes" className="edit-save" onClick={this.saveData}/>
                 </Modal>
-              <div className="push"></div>
+                <div className="push"></div>
             </div>  
             );
   }
