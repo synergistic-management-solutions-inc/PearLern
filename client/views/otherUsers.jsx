@@ -168,6 +168,9 @@ var User = React.createClass({
                 <div className="profile-text">Name: {user.name}</div>
                 <div className="profile-text">Location: {user.about}</div>
                 <div className="profile-text">Interests: {user.interests.join(', ')}</div>
+                <Link to="/messenger">
+                  <RaisedButton onClick={this.openMessenger} label="Message" />
+                </Link>
               </div>
             </div>
           </div>
