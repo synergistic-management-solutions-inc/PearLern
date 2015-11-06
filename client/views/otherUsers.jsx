@@ -11,6 +11,29 @@ const CardText = require('material-ui/lib/card/card-text');
 const CardActions = require('material-ui/lib/card/card-actions');
 const Avatar = require('material-ui/lib/avatar');
 const IconButton = require('material-ui/lib/icon-button');
+var Modal = require('react-modal');
+
+// modal options
+var customStyles = {
+
+  overlay : {
+    position          : 'fixed',
+    top               : 0,
+    left              : 0,
+    right             : 0,
+    bottom            : 0,
+    backgroundColor   : 'rgba(0, 0, 0, 0.75)',
+  },
+
+  content : {
+    top                   : '45%',
+    left                  : '50%',
+    right                 : '-20%',
+    bottom                : 'auto',
+    marginRight           : '0',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
 
 // Top-level component
@@ -148,15 +171,27 @@ var Users = React.createClass({
 
 // User component
 var User = React.createClass({
+  getInitialState: function() {
+    return {
+      modalIsOpen: false
+    }
+  },
   openMessenger: function(){
     var username = this.props.user.username;
     this.props.message(username);
   },
+  openModal : function() {
+    this.setState({modalIsOpen: true});
+  },
+
+  closeModal : function() {
+    this.setState({modalIsOpen: false});
+  },
+
   render: function() {
     var user = this.props.user;
 
     return (
-
         <div className="col s3">
           <div className="card blue-grey darken-1">
             <div className="card-content white-text">
@@ -172,6 +207,32 @@ var User = React.createClass({
                 <Link to="/messenger">
                   <RaisedButton onClick={this.openMessenger} label="Message" />
                 </Link>
+                <RaisedButton label="Profile" onClick={this.openModal} />
+                <Modal
+                  isOpen={this.state.modalIsOpen}
+                  onRequestClose={this.closeModal}
+                  style={customStyles}>
+                <div className="edit-field-p"><span className="edit-field">Name (Username to be displayed to other users)</span>
+                  <div>{user.name}</div>
+                </div>
+                <div className="edit-field-p"><span className='edit-field'>About (Tell us about you!)</span>
+                  <div>{user.about}</div>
+                </div>
+                <div className="edit-field-p"><span className="edit-field">Location (ex Austin,Tx)</span>
+                  <div>{user.location}</div>
+                </div>
+                <div className="edit-field-p"><span className="edit-field">Website (Your Website Adress)</span>
+                  <div><a href={user.website}>{user.website}</a></div>
+                </div>
+                <div className="edit-field-p"><span className="edit-field">Github (Your Handler)</span>
+                  <div><a href={"http://www.github.com/" + user.github}>{user.github}</a></div>
+                </div>
+                <div className="edit-field-p"><span className="edit-field">Programming Lenguage Interests (ex Javascript, Ruby, C++)</span>
+                  <div>{user.interests}</div>
+                </div>
+
+
+                </Modal>
               </div>
             </div>
           </div>

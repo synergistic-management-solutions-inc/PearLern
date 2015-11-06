@@ -3,14 +3,14 @@ var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var Modal = require('react-modal');
 var Link = require('react-router').Link;
-const Card = require('material-ui/lib/card/card')
+const Card = require('material-ui/lib/card/card');
 // const Card = require('material-ui/lib/card/card-expandable')
-const CardHeader = require('material-ui/lib/card/card-header')
-const CardText = require('material-ui/lib/card/card-text')
-const CardActions = require('material-ui/lib/card/card-actions')
+const CardHeader = require('material-ui/lib/card/card-header');
+const CardText = require('material-ui/lib/card/card-text');
+const CardActions = require('material-ui/lib/card/card-actions');
 
-const Avatar = require('material-ui/lib/avatar')
-const IconButton = require('material-ui/lib/icon-button')
+const Avatar = require('material-ui/lib/avatar');
+const IconButton = require('material-ui/lib/icon-button');
 const RaisedButton = require('material-ui/lib/raised-button');
 
 
@@ -41,7 +41,7 @@ var Profile = React.createClass({
 
   // Set the initial value input fields (using dummy data for now) and state of modal
   getInitialState : function() {
-    return { 
+    return {
       modalIsOpen : false,
       nameValue : '',
       aboutValue : '',
@@ -58,10 +58,10 @@ var Profile = React.createClass({
     var self = this;
     var currentUser = this.props.currentUser;
     //this is a pretty hacky fix to the fact
-    //that we don't know how sessions work 
+    //that we don't know how sessions work
     //in passport
     if (!currentUser){
-      this.props.history.pushState(null, '/signin'); 
+      this.props.history.pushState(null, '/signin');
     }
 
     $.ajax({
@@ -89,7 +89,7 @@ var Profile = React.createClass({
   openModal : function() {
     this.setState({modalIsOpen: true});
   },
- 
+
   closeModal : function() {
     this.setState({modalIsOpen: false});
   },
@@ -98,15 +98,15 @@ var Profile = React.createClass({
   updateName : function(event) {
     this.setState({ nameValue : event.target.value });
   },
-  
+
   updateAbout : function(event) {
     this.setState({ aboutValue : event.target.value });
   },
-  
+
   updateLocation : function(event) {
     this.setState({ locationVal : event.target.value });
   },
-  
+
   updateWebsite : function(event) {
     this.setState({ websiteVal : event.target.value });
   },
@@ -120,7 +120,7 @@ var Profile = React.createClass({
   },
 
   saveData : function() {
-    var currentUser = this.props.currentUser;    
+    var currentUser = this.props.currentUser;
     var interests = this.state.interestsValue.split(',');
 
 
@@ -153,8 +153,8 @@ var Profile = React.createClass({
     var interests = this.state.interestsValue;
     //styles vars
     var avatarL = name ? name[0]:'';
-    var url = 'http://'
-    var git = 'https://github.com/'
+    var url = 'http://';
+    var git = 'https://github.com/';
     return (<div>
               <div className="container">
                 <div className="row">
@@ -162,14 +162,14 @@ var Profile = React.createClass({
                     <div className="card blue-grey darken-1">
                       <div className="card-content white-text">
                         <span className="card-title">
-                          <Avatar style={{backgroundColor:'white',color:'#546e7a'}}>{avatarL}</Avatar> 
+                          <Avatar style={{backgroundColor:'white',color:'#546e7a'}}>{avatarL}</Avatar>
                           <span>      {name}'s Profile</span>
-                        </span> 
+                        </span>
                         <div className="card-action">
                           <div className="profile-text">Name: {name}</div>
                           <div className="profile-text">Location: {location}</div>
                           <div className="link-text">Website: <a className ="link-text" href='#'>{url}{website}</a></div>
-                          <div className="link-text">Github:  <a className ="link-text" href='#'>{git}{github}</a></div> 
+                          <div className="link-text">Github:  <a className ="link-text" href='#'>{git}{github}</a></div>
                         </div>
                       </div>
                     </div>
@@ -189,12 +189,12 @@ var Profile = React.createClass({
                         <h6>Interest:</h6>
                         <p>{interests}</p>
                       </CardText>
-                      <div className='push'></div> 
+                      <div className='push'></div>
                       <RaisedButton fullWidth ={true} label="Edit Profile" className="edit-profile" onClick={this.openModal}/>
                     </Card>
                   </div>
                 </div>
-              </div>                       
+              </div>
               <Modal
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
@@ -214,13 +214,13 @@ var Profile = React.createClass({
                 <div className="edit-field-p"><span className="edit-field">Github (Your Handler)</span>
                   <input type="text" value={github} onChange={this.updateGithub} />
                 </div>
-                <div className="edit-field-p"><span className="edit-field">Programming Lenguage Interests (ex Javascript, Ruby, C++)</span> 
+                <div className="edit-field-p"><span className="edit-field">Programming Lenguage Interests (ex Javascript, Ruby, C++)</span>
                   <input type="text" value={interests} onChange={this.updateInterests} />
                 </div>
-                <div className='push'></div> 
+                <div className='push'></div>
                 <RaisedButton fullWidth ={true} label="Save Changes" className="edit-save" onClick={this.saveData}/>
                 </Modal>
-            </div>  
+            </div>
             );
   }
 })
