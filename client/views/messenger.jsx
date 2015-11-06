@@ -590,22 +590,4 @@ var Messenger = React.createClass({
   }
 });
 
-          // <div className="row">
-          //   <div className="file-field input-field">
-          //     {this.displaySelectFile()}
-          //   </div>
-          // </div>
-          // <div>
-          //   {this.displaySendButton()}
-          //   {this.displayDownloadButton()}
-          // </div>
-
-          // <div className="row">
-          //   <div>
-          //     {this.state.fileInfo}
-          //   </div>
-          //   <div>
-          //     <pre>{this.state.displayArea}</pre>
-          //   </div>
-          // </div>
 module.exports = Messenger;
