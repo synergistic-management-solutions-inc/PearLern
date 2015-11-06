@@ -5,6 +5,12 @@ const RaisedButton = require('material-ui/lib/raised-button');
 var Link = require('react-router').Link;
 var userActions = require('../actions/userActions');
 var userStore = require('../stores/userStore');
+const Card = require('material-ui/lib/card/card');
+const CardHeader = require('material-ui/lib/card/card-header');
+const CardText = require('material-ui/lib/card/card-text');
+const CardActions = require('material-ui/lib/card/card-actions');
+const Avatar = require('material-ui/lib/avatar');
+const IconButton = require('material-ui/lib/icon-button');
 
 
 // Top-level component
@@ -20,10 +26,10 @@ var UserView = React.createClass({
 
   componentWillMount: function(){
     //this is a pretty hacky fix to the fact
-    //that we don't know how sessions work 
+    //that we don't know how sessions work
     //in passport
-    if (!this.props.currentUser){ 
-      this.props.history.pushState(null, '/signin'); 
+    if (!this.props.currentUser){
+      this.props.history.pushState(null, '/signin');
     }
   },
 
@@ -90,8 +96,8 @@ var Users = React.createClass({
 
       success: function(res) {
         if (self.isMounted()) {
-          self.setState({users: res.users, 
-            message: self.props.message, 
+          self.setState({users: res.users,
+            message: self.props.message,
             currentUser: self.props.currentUser})
         }
       }
@@ -107,7 +113,7 @@ var Users = React.createClass({
       <div>
         {this.state.users
           .filter(function (element) {
-            // filters out current user 
+            // filters out current user
             if (element.username == currentUser){
               return false;
             }
@@ -120,7 +126,7 @@ var Users = React.createClass({
               return true;
             }
 
-            // filters to show only users whose 
+            // filters to show only users whose
             // interests contain the search query
             return element.interests
             .some(function(interest){
@@ -130,8 +136,8 @@ var Users = React.createClass({
             })
           })
           .map(function (element) {
-            return <User  key={element.username} 
-                          user={element} 
+            return <User  key={element.username}
+                          user={element}
                           message={message} />
           })
         }
@@ -150,24 +156,24 @@ var User = React.createClass({
     var user = this.props.user;
 
     return (
-      <div className="col s6">
-        <ul>
-          <h5>{user.username}</h5>
-          <li>
-            Name: {user.name}
-          </li>
-          <li>
-            About: {user.about}
-          </li>
-          <li>
-            Interests: {user.interests.join(', ')}
-          </li>
-        </ul>
-        <Link to="/messenger">
-          <RaisedButton onClick={this.openMessenger} 
-                        label="Message" />
-        </Link>
-      </div>
+
+        <div className="col s3">
+          <div className="card blue-grey darken-1">
+            <div className="card-content white-text">
+              <span className="card-title">
+                <Avatar style={{backgroundColor:'white',color:'#546e7a'}}>{user.name[0]}</Avatar>
+                <span>      {user.name}</span>
+              </span>
+              <div className="card-action">
+                <div className="profile-text">Name: {user.name}</div>
+                <div className="profile-text">Location: {user.about}</div>
+                <div className="profile-text">Interests: {user.interests.join(', ')}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
     );
   }
 })
