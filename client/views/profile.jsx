@@ -162,7 +162,7 @@ var Profile = React.createClass({
                       <div className="card-content white-text">
                         <span className="card-title">
                           <Avatar style={{backgroundColor:'white',color:'#546e7a'}}>{name[0]}</Avatar> 
-                          <span>      {name}'s' Profile</span>
+                          <span>      {name}'s Profile</span>
                         </span> 
                         <div className="card-action">
                           <div className="profile-text">Name: {name}</div>
@@ -219,7 +219,6 @@ var Profile = React.createClass({
                 <div className='push'></div> 
                 <RaisedButton fullWidth ={true} label="Save Changes" className="edit-save" onClick={this.saveData}/>
                 </Modal>
-                <div className="push"></div>
             </div>  
             );
   }
