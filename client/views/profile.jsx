@@ -203,10 +203,10 @@ var Profile = React.createClass({
                   <input type="text" value={name} onChange={this.updateName} />
                 </div>
                 <div className="edit-field-p"><span className='edit-field'>About (Tell us about you!)</span>
-                  <input type="text" value={about} onChange={this.updateAbout} />
+                  <input type="text" maxLength="12" value={about} onChange={this.updateAbout} />
                 </div>
-                <div className="edit-field-p"><span className="edit-field">Location (ex. Austin, TX)</span>
-                  <input type="text" value={location} onChange={this.updateLocation} />
+                <div className="edit-field-p"><span className="edit-field">Location (ex Austin,Tx)</span>
+                  <input type="text" maxLength="12" value={location} onChange={this.updateLocation} />
                 </div>
                 <div className="edit-field-p"><span className="edit-field">Website (Your Website Address)</span>
                   <input type="text" value={website} onChange={this.updateWebsite} />
