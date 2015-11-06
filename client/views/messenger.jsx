@@ -1,10 +1,24 @@
-var React = require('react')
+var React = require('react');
 var $ = require('jquery');
 const RaisedButton = require('material-ui/lib/raised-button');
 
+  var peer = null;
+  var cons = {};
+
   //an individual contact component
   var Contact = React.createClass({
-    selectUser: function(){
+    selectUser: function() {
+      console.log('Contact - this.props:', this.props);
+      var contact = this.props.contact;
+      var currentUser = this.props.currentUser;
+      var peerCon = peer.connect(contact);
+      cons[this.props.contact] = peerCon;
+
+      console.log('Contact peerCon:', peerCon);
+      peerCon.on('open', function() {
+        console.log('Connected to peer:', contact);
+        peerCon.send('Hi ' + contact + '! I am ' + currentUser);
+      });
       this.props.userSelected(this.props.contact);
     },
     render: function(){
@@ -18,8 +32,8 @@ const RaisedButton = require('material-ui/lib/raised-button');
   var Contacts = React.createClass({
     getInitialState: function(){
 
-      //the empty array 
-      //a placeholder until the 
+      //the empty array
+      //a placeholder until the
       //server sends data
       return {contacts: []}
 
@@ -39,11 +53,12 @@ const RaisedButton = require('material-ui/lib/raised-button');
             state.contacts.push(user.username);
           }
         })
-        
-        if (!component.props.otherUser){
-          var firstContact = state.contacts[0];
-          component.props.displayConversation(firstContact);
-        }
+
+        // if (!component.props.otherUser){
+        //   var firstContact = state.contacts[0];
+        //   component.props.displayConversation(firstContact);
+        // }
+
         //setting the state will automatically re-render
         component.setState(state);
       })
@@ -54,16 +69,19 @@ const RaisedButton = require('material-ui/lib/raised-button');
     render: function(){
 
       var userSelected = this.userSelected;
+      var currentUser = this.props.currentUser;
       var contacts = this.state.contacts.map(function(contact){
-        return <div className="z-depth-1"><Contact userSelected={userSelected} key={contact} contact={contact} /></div>
+        return ( <div className="z-depth-1 grey-text text-lighten-1"><Contact currentUser={currentUser} userSelected={userSelected} key={contact} contact={contact} /></div> )
       })
 
       return (
-        <div className="col s2">
-          <div className="contacts" >
-            <h4>Contacts</h4>
-            <div>
-              {contacts}
+        <div className="col s3">
+          <div className="card blue-grey darken-1">
+            <div className="contacts">
+              <div className="card-content">
+                <h4 className="white-text">Contacts</h4>
+                {contacts}
+              </div>
             </div>
           </div>
         </div>
@@ -75,7 +93,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
   var OtherUser = React.createClass({
     render: function(){
       return (
-        <h5>{this.props.otherUser} </h5>
+        <h5>{this.props.otherUser}</h5>
       );
     }
   })
@@ -98,23 +116,24 @@ const RaisedButton = require('material-ui/lib/raised-button');
         'to': this.props.otherUser,
         'from': currentUser,
         'text': this.refs.message.getDOMNode().value
-        };
+      };
 
       $.ajax({
         type: 'POST',
         url: '/messages',
         data: message,
         success: function(res){
-          //should re-render page; 
+          //should re-render page;
           update();
         }
       })
     },
     render: function(){
       return (
-        <div>
-          <input ref='message' type='text'></input>
-          <RaisedButton label="Send" className="send-button" onClick={this.sendMessage}/>        
+        <div className="row messageInput">
+          <input className="col s9" id="mess" ref="message" type="text" placeholder="Type here"></input>
+          <a id="messButton" label="Send" type="button" className="btn btn-small"
+            onClick={this.sendMessage}>+</a>
         </div>
       )
     }
@@ -135,21 +154,20 @@ const RaisedButton = require('material-ui/lib/raised-button');
         else {
           var className = 'outgoing';
           var user = currentUser;
-        } 
+        }
 
         return <div className={className}><Message key={message.text} message={message} currentUser={currentUser}/></div>
       })
 
       return (
         <div>
-          <div className="convoWith">Your conversation with:</div>
           <OtherUser otherUser={this.props.conversation.username}/>
-          {conversation}
           <NewMessage currentUser={currentUser}
                       otherUser={this.props.conversation.username}
-                      update={this.props.update}/> 
+                      update={this.props.update}/>
+          {conversation}
         </div>
-        ) 
+        )
     }
   })
 
@@ -163,7 +181,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
       //grabs the initial message data
       update();
-      
+
       //checks for new messages every two seconds
       setInterval(update, 2000);
     },
@@ -179,7 +197,7 @@ const RaisedButton = require('material-ui/lib/raised-button');
         .then(function(res){
           //gives conversation data to the state and automatically re-renders
            component.setState(res);
-        }) 
+        })
       }
     },
     render: function(){
@@ -194,52 +212,134 @@ const RaisedButton = require('material-ui/lib/raised-button');
         }
       })
 
+      if (this.props.otherUser) {
+        return (
+          <div className="col s4">
+            <div className="card grey lighten-3">
+              <div className="card-content">
+                <Conversation key={conversation.messages}
+                              conversation={conversation}
+                              update={this.update}
+                              currentUser={currentUser}/>
+              </div>
+            </div>
+          </div>
+        )
+      } else {
+        return (
+          <div className="col s4">
+            <div className="card grey lighten-3">
+              <div className="card-content">
+                Select a contact to connect with.
+              </div>
+            </div>
+          </div>
+        )
+      }
+    }
+  })
+
+  var VideoCall = React.createClass({
+    getInitialState: function() {
+      return {
+        holla: []
+      };
+    },
+
+    render: function() {
       return (
-        <div className="col s4 offset-s3">
-          <Conversation key={conversation.messages} 
-                        conversation={conversation}
-                        update={this.update} 
-                        currentUser={currentUser}/>
+        <div className="vidWindow card blue-grey darken-1">
+          <div className="card-content">
+            <div className="z-depth-1 video-container videoPlaceholder">
+
+            </div>
+          </div>
+          <div className="card-action">
+            <a href="#">CONNECT</a>
+          </div>
         </div>
       )
     }
   })
 
-  //the main component 
+  //the main component
   var Messenger = React.createClass({
     getInitialState: function(){
       return {
         //other user represents the user whose conversation
         //is currently being displayed
 
-        //this can be intially set to a particular user when 
-        //linked from the otherUsers page or it will be auto 
+        //this can be intially set to a particular user when
+        //linked from the otherUsers page or it will be auto
         //set to the first user on the list
         otherUser: this.props.messageTo
       }
     },
+
     displayConversation: function(username){
       this.setState({otherUser: username});
     },
     componentWillMount: function(){
+      console.log('Messenger will mount')
       //this is a pretty hacky fix to the fact
-      //that we don't know how sessions work 
+      //that we don't know how sessions work
       //in passport
-      if (!this.props.currentUser){ 
-        this.props.history.pushState(null, '/signin'); 
+      if (!this.props.currentUser){
+        this.props.history.pushState(null, '/signin');
+        return;
       }
+
+      peer = new Peer(this.props.currentUser, {
+        host: window.location.hostname,
+        port: process.env.PORT, // provided to client by envify
+        path: '/peerjs'
+      });
+
+      peer.on('connection', function(con) {
+        console.log('New connection');
+        con.on('data', function(data) {
+          console.log(data);
+        });
+      });
+
     },
     render: function(){
       return (
-        <div className="row">
-          <Contacts displayConversation={this.displayConversation} 
-                    otherUser={this.state.otherUser} 
+        <div className="row" id="nosideMargin">
+          <Contacts displayConversation={this.displayConversation}
+                    otherUser={this.state.otherUser}
                     currentUser={this.props.currentUser}/>
-          <Conversations otherUser={this.state.otherUser} 
+          <Conversations otherUser={this.state.otherUser}
                           currentUser={this.props.currentUser}/>
+          <div className="col s5">
+            <div className="row"><VideoCall /></div>
+            <div className="row"><FileShare /></div>
+            <div className="row"><FileDisplay /></div>
+          </div>
         </div>
       )
     }
   })
 
-module.exports = Messenger; 
+  var FileShare = React.createClass({
+    render: function() {
+      return (
+        <div className="file-field input-field">
+          <div className="btn">
+            <span>File</span>
+            <input type="file" />
+          </div>
+        </div>
+      );
+    }
+  });
+
+  var FileDisplay = React.createClass({
+    render: function() {
+      return (
+        <div>FileDisplay</div>
+      )
+    }
+  });
+
+module.exports = Messenger;

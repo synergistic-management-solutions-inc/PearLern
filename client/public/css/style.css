@@ -3,6 +3,23 @@ html, body {
     height: 100%;
 }
 
+#nosideMargin {
+  margin-right: 0;
+}
+
+.messageInput {
+  margin: auto;
+}
+
+#app {
+  margin: 0;
+  width: 100%;
+}
+
+.videoPlaceholder {
+  margin: auto;
+}
+
 .nav-wrapper {
   padding-left: 30px;
 }
@@ -27,6 +44,9 @@ footer .row, .push {
   height: 75px;
 }
 
+.footer-text {
+  color:white;
+}
 .contacts p {
   padding: 5px;
 }
@@ -52,9 +72,17 @@ footer .row, .push {
 
 .convoWith {
   margin-top: 30px;
-
 }
 
-.z-depth-1 {
-  border-radius: 5px;
+.container {
+  width: 100%;
+  margin: auto;
 }
+
+.landing-header{
+  text-align: center;
+}
+/*.text-header{
+  width: 80%
+}*/
+

@@ -9,13 +9,17 @@ var UserSchema = new Schema({
     },
     password: String,
     profile: {
-    	name: String,
-    	about: String,
-    	interests: []
+      name: String,
+      about: String,
+      location: String,
+      website: String,
+      joined: String,
+      github: String,
+      interests: []
     }
 });
+
 //hash
-//
 UserSchema.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(9));
 };
