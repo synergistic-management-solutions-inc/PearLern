@@ -8,6 +8,7 @@ var cons = {};
 var file = null;
 var fileInfo = {};
 var mediaStream = null;
+var localCall = null;
 var currentCall = null;
 
 var reader = new FileReader();
@@ -58,6 +59,13 @@ var Contact = React.createClass({
         data: 'Hi ' + contact + '! I am ' + currentUser
       };
       peerCon.send(toSend);
+    });
+
+    peerCon.on('close', function() {
+      userPeer.connected = false;
+      connectionState(false);
+      delete cons[contact]; // maybe just set it to empty object?
+      console.log('peerCon closed');
     });
 
     this.props.userSelected(this.props.contact);
@@ -294,7 +302,9 @@ var Messenger = React.createClass({
       //this can be intially set to a particular user when
       //linked from the otherUsers page or it will be auto
       //set to the first user on the list
-      otherUser: this.props.messageTo
+      otherUser: this.props.messageTo,
+      inCall: false,
+      mediaStreamPerms: false
     }
   },
 
@@ -328,32 +338,61 @@ var Messenger = React.createClass({
       });
     });
 
-    peer.on('disconnected', function() {
-
+    peer.on('disconnected', function(data) {
+      console.log('Peer disconnected', data);
     });
 
 
 
-    // peer.on('stream', function() {
-    //   $('#videoStream').prop('src', URL.createObjectURL(mediaStream));
-    // });
 
+    // Handle call related events
     peer.on('call', function(call) {
       currentCall = call;
 
       console.log('Got a new call!!', currentCall);
 
       currentCall.on('stream', function(stream) {
-        $('#videoStream').prop('src', URL.createObjectURL(stream));
+        console.log('stream PEER>ON ASDASF')
+        // $('#videoStream').prop('src', URL.createObjectURL(stream));
+        self.setUpPlayer(stream);
       });
 
-      currentCall.answer(mediaStream);
+      currentCall.on('close', function(data) {
+        console.log('call closed:', data);
+        self.hangUp();
+      });
+
+      console.log('setting inCall state true')
+
+      // This should be in its own method (its reused elsewhere), just dont have time to refactor
+      // Try to get permission for video calling
+      if (self.state.mediaStreamPerms !== true) {
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+        .then(function(stream) {
+          self.setState({ mediaStreamPerms: true });
+          mediaStream = stream;
+          currentCall.answer(mediaStream);
+        })
+        .catch(function(err) {
+          localCall = null;
+          mediaStream = null;
+          console.log('Error getting video permissions:', err);
+        });
+      } else {
+        currentCall.answer(mediaStream);
+      }
+
     });
 
     peer.on('error', function(err) {
       console.log('Peer error:', err);
     });
 
+  },
+
+  setUpPlayer: function(stream) {
+    this.setState({ inCall: true });
+    $('#videoStream').prop('src', URL.createObjectURL(stream));
   },
 
   selectFile: function(e) {
@@ -445,9 +484,9 @@ var Messenger = React.createClass({
     }
     
     return (
-      <div className="fileCard" onClick={this.sendFile}>
+      <a className="fileCard" onClick={this.sendFile}>
         <span>Send File</span>
-      </div>
+      </a>
     )
   },
 
@@ -457,9 +496,9 @@ var Messenger = React.createClass({
     }
 
     return (
-      <div className="fileCard" onClick={this.downloadFile}>
+      <a className="fileCard" onClick={this.downloadFile}>
         <span>Download File</span>
-      </div>
+      </a>
     )
   },
 
@@ -470,36 +509,30 @@ var Messenger = React.createClass({
       return null;
     }
 
-    // Try to get permission for video calling
-    if (this.state.mediaStreamPerms !== true) {
-      navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-      .then(function(stream) {
-        self.setState({ mediaStreamPerms: true });
-        mediaStream = stream;
-        // $('#videoStream').prop('src', URL.createObjectURL(mediaStream));
-      })
-      .catch(function(err) {
-        console.log('Error getting video permissions:', err);
-      });
-    }
-
-    // var video = '<video id="videoStream" autoplay></video>';
-
     if (this.state.mediaStreamPerms === true) {
       console.log('Have media perms');
     }
 
+    var callEl = null;
+
+    if (this.state.inCall === true) {
+      callEl = (<a href="#" onClick={this.hangUp}>Hang Up</a>);
+    } else {
+      callEl = (<a href="#" onClick={this.call}>Call</a>);
+    }
+
+    // <a href="#" onClick={this.call}>Call</a>
+    // <a href="#" onClick={this.hangUp}>Hang Up</a>
 
     return (
       <div className="vidWindow card blue-grey darken-1">
         <div className="card-content">
           <div className="z-depth-1 video-container videoPlaceholder">
-            <div id="videoContainer"><video id="videoStream" autoPlay></video></div>
+            <div id="videoContainer"><video className="responsive-video" id="videoStream" autoPlay></video></div>
           </div>
         </div>
         <div className="card-action">
-          <a href="#" onClick={this.call}>Call</a>
-          <a href="#" onClick={this.hangUp}>Hang Up</a>
+          {callEl}
         </div>
       </div>
     )
@@ -541,13 +574,36 @@ var Messenger = React.createClass({
   },
 
   call: function() {
+    var self = this;
     var other = this.state.otherUser;
     console.log('Calling', other);
     if (!this.isValidCon()) {
       return;
     }
 
-    var call = peer.call(other, mediaStream);
+    // Try to get permission for video calling
+    if (this.state.mediaStreamPerms !== true) {
+      navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      .then(function(stream) {
+        self.setState({ mediaStreamPerms: true });
+        mediaStream = stream;
+        // $('#videoStream').prop('src', URL.createObjectURL(mediaStream));
+        localCall = peer.call(other, mediaStream);
+        localCall.on('close', function() {
+          console.log('close asdfkljasdjfadskfjal');
+        })
+        localCall.on('stream', function(stream) {
+          self.setUpPlayer(stream);
+          console.log('asdfasdfasdfkajffkjlsfjaklsd')
+        })
+      })
+      .catch(function(err) {
+        localCall = null;
+        mediaStream = null;
+        console.log('Error getting video permissions:', err);
+      });
+    }
+
 
   },
 
@@ -557,9 +613,25 @@ var Messenger = React.createClass({
       // Somehow they are "in a call" but not connected to anything, gracefully hang up
     }
 
-    if (currentCall) {
-      currentCall.close();
+    // if (localCall) {
+      console.log('Closing call')
+      // this.tearDownPlayer();
+    try {
+      // mediaStream.stop() is gonna be deprecated, this is supposed to be how to handle it after deprecation but it does not
+      // if (mediaStream.getVideoTracks) {
+      //     // get video track to call stop on it
+      //     var tracks = mediaStream.getVideoTracks();
+      //     if (tracks && tracks[0] && tracks[0].stop) tracks[0].stop();
+      // } else {
+      //   mediaStream.stop();
+      // }
+      mediaStream.stop();
+      this.setState({ mediaStreamPerms: false, inCall: false });
+      localCall.close();
+    } catch (err) {
+      // Error closing localCall most likely
     }
+    // }
   },
 
   connectionState: function(open) {
