@@ -58,21 +58,19 @@ var SignUp = React.createClass({
   },
   render: function () {
     return (
+      
       <div className="sign-up-view">
+      <div className="push"></div>
         <div className="row">
-          <div className="col s6">
-            <img className="responsive-img" src="/images/signUpImage.jpg"/>
-          </div>
-          <div className="col s6">
-            <h4 className="signup-header">Sign Up</h4> 
-            <input type="text" className="username-input" placeholder="Choose a Username" onChange={this.updateUsername}/> <br />
-            <input type="password" className="password-input" placeholder="Choose a Password"  onChange={this.updatePassword}/>
+          <div className="input-field col s4 offset-s4 z-depth-5">
+            <h5 className="signin-header">Sign Up</h5>
+            <input type="text" className="username-input" placeholder="Enter Username" onChange={this.updateUsername}/>
+            <input type="password" className="password-input" placeholder="Enter Password"  onChange={this.updatePassword}/> 
             <input type="password" className="password-validate" placeholder="Re-enter Password"  onChange={this.validatePassword}/>
-            <RaisedButton label="Register" className="submit-button" onClick={this.addUser}/> 
+            <RaisedButton fullWidth ={true} label="Sign up" className="submit-button" onClick={this.addUser}/>
             <p className="signup-footer">Already registered? <Link to='/signin'>Sign in!</Link></p>
           </div>
         </div>
-        <div className="push"></div>
       </div>
     )
   }

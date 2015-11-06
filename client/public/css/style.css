@@ -126,7 +126,6 @@ footer{
 /*.text-header{
   width: 80%
 }*/
-
 .edit-field {
   font-style: italic;
   color: #78909c;
@@ -135,6 +134,73 @@ footer{
 #topCard {
   border-top: 0;
   border-bottom: 1px solid rgba(160,160,160,0.2);
+}
+
+/*SIGN IN / UP STYLING*/  
+/* label color */
+.input-field label {
+ color: #37474f ;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label {
+ color: #37474f ;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+ border-bottom: 1px solid #37474f ;
+ box-shadow: 0 1px 0 0 #37474f ;
+}
+/* valid color */
+.input-field input[type=text].valid {
+ border-bottom: 1px solid #37474f ;
+ box-shadow: 0 1px 0 0 #37474f ;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+ border-bottom: 1px solid #37474f ;
+ box-shadow: 0 1px 0 0 #37474f ;
+}
+
+.input-field input[type=password]:focus + label {
+ color: #37474f ;
+}
+/* label underline focus color */
+.input-field input[type=password]:focus {
+ border-bottom: 1px solid #37474f ;
+ box-shadow: 0 1px 0 0 #37474f ;
+}
+/* valid color */
+.input-field input[type=password].valid {
+ border-bottom: 1px solid #37474f ;
+ box-shadow: 0 1px 0 0 #37474f ;
+}
+/* invalid color */
+.input-field input[type=password].invalid {
+ border-bottom: 1px solid #37474f ;
+ box-shadow: 0 1px 0 0 #37474f ;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+ color: #37474f ;
+}
+
+
+.sign-in-view {
+  background-image: url(/images/sign_in.jpg); 
+  background-repeat: no-repeat;
+  min-height: 100%;
+  background-size: cover;
+}
+
+.input-field {
+ background-color:rgba(236,239,241,0.8)
+}
+
+.sign-up-view {
+  background-image: url(/images/sign_in.jpg); 
+  background-repeat: no-repeat;
+  min-height: 100%;
+  background-size: cover;
 }
 
 .fileCard {
