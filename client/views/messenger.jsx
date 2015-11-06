@@ -392,7 +392,7 @@ var Messenger = React.createClass({
       return (
         <div className="btn">
           <span>Select a File</span>
-          <input type="file" onChange={this.selectFile} />
+          <input className="btn" type="file" onChange={this.selectFile} />
         </div>
       )
     // }
@@ -447,10 +447,10 @@ var Messenger = React.createClass({
           <div className="row">
             <div className="file-field input-field">
               {this.displaySelectFile()}
-              {this.displaySendButton()}
-              {this.displayDownloadButton()}
             </div>
           </div>
+              {this.displaySendButton()}
+              {this.displayDownloadButton()}
           <div className="row">
             <div>
               {this.state.fileInfo}
