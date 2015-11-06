@@ -86,3 +86,9 @@ footer .row, .push {
   width: 80%
 }*/
 
+.edit-field {
+  font-style: italic;
+  color: #78909c;  
+}
+
+
