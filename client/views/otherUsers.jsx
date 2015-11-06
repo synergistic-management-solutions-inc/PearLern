@@ -201,7 +201,7 @@ var User = React.createClass({
               </span>
               <div className="card-action">
                 <div className="profile-text">Name: {user.name}</div>
-                <div className="profile-text">Location: {user.about}</div>
+                <div className="profile-text">Location: {user.location}</div>
                 <div className="profile-text">Interests: {user.interests.join(', ')}</div>
                 <br></br>
                 <Link to="/messenger">
